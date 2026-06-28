@@ -46,6 +46,81 @@
             margin-bottom: 6px;
         }
 
+        .route-input-summary {
+            display: none;
+            background: #141414;
+            border: 1px solid #333;
+            border-left: 3px solid var(--ok);
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .route-edit-only.is-hidden {
+            display: none !important;
+        }
+
+        .route-input-summary strong {
+            color: #ffffff;
+            display: block;
+            font-size: 11px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin: 8px 0 10px;
+        }
+
+        .summary-card {
+            background: #202020;
+            border: 1px solid #2d2d2d;
+            padding: 8px;
+            min-height: 38px;
+        }
+
+        .summary-card b {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 3px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-list {
+            margin: 8px 0;
+            display: grid;
+            gap: 5px;
+        }
+
+        .summary-item {
+            background: #1f1f1f;
+            border: 1px solid #2f2f2f;
+            padding: 6px 8px;
+            color: #dcdcdc;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .route-focus {
+            box-shadow: 0 0 0 1px var(--accent), 0 0 18px rgba(249, 115, 22, 0.16);
+        }
+
+        @media (max-width: 700px) {
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+
         #dropoffs.two-col {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -431,10 +506,17 @@
             </span>
             <input id="showAllLocationsToggle" type="checkbox" onchange="setShowAllMapLocations(this.checked)">
         </label>
+
+        <label class="settings-row" for="mapPerspectiveToggle">
+            <span>Leaned-back map perspective
+                <small>Turns the flat orbital map into a tilted tactical-table view.</small>
+            </span>
+            <input id="mapPerspectiveToggle" type="checkbox" onchange="setMapPerspectiveMode(this.checked)">
+        </label>
     </div>
     
     <div class="main-grid">
-        <div class="panel">
+        <div class="panel" id="configPanel">
             <h2>Configuration</h2>
 
             <div class="control-group">
@@ -507,11 +589,11 @@
                 <select id="startLocation"></select>
             </div>
 
-            <h2>Contract Type</h2>
-            <div class="toggle-group">
-                <button class="toggle-btn active" onclick="setContractType('single-multi')">Single→Multi</button>
-                <button class="toggle-btn" onclick="setContractType('multi-single')">Multi→Single</button>
-                <button class="toggle-btn" onclick="setContractType('multi-multi')">Multi→Multi</button>
+            <h2 id="contractTypeLabel" class="route-edit-only">Contract Type</h2>
+            <div id="contractTypeControls" class="toggle-group route-edit-only">
+                <button class="toggle-btn active" onclick="setContractType('single-multi', event)">Single→Multi</button>
+                <button class="toggle-btn" onclick="setContractType('multi-single', event)">Multi→Single</button>
+                <button class="toggle-btn" onclick="setContractType('multi-multi', event)">Multi→Multi</button>
             </div>
 
             <h2 id="pickupLabel">Pickups</h2>
@@ -520,8 +602,10 @@
             <h2 id="dropoffLabel" style="display:none;">Dropoffs</h2>
             <div id="dropoffs"></div>
 
+            <div id="routeInputSummary" class="route-input-summary"></div>
+
             <div style="margin-top: 16px;">
-                <button onclick="calculateRoute()">🚀 Calculate Route</button>
+                <button id="calculateBtn" onclick="calculateRoute()">🚀 Calculate Route</button>
             </div>
         </div>
 
@@ -561,9 +645,9 @@
 			// === PYRO ===
             {name: "Checkmate", sys: "Pyro", lat: 0.01, lon: -5.19, dist: 10.59},
             {name: "Dudley & Daughters", sys: "Pyro", lat: 0.00, lon: -155.25, dist: 68.33},
-            {name: "Endgame (Terminus L3)", sys: "Pyro", lat: 0.00, lon: -40.23, dist: 68.29},
+            {name: "Endgame", sys: "Pyro", lat: 0.00, lon: -40.23, dist: 68.29},
             {name: "Gaslight", sys: "Pyro", lat: 0.02, lon: -95.22, dist: 47.21},
-            {name: "Megumi Refueling (Terminus L5)", sys: "Pyro", lat: 0.01, lon: 64.77, dist: 68.29},
+            {name: "Megumi Refueling", sys: "Pyro", lat: 0.01, lon: 64.77, dist: 68.29},
             {name: "Nyx Gateway", sys: "Pyro", lat: 0.00, lon: -134.37, dist: 50.43},
 			{name: "Orbituary", sys: "Pyro", lat: 0.00, lon: 154.76, dist: 17.8},
 
@@ -571,8 +655,8 @@
 			{name: "RAB-Kilo", sys: "Pyro", lat: 0.00, lon: -32.82, dist: 17.79},	
 			{name: "Cluster NBD-102", sys: "Pyro", lat: 0.21, lon: -37.13, dist: 20.67},
 
-			{name: "Rat's Nest (Pyro V L5)", sys: "Pyro", lat: 0.02, lon: -170.24, dist: 42.92},
-			{name: "Rod's Fuel 'N Supplies (Pyro V L4)", sys: "Pyro", lat: -0.01, lon: -15.20, dist: 42.92},
+			{name: "Rat's Nest", sys: "Pyro", lat: 0.02, lon: -170.24, dist: 42.92},
+			{name: "Rod's Fuel 'N Supplies", sys: "Pyro", lat: -0.01, lon: -15.20, dist: 42.92},
             {name: "Ruin Station", sys: "Pyro", lat: 0.00, lon: 134.77, dist: 68.32},
             {name: "Starlight Service Station", sys: "Pyro", lat: 0.00, lon: 155.79, dist: 60.1},
             {name: "Stanton Gateway", sys: "Pyro", lat: 0.00, lon: 49.90, dist: 53.06},
@@ -671,19 +755,21 @@
         let tracking = {};
         let currentRoute = null;
         let showAllMapLocations = false;
+        let mapPerspectiveMode = false;
+        let routeInputsCollapsed = false;
 
         const haulingLocationNames = new Set([
             // Pyro hauling / main usable contract locations
             "Checkmate",
             "Dudley & Daughters",
-            "Endgame (Terminus L3)",
+            "Endgame",
             "Gaslight",
-            "Megumi Refueling (Terminus L5)",
+            "Megumi Refueling",
             "Nyx Gateway",
             "Orbituary",
             "Patch City",
-            "Rat's Nest (Pyro V L5)",
-            "Rod's Fuel 'N Supplies (Pyro V L4)",
+            "Rat's Nest",
+            "Rod's Fuel 'N Supplies",
             "Ruin Station",
             "Starlight Service Station",
             "Stanton Gateway",
@@ -735,6 +821,20 @@
             showAllMapLocations = localStorage.getItem('scShowAllMapLocations') === '1';
             const toggle = document.getElementById('showAllLocationsToggle');
             if (toggle) toggle.checked = showAllMapLocations;
+        }
+
+        function setMapPerspectiveMode(value) {
+            mapPerspectiveMode = Boolean(value);
+            localStorage.setItem('scMapPerspectiveMode', mapPerspectiveMode ? '1' : '0');
+            const toggle = document.getElementById('mapPerspectiveToggle');
+            if (toggle) toggle.checked = mapPerspectiveMode;
+            drawSystemMap(currentRoute?.path || []);
+        }
+
+        function loadMapPerspectiveSetting() {
+            mapPerspectiveMode = localStorage.getItem('scMapPerspectiveMode') === '1';
+            const toggle = document.getElementById('mapPerspectiveToggle');
+            if (toggle) toggle.checked = mapPerspectiveMode;
         }
 
         let mapViewBox = { x: 0, y: 0, w: 1000, h: 640 };
@@ -867,12 +967,24 @@
 			}
 		};
 
+        function projectMapPoint(x, y, cx, cy) {
+            if (!mapPerspectiveMode) return { x, y };
+
+            // "Leaned back" tactical-table projection:
+            // x stays true to the longitude, y is compressed toward the horizon.
+            // This keeps the real route/distance maths unchanged while making the map feel angled.
+            const tilt = 0.52;
+            return {
+                x,
+                y: cy + (y - cy) * tilt
+            };
+        }
+
         function mapPoint(loc, cx, cy, scale) {
             const lonRad = loc.lon * Math.PI / 180;
-            return {
-                x: cx + loc.dist * scale * Math.cos(lonRad),
-                y: cy - loc.dist * scale * Math.sin(lonRad)
-            };
+            const x = cx + loc.dist * scale * Math.cos(lonRad);
+            const y = cy - loc.dist * scale * Math.sin(lonRad);
+            return projectMapPoint(x, y, cx, cy);
         }
 		
         function getMapPlotPoint(loc) {
@@ -1143,7 +1255,7 @@
                 <circle cx="${cx}" cy="${cy}" r="28" fill="url(#starGlow)"/>
                 <circle class="map-star" cx="${cx}" cy="${cy}" r="7"/>
                 <text x="${cx+12}" y="${cy+4}" fill="#777" font-family="Courier New" font-size="8">STAR</text>
-                <text x="24" y="62" fill="#777" font-family="Courier New" font-size="9">${showAllMapLocations ? 'SHOWING ALL LOCATIONS' : 'HAULING LOCATIONS ONLY'} • ${locs.length}/${allSystemLocs.length}</text>
+                <text x="24" y="62" fill="#777" font-family="Courier New" font-size="9">${showAllMapLocations ? 'SHOWING ALL LOCATIONS' : 'HAULING LOCATIONS ONLY'} • ${mapPerspectiveMode ? 'LEANED-BACK VIEW' : 'FLAT VIEW'} • ${locs.length}/${allSystemLocs.length}</text>
             `;
 
             if (locs.length === 0) {
@@ -1156,8 +1268,14 @@
 
             cfg.rings.forEach(r => {
                 const rr = r * scale;
-                svg.innerHTML += `<circle class="map-ring" cx="${cx}" cy="${cy}" r="${rr}"/>`;
-                svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-rr-5}">${r.toFixed(2)} GM</text>`;
+                if (mapPerspectiveMode) {
+                    const ry = rr * 0.52;
+                    svg.innerHTML += `<ellipse class="map-ring" cx="${cx}" cy="${cy}" rx="${rr}" ry="${ry}"/>`;
+                    svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-ry-5}">${r.toFixed(2)} GM</text>`;
+                } else {
+                    svg.innerHTML += `<circle class="map-ring" cx="${cx}" cy="${cy}" r="${rr}"/>`;
+                    svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-rr-5}">${r.toFixed(2)} GM</text>`;
+                }
             });
 
             const routeNameSet = new Set(routePath);
@@ -1302,57 +1420,200 @@
             drawSystemMap(currentRoute?.path || []);
         }
 
-        function setContractType(type) {
+        function setContractType(type, sourceEvent = null) {
+            if (routeInputsCollapsed) {
+                // Route is locked in calculate mode. Use Edit Inputs before changing mode.
+                return;
+            }
+            if (!sourceEvent && typeof window !== 'undefined') sourceEvent = window.event;
             contractType = type;
+            routeInputsCollapsed = false;
             document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
+            if (sourceEvent?.target) sourceEvent.target.classList.add('active');
+            else {
+                const idx = type === 'single-multi' ? 0 : type === 'multi-single' ? 1 : 2;
+                document.querySelectorAll('.toggle-btn')[idx]?.classList.add('active');
+            }
+
             updateUI();
-            
-            // Clear ALL grid styles first
+            hideRouteInputSummary();
+        }
+
+        function applyContractGridLayout() {
             const pickups = document.getElementById('pickups');
             const dropoffs = document.getElementById('dropoffs');
-            
-            pickups.style.cssText = '';
-            dropoffs.style.cssText = '';
-            
-            // Then apply only the needed styles for this mode
-            if (type === 'single-multi') {
+            if (!pickups || !dropoffs) return;
+
+            pickups.style.display = '';
+            pickups.style.gridTemplateColumns = '';
+            pickups.style.gap = '';
+            dropoffs.style.display = '';
+            dropoffs.style.gridTemplateColumns = '';
+            dropoffs.style.gap = '';
+
+            if (contractType === 'single-multi') {
                 dropoffs.style.display = 'grid';
                 dropoffs.style.gridTemplateColumns = 'repeat(2, 1fr)';
                 dropoffs.style.gap = '8px';
-            } else if (type === 'multi-single') {
+            } else if (contractType === 'multi-single') {
                 pickups.style.display = 'grid';
                 pickups.style.gridTemplateColumns = 'repeat(2, 1fr)';
                 pickups.style.gap = '8px';
+            } else {
+                dropoffs.style.display = 'none';
             }
-            // multi-multi: no grid applied, stays normal
         }
 
         function updateUI() {
             const pickupLabel = document.getElementById('pickupLabel');
             const dropoffLabel = document.getElementById('dropoffLabel');
+            routeInputsCollapsed = false;
+            hideRouteInputSummary();
             
             if (contractType === 'single-multi') {
                 pickupLabel.textContent = 'Pickup (1)';
                 dropoffLabel.textContent = 'Dropoffs (up to 10)';
                 dropoffLabel.style.display = 'block';
-                document.getElementById('dropoffs').style.display = 'block';
                 renderPickups(1);
                 renderDropoffs(10);
             } else if (contractType === 'multi-single') {
                 pickupLabel.textContent = 'Pickups (up to 10)';
                 dropoffLabel.textContent = 'Dropoff (1)';
                 dropoffLabel.style.display = 'block';
-                document.getElementById('dropoffs').style.display = 'block';
                 renderPickups(10);
                 renderDropoffs(1);
             } else {
                 pickupLabel.textContent = 'Pickups + Destinations (up to 15)';
                 dropoffLabel.style.display = 'none';
-                document.getElementById('dropoffs').style.display = 'none';
                 renderPickupsMultiMulti(15);
             }
+
+            pickupLabel.style.display = 'block';
+            document.getElementById('pickups').style.display = 'block';
+            applyContractGridLayout();
+        }
+
+        function getContractTypeLabel() {
+            if (contractType === 'single-multi') return 'Single Pickup → Multi Dropoff';
+            if (contractType === 'multi-single') return 'Multi Pickup → Single Dropoff';
+            return 'Multi Pickup → Multi Dropoff';
+        }
+
+        function selectedText(selector) {
+            const el = document.querySelector(selector);
+            if (!el) return '';
+            const opt = el.options?.[el.selectedIndex];
+            return opt ? opt.textContent.replace(/\s+/g, ' ').trim() : el.value;
+        }
+
+        function collectContractSelections() {
+            const pickups = Array.from(document.querySelectorAll('.pickup-select')).map((sel, i) => ({
+                name: sel.value,
+                cargo: parseInt(document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`)?.value) || 0,
+                destination: document.querySelector(`.pickup-dest[data-idx="${i+1}"]`)?.value || ''
+            })).filter(p => p.name || p.destination || p.cargo);
+
+            const dropoffs = Array.from(document.querySelectorAll('.dropoff-select')).map((sel, i) => ({
+                name: sel.value,
+                cargo: parseInt(document.querySelector(`.dropoff-cargo[data-idx="${i+1}"]`)?.value) || 0
+            })).filter(d => d.name || d.cargo);
+
+            return { pickups, dropoffs };
+        }
+
+        function buildRouteInputSummaryHtml() {
+            const start = document.getElementById('startLocation')?.value || 'Current Location';
+            const ship = selectedText('#shipSelect') || 'No ship selected';
+            const system = selectedText('#systemSelect') || 'All Systems';
+            const { pickups, dropoffs } = collectContractSelections();
+            const cargo = getCargoSummary();
+
+            let html = `<strong>Route calculated — inputs hidden</strong>`;
+            html += `<div style="color:#aaa;">Your selected contract list is tucked away so the route is easier to read. Use Edit Inputs if you need to change anything.</div>`;
+            html += `<div class="summary-grid">`;
+            html += `<div class="summary-card"><b>Mode</b>${escapeHtml(getContractTypeLabel())}</div>`;
+            html += `<div class="summary-card"><b>System / Ship</b>${escapeHtml(system)}<br>${escapeHtml(ship)}</div>`;
+            html += `<div class="summary-card"><b>Start</b>${escapeHtml(start)}</div>`;
+            html += `<div class="summary-card"><b>Cargo</b>${cargo.carriedCargo} SCU${cargo.cargoNote ? escapeHtml(cargo.cargoNote.replace(/^ \| /, ' — ')) : ''}</div>`;
+            html += `</div>`;
+
+            html += `<div class="summary-list">`;
+            pickups.filter(p => p.name).forEach((p, idx) => {
+                const dest = p.destination ? ` → ${p.destination}` : '';
+                html += `<div class="summary-item">PICKUP ${idx + 1}: ${escapeHtml(p.name + dest)}${p.cargo ? ` — ${p.cargo} SCU` : ''}</div>`;
+            });
+            dropoffs.filter(d => d.name).forEach((d, idx) => {
+                html += `<div class="summary-item">DROPOFF ${idx + 1}: ${escapeHtml(d.name)}${d.cargo ? ` — ${d.cargo} SCU` : ''}</div>`;
+            });
+            html += `</div>`;
+            html += `<div class="summary-actions">`;
+            html += `<button class="secondary" onclick="unlockRouteInputs()" style="margin:0;">✎ Edit Inputs</button>`;
+            html += `<button onclick="calculateRoute()" style="margin:0;">↻ Recalculate</button>`;
+            html += `</div>`;
+            return html;
+        }
+
+        function hideRouteInputSummary() {
+            const summary = document.getElementById('routeInputSummary');
+            const calcBtn = document.getElementById('calculateBtn');
+            if (summary) {
+                summary.style.display = 'none';
+                summary.innerHTML = '';
+            }
+            if (calcBtn) calcBtn.textContent = '🚀 Calculate Route';
+        }
+
+        function setContractTypeControlsVisible(visible) {
+            const label = document.getElementById('contractTypeLabel');
+            const controls = document.getElementById('contractTypeControls');
+            [label, controls].forEach(el => {
+                if (!el) return;
+                el.classList.toggle('is-hidden', !visible);
+            });
+        }
+
+        function collapseRouteInputs() {
+            routeInputsCollapsed = true;
+            const pickupLabel = document.getElementById('pickupLabel');
+            const dropoffLabel = document.getElementById('dropoffLabel');
+            const pickups = document.getElementById('pickups');
+            const dropoffs = document.getElementById('dropoffs');
+            const summary = document.getElementById('routeInputSummary');
+            const calcBtn = document.getElementById('calculateBtn');
+
+            setContractTypeControlsVisible(false);
+            if (pickupLabel) pickupLabel.style.display = 'none';
+            if (dropoffLabel) dropoffLabel.style.display = 'none';
+            if (pickups) pickups.style.display = 'none';
+            if (dropoffs) dropoffs.style.display = 'none';
+            if (summary) {
+                summary.innerHTML = buildRouteInputSummaryHtml();
+                summary.style.display = 'block';
+            }
+            if (calcBtn) calcBtn.textContent = '↻ Recalculate Route';
+        }
+
+        function unlockRouteInputs() {
+            routeInputsCollapsed = false;
+            hideRouteInputSummary();
+            const pickupLabel = document.getElementById('pickupLabel');
+            const dropoffLabel = document.getElementById('dropoffLabel');
+            const pickups = document.getElementById('pickups');
+            const dropoffs = document.getElementById('dropoffs');
+
+            setContractTypeControlsVisible(true);
+            if (pickupLabel) pickupLabel.style.display = 'block';
+            if (pickups) pickups.style.display = 'block';
+            if (dropoffLabel) dropoffLabel.style.display = contractType === 'multi-multi' ? 'none' : 'block';
+            if (dropoffs) dropoffs.style.display = contractType === 'multi-multi' ? 'none' : 'block';
+            applyContractGridLayout();
+        }
+
+        function focusRouteOutput() {
+            const panel = document.getElementById('route')?.closest('.panel');
+            if (!panel) return;
+            panel.classList.add('route-focus');
+            setTimeout(() => panel.classList.remove('route-focus'), 900);
         }
 
         function getLocationsBySystem() {
@@ -1532,6 +1793,8 @@
                 } else {
                     renderRoute(routeMultiToSingle(start, pickups, dropoffs));
                 }
+                collapseRouteInputs();
+                focusRouteOutput();
             }
             saveState();
         }
@@ -1607,6 +1870,8 @@
                 totalCargo,
                 path: [startLoc?.name, ...steps.map(step => locations.find(l => step.text.includes(l.name))?.name).filter(Boolean)].filter(Boolean)
             });
+            collapseRouteInputs();
+            focusRouteOutput();
         }
 
         function optimiseOpenRoute(startLoc, stops, endLoc = null) {
@@ -1962,26 +2227,7 @@
 
             updateUI();
             
-            // Apply two-col styles after updateUI
-            const pickups = document.getElementById('pickups');
-            const dropoffs = document.getElementById('dropoffs');
-            
-            pickups.style.display = '';
-            pickups.style.gridTemplateColumns = '';
-            pickups.style.gap = '';
-            dropoffs.style.display = '';
-            dropoffs.style.gridTemplateColumns = '';
-            dropoffs.style.gap = '';
-            
-            if (contractType === 'single-multi') {
-                dropoffs.style.display = 'grid';
-                dropoffs.style.gridTemplateColumns = 'repeat(2, 1fr)';
-                dropoffs.style.gap = '8px';
-            } else if (contractType === 'multi-single') {
-                pickups.style.display = 'grid';
-                pickups.style.gridTemplateColumns = 'repeat(2, 1fr)';
-                pickups.style.gap = '8px';
-            }
+            applyContractGridLayout();
 
             setTimeout(() => {
                 state.pickups?.forEach((p, i) => {
@@ -2018,6 +2264,7 @@
         window.onload = () => {
             loadTheme();
             loadMapLocationSetting();
+            loadMapPerspectiveSetting();
             updateLocationOptions();
             loadState();
             drawSystemMap(currentRoute?.path || []);
