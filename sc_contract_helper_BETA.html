@@ -10,6 +10,7 @@
             --accent-hover: #ff8c42;
             --accent-text: #0f0f0f;
             --ok: #4ade80;
+            --trans: all 0.2s;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -28,438 +29,233 @@
         .panel { background: #1a1a1a; border: 1px solid #2a2a2a; padding: 16px; }
         .control-group { margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
         label { font-size: 10px; color: #999; text-transform: uppercase; min-width: 60px; font-weight: 700; letter-spacing: 1px; }
-        select, input { flex: 1; padding: 7px 8px; background: #262626; color: #e0e0e0; border: 1px solid #333; font-family: inherit; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+        select, input { flex: 1; padding: 7px 8px; background: #262626; color: #e0e0e0; border: 1px solid #333; font-family: inherit; font-size: 11px; cursor: pointer; transition: var(--trans); }
         select:focus, input:focus { outline: none; border-color: var(--accent); background: #2a2a2a; }
         .toggle-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
-        .toggle-btn { padding: 8px; background: #262626; color: #999; border: 1px solid #333; font-family: inherit; font-size: 9px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+        .toggle-btn, button { transition: var(--trans); font-family: inherit; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .toggle-btn { padding: 8px; background: #262626; color: #999; border: 1px solid #333; font-size: 9px; }
         .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
         .toggle-btn.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-        button { padding: 8px 12px; background: var(--accent); color: var(--accent-text); border: 1px solid var(--accent); font-family: inherit; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px; margin-right: 6px; margin-bottom: 6px; }
+        button { padding: 8px 12px; background: var(--accent); color: var(--accent-text); border: 1px solid var(--accent); font-size: 10px; letter-spacing: 1px; margin-right: 6px; margin-bottom: 6px; }
         button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
         button.secondary { background: #262626; color: #e0e0e0; border-color: #333; }
         button.secondary:hover { border-color: var(--accent); color: var(--accent); }
+        button.secondary.active { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(249,115,22,0.22); }
         
-        .contract-row { 
-            background: #262626; 
-            border: 1px solid #333; 
-            padding: 10px; 
-            margin-bottom: 6px;
-        }
+        .contract-row { background: #262626; border: 1px solid #333; padding: 10px; margin-bottom: 6px; }
+        .route-input-summary { display: none; background: #141414; border: 1px solid #333; border-left: 3px solid var(--ok); padding: 12px; margin: 12px 0; font-size: 10px; line-height: 1.5; }
+        .route-edit-only.is-hidden { display: none !important; }
+        .route-input-summary strong { color: #ffffff; display: block; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .route-input-summary {
-            display: none;
-            background: #141414;
-            border: 1px solid #333;
-            border-left: 3px solid var(--ok);
-            padding: 12px;
-            margin: 12px 0;
-            font-size: 10px;
-            line-height: 1.5;
-        }
+        .summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 8px 0 10px; }
+        .summary-card { background: #202020; border: 1px solid #2d2d2d; padding: 8px; min-height: 38px; }
+        .summary-card b { color: var(--accent); display: block; margin-bottom: 3px; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-list { margin: 8px 0; display: grid; gap: 5px; }
+        .summary-item { background: #1f1f1f; border: 1px solid #2f2f2f; padding: 6px 8px; color: #dcdcdc; }
+        .summary-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .route-focus { box-shadow: 0 0 0 1px var(--accent), 0 0 18px rgba(249, 115, 22, 0.16); }
+        @media (max-width: 700px) { .summary-grid { grid-template-columns: 1fr; } }
 
-        .route-edit-only.is-hidden {
-            display: none !important;
-        }
-
-        .route-input-summary strong {
-            color: #ffffff;
-            display: block;
-            font-size: 11px;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 8px;
-            margin: 8px 0 10px;
-        }
-
-        .summary-card {
-            background: #202020;
-            border: 1px solid #2d2d2d;
-            padding: 8px;
-            min-height: 38px;
-        }
-
-        .summary-card b {
-            color: var(--accent);
-            display: block;
-            margin-bottom: 3px;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .summary-list {
-            margin: 8px 0;
-            display: grid;
-            gap: 5px;
-        }
-
-        .summary-item {
-            background: #1f1f1f;
-            border: 1px solid #2f2f2f;
-            padding: 6px 8px;
-            color: #dcdcdc;
-        }
-
-        .summary-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .route-focus {
-            box-shadow: 0 0 0 1px var(--accent), 0 0 18px rgba(249, 115, 22, 0.16);
-        }
-
-        @media (max-width: 700px) {
-            .summary-grid { grid-template-columns: 1fr; }
-        }
-
-        #dropoffs.two-col {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        #pickups.two-col {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
+        #dropoffs.two-col, #pickups.two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         
         .status-box { background: #1f3a1f; border: 1px solid #2a5a2a; padding: 8px; margin: 8px 0; font-size: 10px; border-left: 3px solid var(--ok); }
         .status-box.warn { background: #3a3a1f; border-left-color: var(--accent); }
         .status-box.error { background: #3a1f1f; border-left-color: #ff6b6b; }
 
-        #settingsPanel { 
-            background: #1a1a1a; 
-            border: 1px solid #2a2a2a; 
-            padding: 12px; 
-            margin-bottom: 12px; 
-        }
+        #settingsPanel { background: #1a1a1a; border: 1px solid #2a2a2a; padding: 12px; margin-bottom: 12px; }
 
-        .theme-ball {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-            box-shadow: 0 0 0 rgba(255,255,255,0);
-        }
-
-        .theme-ball:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
-        }
-
-        .theme-ball.active {
-            border-color: #ffffff;
-            box-shadow: 0 0 16px rgba(255, 255, 255, 0.8);
-        }
+        .theme-ball { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; box-shadow: 0 0 0 rgba(255,255,255,0); transition: var(--trans); }
+        .theme-ball:hover { transform: scale(1.15); box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
+        .theme-ball.active { border-color: #ffffff; box-shadow: 0 0 16px rgba(255, 255, 255, 0.8); }
         
-        #route { 
-            grid-column: 1 / -1;
-            background: #262626; 
-            padding: 12px; 
-            border: 1px solid #333; 
-            min-height: 350px; 
-            font-size: 10px; 
-            line-height: 1.6; 
-            font-family: 'Courier New', monospace;
-            overflow-y: auto;
-            max-height: 700px;
-            color: #e0e0e0;
-        }
+        #route { grid-column: 1 / -1; background: #262626; padding: 12px; border: 1px solid #333; min-height: 350px; font-size: 10px; line-height: 1.6; font-family: 'Courier New', monospace; overflow-y: auto; max-height: 700px; color: #e0e0e0; }
+        .route-line { padding: 4px 6px; margin: 1px 0; cursor: pointer; user-select: none; transition: var(--trans); }
+        .route-line.clickable { background: #333; border-left: 2px solid #666; }
+        .route-line.clickable:hover { background: #3a3a3a; border-left-color: var(--accent); }
+        .route-line.completed { background: #1f3a1f; border-left-color: var(--ok); color: var(--ok); text-decoration: line-through; }
+        .route-line.completed::before { content: "✓ "; color: var(--ok); font-weight: 700; }
+        .route-header { color: var(--accent); font-weight: 700; margin-top: 6px; margin-bottom: 4px; }
+        .route-phase { opacity: 0.6; margin-top: 8px; }
+        .route-phase.active { opacity: 1; }
+        .route-summary { border-top: 1px solid #333; margin-top: 12px; padding-top: 8px; color: #999; font-size: 9px; }
 
-        .route-line {
-            padding: 4px 6px;
-            margin: 1px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .route-line.clickable {
-            background: #333;
-            border-left: 2px solid #666;
-        }
-
-        .route-line.clickable:hover {
-            background: #3a3a3a;
-            border-left-color: var(--accent);
-        }
-
-        .route-line.completed {
-            background: #1f3a1f;
-            border-left-color: var(--ok);
-            color: var(--ok);
-            text-decoration: line-through;
-        }
-
-        .route-line.completed::before {
-            content: "✓ ";
-            color: var(--ok);
-            font-weight: 700;
-        }
-
-        .route-header {
-            color: var(--accent);
-            font-weight: 700;
-            margin-top: 6px;
-            margin-bottom: 4px;
-        }
-
-        .route-phase {
-            opacity: 0.6;
-            margin-top: 8px;
-        }
-
-        .route-phase.active {
-            opacity: 1;
-        }
-
-        .route-summary {
-            border-top: 1px solid #333;
-            margin-top: 12px;
-            padding-top: 8px;
-            color: #999;
-            font-size: 9px;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: #1a1a1a;
-            border: 2px solid var(--accent);
-            padding: 20px;
-            border-radius: 4px;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .modal-box h3 {
-            color: #ffffff;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-
-        .modal-box p {
-            color: #e0e0e0;
-            margin-bottom: 16px;
-            font-size: 12px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .modal-buttons button {
-            flex: 1;
-            margin: 0;
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #1a1a1a; border: 2px solid var(--accent); padding: 20px; border-radius: 4px; max-width: 400px; text-align: center; }
+        .modal-box h3 { color: #ffffff; margin-bottom: 12px; font-size: 14px; }
+        .modal-box p { color: #e0e0e0; margin-bottom: 16px; font-size: 12px; }
+        .modal-buttons { display: flex; gap: 8px; justify-content: center; }
+        .modal-buttons button { flex: 1; margin: 0; }
 		
-.construction-banner{
-    background:#111;
-    border:2px solid var(--accent);
-    color:var(--accent);
-    padding:12px 18px;
-    margin-bottom:16px;
-    font-family:"Courier New", monospace;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
+        .construction-banner { background:#111; border:2px solid var(--accent); color:var(--accent); padding:12px 18px; margin-bottom:16px; font-family:"Courier New", monospace; text-transform:uppercase; letter-spacing:1px; }
+        .construction-banner strong { color:#fff; display:block; margin-bottom:6px; }
 
-.construction-banner strong{
-    color:#fff;
-    display:block;
-    margin-bottom:6px;
-}
-		
+        .map-search-panel { display: none; grid-template-columns: 1.2fr 2fr; gap: 10px; align-items: start; margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(249,115,22,0.10), rgba(17,17,17,0.96)); border: 1px solid var(--accent); box-shadow: 0 0 18px rgba(249,115,22,0.10) inset; }
+        .map-search-panel.active { display: grid; }
+        @media (max-width: 900px) { .map-search-panel.active { grid-template-columns: 1fr; } }
 
+        .map-search-input-wrap { display: flex; flex-direction: column; gap: 8px; }
+        .map-search-input-wrap label { min-width: 0; color: var(--accent); font-family: 'Courier New', monospace; font-size: 10px; }
+        #mapSearchInput { width: 100%; flex: none; font-family: 'Courier New', monospace; font-size: 12px; border-color: var(--accent); background: #090909; color: #fff; }
 
-.system-map-panel {
-	grid-column: 1 / -1;
-	background: #111;
-	border: 1px solid #2a2a2a;
-	padding: 16px;
-	overflow: hidden;
-}
+        .map-search-hint { color: #888; font-family: 'Courier New', monospace; font-size: 9px; line-height: 1.4; }
+        .map-search-results { display: grid; gap: 6px; max-height: 210px; overflow-y: auto; padding-right: 4px; }
+        .map-search-result { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; background: rgba(38,38,38,0.92); border: 1px solid #333; color: #ddd; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px; transition: var(--trans); }
+        .map-search-result:hover, .map-search-result.active { border-color: var(--accent); color: #fff; background: rgba(249,115,22,0.14); }
+        .map-search-result b { color: #fff; display: block; font-size: 11px; margin-bottom: 2px; }
+        .map-search-result small { color: #888; }
+        .map-search-chip { color: var(--accent); border: 1px solid rgba(249,115,22,0.45); padding: 3px 6px; font-size: 8px; text-transform: uppercase; }
+        .map-search-empty { color: #888; font-family: 'Courier New', monospace; font-size: 10px; padding: 10px; border: 1px dashed #333; background: #111; }
 
-.map-toolbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 8px;
-	gap: 8px;
-}
+        .map-point.search-result { stroke: var(--accent); stroke-width: 2.8; filter: drop-shadow(0 0 8px var(--accent)); }
+        .map-point.search-selected { fill: var(--accent); stroke: #fff; stroke-width: 3.2; filter: drop-shadow(0 0 14px var(--accent)); }
+        .map-label.search-label, .map-label.search-selected-label, .map-label-leader.search-label, .map-label-leader.search-selected-label { display: block; }
+        .map-label.search-label { fill: #fff; font-size: 8px; font-weight: 700; }
+        .map-label.search-selected-label { fill: var(--accent); font-size: 10px; font-weight: 900; }
+        .map-label-leader.search-label { stroke: #fff; opacity: 0.5; }
+        .map-label-leader.search-selected-label { stroke: var(--accent); opacity: 0.85; stroke-width: 1.2; }
 
-.map-toolbar .map-title {
-	color: var(--accent);
-	font-family: 'Courier New', monospace;
-	font-size: 12px;
-	font-weight: 700;
-	letter-spacing: 1.5px;
-	text-transform: uppercase;
-}
+        @keyframes searchPulse {
+            0% { opacity: 0.9; transform: scale(1); }
+            70% { opacity: 0.05; transform: scale(2.8); }
+            100% { opacity: 0; transform: scale(3.1); }
+        }
+        .map-search-pulse { fill: none; stroke: var(--accent); stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: searchPulse 1.4s ease-out infinite; pointer-events: none; }
 
-#systemMap {
-	width: 100%;
-	min-height: 620px;
-	display: block;
-	background: radial-gradient(circle at center, rgba(249,115,22,0.08), rgba(0,0,0,0.85) 55%, #050505 100%);
-	border: 1px solid #333;
-	cursor: grab;
-	user-select: none;
-	touch-action: none;
-}
+        .system-map-panel { grid-column: 1 / -1; background: #111; border: 1px solid #2a2a2a; padding: 16px; overflow: hidden; position: relative; max-height: 70vh; }
+        .map-shell { position: relative; width: 100%; height: 60vh; background: #050505; border: 1px solid #333; }
+        .map-toolbar { display: none; }
+        #systemMap { width: 100%; height: 100%; display: block; background: radial-gradient(circle at center, rgba(249,115,22,0.08), rgba(0,0,0,0.85) 55%, #050505 100%); border: 1px solid #333; cursor: grab; user-select: none; touch-action: none; transition: opacity 0.28s ease, transform 0.28s ease, filter 0.28s ease; transform-origin: center center; }
+        #systemMap.dragging { cursor: grabbing; }
+        #systemMap.map-jump-out { opacity: 0.08; transform: scale(0.78); filter: blur(2px); }
+        #systemMap.map-jump-in { opacity: 1; transform: scale(1); filter: blur(0); }
 
-#systemMap.dragging {
-	cursor: grabbing;
-}
+        .map-help { color: #777; font-family: 'Courier New', monospace; font-size: 9px; margin-left: 8px; }
+        .map-ring { fill: none; stroke: var(--accent); stroke-width: 1.2; opacity: 0.45; }
+        .map-ring-label { fill: var(--accent); font-size: 9px; font-family: 'Courier New', monospace; opacity: 1; font-weight: 700; paint-order: stroke; stroke: #050505; stroke-width: 1.5px; }
+        .map-axis { stroke: #555; stroke-width: 1; stroke-dasharray: 5 6; opacity: 0.45; }
+        .map-star { fill: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+        .map-point { fill: #e0e0e0; stroke: rgba(255,255,255,0.55); stroke-width: 0.8; cursor: pointer; }
+        .map-point.planet { fill: url(#planetGradient); stroke: rgba(125, 211, 252, 0.65); stroke-width: 1.1; filter: drop-shadow(0 0 4px rgba(125, 211, 252, 0.28)); }
+        .map-point.gateway { fill: rgba(74, 222, 128, 0.55); stroke: rgba(74, 222, 128, 0.85); stroke-width: 1.1; }
+        .map-point.station { fill: #ffffff; stroke: rgba(224,224,224,0.55); stroke-width: 0.7; }
+        .map-point.surface { fill: var(--accent); stroke: none; filter: drop-shadow(0 0 4px var(--accent)); }
+        .map-surface-link { stroke: var(--accent); stroke-width: 0.7; opacity: 0.38; pointer-events: none; stroke-dasharray: 2 3; }
+        .map-surface-ground { display: none; }
+        .map-gateway-ring { fill: none; stroke: #4ade80; stroke-width: 1.2; opacity: 0.5; pointer-events: none; }
+        .map-station-cross { stroke: #e0e0e0; pointer-events: none; }
+        .map-object { cursor: pointer; }
+        .map-object:hover .map-point { stroke: var(--accent); filter: drop-shadow(0 0 5px var(--accent)); }
+        .map-label { display: none; fill: #f2f2f2; font-size: 6.5px; font-family: 'Courier New', monospace; paint-order: stroke; stroke: rgba(0,0,0,0.92); stroke-width: 2px; stroke-linejoin: round; pointer-events: none; font-weight: 700; }
+        .map-label-leader { display: none; stroke: #cfcfcf; stroke-width: 0.7; opacity: 0.42; pointer-events: none; }
+        .map-label-leader.major, .map-label-leader.route-label { display: block; }
+        .map-object:hover .map-label-leader { display: block; stroke: #ffffff; opacity: 0.55; }
+        .map-label.major { display: block; fill: var(--accent); font-size: 8.5px; font-weight: 800; }
+        .map-label.route-label { display: block; fill: var(--ok); font-size: 8px; font-weight: 700; }
+        .map-object:hover .map-label { display: block; fill: #ffffff !important; font-size: 8px; }
+        .map-route-line, .map-route-segment { stroke: var(--ok); stroke-width: 2.2; fill: none; opacity: 0.9; stroke-dasharray: 6 4; pointer-events: none; }
+        .map-route-segment { marker-end: url(#routeArrow); }
+        .map-route-arrow { pointer-events: none; fill: var(--ok); stroke: none; opacity: 0.95; }
+        .map-hover-info { color: var(--accent); font-family: 'Courier New', monospace; font-size: 9px; min-width: 280px; text-align: right; }
+        .map-tooltip { fill: #111; stroke: var(--accent); stroke-width: 1; opacity: 0.94; }
+        .map-tooltip-text { fill: #fff; font-size: 10px; font-family: 'Courier New', monospace; }
 
-.map-help {
-	color: #777;
-	font-family: 'Courier New', monospace;
-	font-size: 9px;
-	margin-left: 8px;
-}
+        .gateway-link { cursor: pointer; }
+        .gateway-link:hover .map-point { stroke:#4ade80; stroke-width:1.4; filter:drop-shadow(0 0 6px #4ade80); }
 
-.map-ring { fill: none; stroke: var(--accent); stroke-width: 1.2; opacity: 0.45; }
-.map-ring-label { fill: var(--accent); font-size: 8px; font-family: 'Courier New', monospace; opacity: 0.9; }
-.map-axis { stroke: #555; stroke-width: 1; stroke-dasharray: 5 6; opacity: 0.45; }
-.map-star { fill: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
-.map-point { fill: #e0e0e0; stroke: #ffffff; stroke-width: 1.4; cursor: pointer; }
-.map-point.planet { fill: url(#planetGradient); stroke: #7dd3fc; stroke-width: 2.2; filter: drop-shadow(0 0 8px rgba(125, 211, 252, 0.4)); }
-.map-point.gateway { fill: rgba(74, 222, 128, 0.15); stroke: #4ade80; stroke-width: 2.5; }
-.map-point.station { fill: #ffffff; stroke: #e0e0e0; stroke-width: 1.2; }
-.map-gateway-ring { fill: none; stroke: #4ade80; stroke-width: 1.2; opacity: 0.5; pointer-events: none; }
-.map-station-cross { stroke: #e0e0e0; pointer-events: none; }
-.map-object { cursor: pointer; }
-.map-object:hover .map-point { stroke: var(--accent); filter: drop-shadow(0 0 6px var(--accent)); }
-.map-label { display: none; fill: #e0e0e0; font-size: 6.5px; font-family: 'Courier New', monospace; paint-order: stroke; stroke: #050505; stroke-width: 2px; stroke-linejoin: round; pointer-events: none; }
-.map-label-leader { display: none; stroke: #cfcfcf; stroke-width: 0.7; opacity: 0.42; pointer-events: none; }
-.map-label-leader.major, .map-label-leader.route-label { display: block; }
-.map-object:hover .map-label-leader { display: block; stroke: #ffffff; opacity: 0.55; }
-.map-label.major { display: block; fill: var(--accent); font-size: 8.5px; font-weight: 700; }
-.map-label.route-label { display: block; fill: var(--ok); font-size: 8px; font-weight: 700; }
-.map-object:hover .map-label { display: block; fill: #ffffff; font-size: 8px; }
-.map-route-line { stroke: var(--ok); stroke-width: 2.2; fill: none; opacity: 0.9; stroke-dasharray: 6 4; }
-.map-hover-info { color: var(--accent); font-family: 'Courier New', monospace; font-size: 9px; min-width: 280px; text-align: right; }
-.map-tooltip { fill: #111; stroke: var(--accent); stroke-width: 1; opacity: 0.94; }
-.map-tooltip-text { fill: #fff; font-size: 10px; font-family: 'Courier New', monospace; }
+        .map-sidebar { position: absolute; top: 14px; right: 14px; z-index: 8; width: min(285px, calc(100% - 28px)); max-height: calc(100% - 28px); overflow-y: auto; padding: 12px; background: linear-gradient(180deg, rgba(10,10,10,0.94), rgba(18,18,18,0.86)); border: 1px solid rgba(249,115,22,0.45); box-shadow: 0 0 22px rgba(0,0,0,0.55), inset 0 0 18px rgba(249,115,22,0.06); backdrop-filter: blur(6px); }
+        .map-sidebar .map-title { color: var(--accent); font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+        .map-sidebar-subtitle { color: #777; font-family: 'Courier New', monospace; font-size: 8px; margin: 2px 0 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .map-sidebar .map-system-control { width: 100%; margin-bottom: 8px; justify-content: space-between; }
+        .map-sidebar .map-system-select { width: 175px; }
 
-.gateway-link{
-    cursor:pointer;
-}
+        .map-system-control { display: flex; align-items: center; gap: 6px; background: #141414; border: 1px solid #2a2a2a; padding: 4px 6px; }
+        .map-system-control label { min-width: auto; color: var(--accent); font-size: 9px; }
+        .map-system-select { flex: 0 0 auto; width: 118px; padding: 5px 7px; font-size: 10px; background: #202020; }
 
-.gateway-link:hover .map-point{
-    stroke:#4ade80;
-    stroke-width:3;
-    filter:drop-shadow(0 0 10px #4ade80);
-}
+        .map-sidebar-toggle { display:flex; align-items:center; justify-content:space-between; gap:10px; margin: 8px 0; padding: 8px 10px; background:#141414; border:1px solid #2a2a2a; cursor:pointer; }
+        .map-sidebar-toggle span { color:#ddd; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.9px; line-height:1.25; }
+        .map-sidebar-toggle small { display:block; margin-top:2px; color:#777; font-size:8px; font-weight:400; text-transform:none; letter-spacing:0; }
+        .map-sidebar-toggle input[type=checkbox] { width:18px; height:18px; flex:0 0 auto; accent-color:var(--accent); cursor:pointer; }
 
-#systemMap {
-    transition: opacity 0.28s ease, transform 0.28s ease, filter 0.28s ease;
-    transform-origin: center center;
-}
+        .map-side-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+        .map-side-actions button, .map-sidebar .map-search-input-wrap button { margin: 0; padding: 7px 8px; font-size: 9px; width: 100%; }
+        .map-side-actions button:nth-child(3), .map-side-actions button:nth-child(5) { grid-column: span 2; }
+        .map-sidebar .map-search-panel { margin: 10px 0 0; padding: 10px; grid-template-columns: 1fr; gap: 8px; background: rgba(5,5,5,0.82); }
+        .map-sidebar .map-search-panel.active { display: grid; }
+        .map-sidebar .map-search-results { max-height: 260px; }
+        .map-sidebar .map-search-result { grid-template-columns: 1fr; }
+        .map-sidebar .map-search-chip { justify-self: start; }
+        .map-sidebar .map-help { margin: 10px 0 0; padding-top: 8px; border-top: 1px solid #2a2a2a; color: #777; font-family: 'Courier New', monospace; font-size: 9px; line-height: 1.35; }
 
-#systemMap.map-jump-out {
-    opacity: 0.08;
-    transform: scale(0.78);
-    filter: blur(2px);
-}
+        .map-hover-info { position: absolute; left: 14px; bottom: 14px; z-index: 7; max-width: min(640px, calc(100% - 330px)); min-width: 0; padding: 8px 10px; background: rgba(5,5,5,0.78); border: 1px solid rgba(249,115,22,0.28); color: var(--accent); text-align: left; pointer-events: none; }
+        .map-jump-banner { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; z-index: 5; font-family: 'Courier New', monospace; color: var(--accent); font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 0 12px #000; }
+        .system-map-panel.map-jumping .map-jump-banner { display: flex; }
 
-#systemMap.map-jump-in {
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0);
-}
+        @media (max-width: 760px) {
+            .system-map-panel { max-height: none; overflow: visible; padding: 10px; }
+            .map-shell { height: auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px; overflow: visible; }
+            #systemMap { order: 2; height: 430px; min-height: 430px; flex: 0 0 auto; }
+            .map-sidebar { position: relative; order: 1; inset: auto; left: auto; right: auto; top: auto; width: 100%; max-height: none; overflow: visible; padding: 10px; }
+            .map-sidebar .map-system-control { display: grid; grid-template-columns: 70px minmax(0, 1fr); align-items: center; }
+            .map-sidebar .map-system-select { width: 100%; min-width: 0; }
+            .map-side-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .map-side-actions button:nth-child(3), .map-side-actions button:nth-child(5) { grid-column: span 2; }
+            .map-sidebar .map-search-panel.active { max-height: none; overflow: visible; }
+            .map-hover-info { position: relative; order: 3; left: auto; right: auto; bottom: auto; max-width: none; min-width: 0; width: 100%; font-size: 8px; margin: 0; }
+            .map-jump-banner { position: absolute; }
+        }
 
+        @media (max-width: 480px) {
+            .system-map-panel { padding: 6px; }
+            .map-shell { padding: 8px; }
+            #systemMap { height: 360px; min-height: 360px; }
+            .map-sidebar .map-title { font-size: 11px; }
+            .map-sidebar-subtitle { font-size: 7px; }
+            .map-side-actions button, .map-sidebar .map-search-input-wrap button { padding: 8px 6px; font-size: 8px; }
+            .map-sidebar .map-help { font-size: 8px; }
+        }
 
-.settings-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 8px;
-    padding: 10px;
-    background: #141414;
-    border: 1px solid #2a2a2a;
-}
+        .settings-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; padding: 10px; background: #141414; border: 1px solid #2a2a2a; }
+        .settings-row span { color: #ddd; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .settings-row small { display: block; margin-top: 3px; color: #777; font-size: 9px; font-weight: 400; text-transform: none; letter-spacing: 0; }
+        .settings-row input[type=checkbox] { width: 18px; height: 18px; flex: 0 0 auto; accent-color: var(--accent); }
 
-.settings-row span {
-    color: #ddd;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+        /* === Contract cards rework: added without removing original map/location/ship data === */
+        .contract-tools { display:flex; gap:6px; flex-wrap:wrap; margin: 10px 0 12px; }
+        .contract-help { color:#9a9a9a; font-size:10px; line-height:1.45; margin: 6px 0 10px; }
+        .contract-list { display:grid; gap:10px; margin-top:10px; }
+        .contract-card { background:#202020; border:1px solid #333; overflow:hidden; }
+        .contract-card.active { border-color:var(--accent); box-shadow:0 0 0 1px rgba(249,115,22,0.16), 0 0 16px rgba(249,115,22,0.08); }
+        .contract-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; padding:10px; background:linear-gradient(90deg, rgba(249,115,22,0.12), rgba(38,38,38,0)); border-bottom:1px solid #333; }
+        .contract-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .contract-title input { max-width:220px; flex:0 1 220px; }
+        .contract-summary { display:flex; gap:5px; flex-wrap:wrap; margin-top:7px; }
+        .contract-pill { display:inline-flex; align-items:center; gap:4px; background:#161616; border:1px solid #333; color:#ddd; padding:4px 7px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; }
+        .contract-pill.good { color:var(--ok); border-color:rgba(74,222,128,0.45); background:rgba(74,222,128,0.08); }
+        .contract-pill.warn { color:var(--accent); border-color:rgba(249,115,22,0.45); background:rgba(249,115,22,0.08); }
+        .contract-actions { display:flex; gap:5px; justify-content:flex-end; flex-wrap:wrap; }
+        .contract-actions button { padding:6px 8px; font-size:8px; margin:0; }
+        .contract-body { padding:10px; display:grid; gap:10px; }
+        .contract-body.collapsed { display:none; }
+        .delivery-line { background:#171717; border:1px solid #303030; padding:10px; display:grid; gap:9px; }
+        .line-top { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(120px,0.75fr) 72px auto; gap:7px; align-items:end; }
+        .section-title { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:2px; }
+        .section-title b { color:#fff; font-size:9px; text-transform:uppercase; letter-spacing:1.2px; }
+        .pickup-list { display:grid; gap:7px; }
+        .pickup-row { display:grid; grid-template-columns:minmax(0,1fr) 76px auto; gap:7px; align-items:end; background:#111; border:1px solid #2b2b2b; padding:8px; }
+        .mini-note { color:#888; font-size:9px; line-height:1.35; margin-top:3px; }
+        .custom-location-panel { display:none; background:#141414; border:1px solid #333; padding:10px; margin:8px 0 10px; }
+        .custom-location-panel.open { display:block; }
+        .custom-location-grid { display:grid; grid-template-columns:1.4fr .8fr .65fr .65fr .65fr auto; gap:7px; align-items:end; }
+        .empty-contracts { background:#141414; border:1px dashed #333; color:#aaa; padding:12px; font-size:10px; line-height:1.5; }
+        .unknown-location { border-color:#ef4444 !important; box-shadow:0 0 0 1px rgba(239,68,68,0.18); }
+        @media (max-width: 760px) {
+            .contract-head, .line-top, .pickup-row, .custom-location-grid { grid-template-columns:1fr; }
+            .contract-actions { justify-content:flex-start; }
+            .contract-title input { max-width:none; flex:1 1 100%; }
+        }
 
-.settings-row small {
-    display: block;
-    margin-top: 3px;
-    color: #777;
-    font-size: 9px;
-    font-weight: 400;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-.settings-row input[type=checkbox] {
-    width: 18px;
-    height: 18px;
-    flex: 0 0 auto;
-    accent-color: var(--accent);
-}
-
-.map-jump-banner {
-    position: absolute;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 5;
-    font-family: 'Courier New', monospace;
-    color: var(--accent);
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-shadow: 0 0 12px #000;
-}
-
-.system-map-panel {
-    position: relative;
-}
-
-.system-map-panel.map-jumping .map-jump-banner {
-    display: flex;
-}
     </style>
 </head>
 <body>
@@ -483,7 +279,6 @@
 		FEATURES: INCOMPLETE
 		STABILITY: EXPERIMENTAL
     </small>
-
 </div>
     <div style="margin-bottom: 12px; display: flex; gap: 6px;">
         <button class="secondary" onclick="toggleSettings()" style="margin: 0; padding: 6px 10px; font-size: 9px;">⚙ Settings</button>
@@ -499,12 +294,12 @@
             <div class="theme-ball" data-theme="blue" style="background: #3b82f6;" onclick="setThemeColor('blue')" title="Blue"></div>
         </div>
 
-        <h2>Map Locations</h2>
+        <h2>Contract Locations</h2>
         <label class="settings-row" for="showAllLocationsToggle">
-            <span>Show all locations
-                <small>Off = hauling locations only. On = every known station, L-point and extra marker.</small>
+            <span>Show all locations in contracts
+                <small>Off = hauling locations only in the contract/start dropdowns. On = every known station, L-point and extra marker.</small>
             </span>
-            <input id="showAllLocationsToggle" type="checkbox" onchange="setShowAllMapLocations(this.checked)">
+            <input id="showAllLocationsToggle" type="checkbox" onchange="setShowAllContractLocations(this.checked)">
         </label>
 
         <label class="settings-row" for="mapPerspectiveToggle">
@@ -525,7 +320,7 @@
                     <option value="All">All Systems</option>
                     <option value="Pyro">Pyro</option>
                     <option value="Stanton">Stanton</option>
-                    <option value="Nyx">Nyx [WiP]</option>
+                    <option value="Nyx">Nyx</option>
                 </select>
             </div>
             
@@ -589,19 +384,31 @@
                 <select id="startLocation"></select>
             </div>
 
-            <h2 id="contractTypeLabel" class="route-edit-only">Contract Type</h2>
-            <div id="contractTypeControls" class="toggle-group route-edit-only">
-                <button class="toggle-btn active" onclick="setContractType('single-multi', event)">Single→Multi</button>
-                <button class="toggle-btn" onclick="setContractType('multi-single', event)">Multi→Single</button>
-                <button class="toggle-btn" onclick="setContractType('multi-multi', event)">Multi→Multi</button>
+            <h2>Contracts</h2>
+            <div class="contract-help">
+                Add a contract, then copy the mission screen order: drop-off, cargo/SCU, then one or more pickup locations. No mode buttons needed — the app detects the shape automatically.
             </div>
 
-            <h2 id="pickupLabel">Pickups</h2>
-            <div id="pickups"></div>
+            <div class="contract-tools">
+                <button onclick="addContract()">＋ Add Contract</button>
+                <button class="secondary" onclick="toggleCustomLocationPanel()">＋ Custom Location</button>
+            </div>
 
-            <h2 id="dropoffLabel" style="display:none;">Dropoffs</h2>
-            <div id="dropoffs"></div>
+<div id="customLocationPanel" class="custom-location-panel">
+                <h2>Add Custom Location</h2>
+                <div class="contract-help">Use this for Onyx clusters or new hauling places you find. If you do not know exact coordinates yet, copy the parent moon/planet coordinates for now and update later.</div>
+                <div class="custom-location-grid">
+                    <div><label>Name</label><input id="customLocName" placeholder="Onyx Facility S4A8"></div>
+                    <div><label>System</label><select id="customLocSystem"><option>Stanton</option><option>Pyro</option><option>Nyx</option></select></div>
+                    <div><label>Lat</label><input id="customLocLat" type="number" step="0.01" value="0"></div>
+                    <div><label>Lon</label><input id="customLocLon" type="number" step="0.01" value="58.92"></div>
+                    <div><label>Dist</label><input id="customLocDist" type="number" step="0.01" value="43.39"></div>
+                    <button onclick="addCustomLocation()" style="margin:0;">Save</button>
+                </div>
+                <div id="customLocationList" class="contract-help" style="margin-top:10px;"></div>
+            </div>
 
+            <div id="contractsList" class="contract-list"></div>
             <div id="routeInputSummary" class="route-input-summary"></div>
 
             <div style="margin-top: 16px;">
@@ -618,24 +425,60 @@
                 </div>
                 <button class="secondary" onclick="resetTracking()">Reset Progress</button>
             </div>
-            <div id="route">Set contract type and add locations to calculate route.</div>
+            <div id="route">Add contracts to calculate a route.</div>
         </div>
     </div>
 
     <div class="system-map-panel">
-        <div class="map-toolbar">
-            <div class="map-title">System Orbital Map — generated from location coordinates</div>
-            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-                <button class="secondary" onclick="zoomMap(1.25)" style="margin:0; padding:6px 10px; font-size:9px;">＋ Zoom</button>
-                <button class="secondary" onclick="zoomMap(0.8)" style="margin:0; padding:6px 10px; font-size:9px;">－ Zoom</button>
-                <button class="secondary" onclick="resetMapZoom()" style="margin:0; padding:6px 10px; font-size:9px;">Reset View</button>
-                <button class="secondary" onclick="drawSystemMap()" style="margin:0; padding:6px 10px; font-size:9px;">↻ Redraw Map</button>
-                <span class="map-help">Scroll to zoom • drag to pan • hover marker for name • double-click gateways to jump</span>
-            </div>
+        <div class="map-shell">
+            <svg id="systemMap" onclick="console.log('SVG clicked')" viewBox="0 0 1000 640" role="img" aria-label="System orbital map"></svg>
+
+            <aside class="map-sidebar" aria-label="Map controls">
+                <div class="map-title">System Orbital Map</div>
+                <div class="map-sidebar-subtitle">generated from location coordinates</div>
+
+                <div class="map-system-control">
+                    <label for="mapSystemSelect">Map</label>
+                    <select id="mapSystemSelect" class="map-system-select" onchange="setMapSystem(this.value)">
+                        <option value="Stanton">Stanton</option>
+                        <option value="Pyro">Pyro</option>
+                        <option value="Nyx">Nyx</option>
+                    </select>
+                </div>
+
+                <label class="map-sidebar-toggle" for="showAllLocationsMapToggle">
+                    <span>Show all map locations
+                        <small>Off = hauling only. On = every known marker on the map.</small>
+                    </span>
+                    <input id="showAllLocationsMapToggle" type="checkbox" onchange="setShowAllMapLocations(this.checked)">
+                </label>
+
+                <div class="map-side-actions">
+                    <button class="secondary" onclick="zoomMap(1.25)">＋ Zoom</button>
+                    <button class="secondary" onclick="zoomMap(0.8)">－ Zoom</button>
+                    <button class="secondary" onclick="resetMapZoom()">Reset View</button>
+                    <button id="mapSearchToggle" class="secondary" onclick="toggleMapSearchMode()">⌕ Search</button>
+                    <button class="secondary" onclick="drawSystemMap()">↻ Redraw</button>
+                </div>
+
+                <div id="mapSearchPanel" class="map-search-panel">
+                    <div class="map-search-input-wrap">
+                        <label for="mapSearchInput">MobiGlas-speed location scan</label>
+                        <input id="mapSearchInput" type="search" placeholder="Search any system..." oninput="handleMapSearchInput(this.value)" onkeydown="handleMapSearchKeydown(event)">
+                        <div class="map-search-hint">Global search. Pick a result to switch map, zoom and highlight it.</div>
+                        <button class="secondary" onclick="clearMapSearch()">Clear Scan</button>
+                    </div>
+                    <div id="mapSearchResults" class="map-search-results">
+                        <div class="map-search-empty">Type at least 2 characters to scan every system.</div>
+                    </div>
+                </div>
+
+                <div class="map-help">Drag to pan • Ctrl/Shift + wheel to zoom • double-click gateways to jump</div>
+            </aside>
+
+            <div id="mapHoverInfo" class="map-hover-info">Hover a marker to see full name and coordinates.</div>
+            <div id="mapJumpBanner" class="map-jump-banner">Jumping system...</div>
         </div>
-        <div id="mapHoverInfo" class="map-hover-info">Hover a marker to see full name and coordinates.</div>
-        <svg id="systemMap" onclick="console.log('SVG clicked')" viewBox="0 0 1000 640" role="img" aria-label="System orbital map"></svg>
-        <div id="mapJumpBanner" class="map-jump-banner">Jumping system...</div>
     </div>
 
 
@@ -710,7 +553,7 @@
 
 		
 			// === STANTON ===
-            {name: "Area18 (ArcCorp)", sys: "Stanton", lat: 0.00, lon: -50, dist: 28.91},
+            {name: "Area18 (ArcCorp)", sys: "Stanton", lat: 0.00, lon: -50, dist: 28.91, surfaceOf: "ArcCorp", surfaceType: "landing zone", surfacePos: {x: 640000, y: -240000, z: 310000, radius: 1000000, altitude: 430}},
             {name: "ArcCorp", sys: "Stanton", lat: 0.00, lon: -50, dist: 28.91},
             {name: "Arc-L3 Modern Express Station", sys: "Stanton", lat: 0.00, lon: 149.99, dist: 28.91},
             {name: "Arc-L4 Faint Glen Station", sys: "Stanton", lat: 0.00, lon: 9.99, dist: 28.91},
@@ -725,7 +568,7 @@
             {name: "Hur-L3 Thundering Express Station", sys: "Stanton", lat: 0.00, lon: -180, dist: 12.85},
             {name: "Hur-L4 Melodic Fields Station", sys: "Stanton", lat: 0.00, lon: 60, dist: 12.85},
             {name: "Hur-L5 High Course Station", sys: "Stanton", lat: 0.00, lon: -1, dist: 12.85},
-            {name: "Lorville (Hurston)", sys: "Stanton", lat: 0.00, lon: 165, dist: 24},
+            {name: "Lorville (Hurston)", sys: "Stanton", lat: 0.00, lon: 0.00, dist: 12.85, surfaceOf: "Hurston", surfaceType: "landing zone", surfacePos: {x: -420000, y: 540000, z: -180000, radius: 1000000, altitude: 390}},
             {name: "Microtech", sys: "Stanton", lat: 0.00, lon: 58.86, dist: 43.44},
             {name: "Microtech Calliope", sys: "Stanton", lat: 0.00, lon: 58.92, dist: 43.39},
             {name: "MIC-L1 Shallow Frontier Station", sys: "Stanton", lat: 0.00, lon: 60, dist: 39.09},
@@ -733,17 +576,17 @@
             {name: "MIC-L3 Endless Odyssey Station", sys: "Stanton", lat: 0.01, lon: -121.12, dist: 43.45},
             {name: "MIC-L4 Red Crossroads Station", sys: "Stanton", lat: -0.01, lon: 120, dist: 43.45},
             {name: "MIC-L5 Modern Icarus Station", sys: "Stanton", lat: -0.01, lon: 0, dist: 43.45},
-            {name: "New Babbage (Microtech)", sys: "Stanton", lat: 0.00, lon: 58.86, dist: 43.44},
+            {name: "New Babbage (Microtech)", sys: "Stanton", lat: 0.00, lon: 58.86, dist: 43.44, surfaceOf: "Microtech", surfaceType: "landing zone", surfacePos: {x: 520330.802721, y: 435097.922874, z: 736221.965646, radius: 1000000, altitude: 372.088}},
             {name: "Nyx Gateway (Stanton)", sys: "Stanton", lat: 16.88, lon: 160, dist: 69.55},
-            {name: "Orison (Crusader)", sys: "Stanton", lat: 0.00, lon: -172.02, dist: 19.14},
+            {name: "Orison (Crusader)", sys: "Stanton", lat: 0.00, lon: -172.02, dist: 19.14, surfaceOf: "Crusader", surfaceType: "landing zone", surfacePos: {x: -300000, y: -610000, z: 260000, radius: 7450000, altitude: 80000}},
             {name: "Pyro Gateway", sys: "Stanton", lat: -5.42, lon: -83.25, dist: 28.30},
 	  
 			// === NYX ===
 			{name: "Stanton Gateway", sys: "Nyx", lat: 0.00, lon: -119.99, dist: 26.99},
 			{name: "Levski", sys: "Nyx", lat: 0.00, lon: -129.99, dist: 15.00},
-			{name: "Nyx I", sys: "Nyx", lat: 0.00, lon: -25.00, dist: 7.00}, // Not accurate as you cannot jump to this location yet
-			{name: "Nyx II", sys: "Nyx", lat: 0.00, lon: 110.00, dist: 10.00}, // Not accurate as you cannot jump to this location yet
-			{name: "Nyx III", sys: "Nyx", lat: 0.00, lon: -139.43, dist: 40.00}, // Not accurate as you cannot jump to this location yet
+			{name: "Nyx I", sys: "Nyx", lat: 0.00, lon: -25.00, dist: 7.00},
+			{name: "Nyx II", sys: "Nyx", lat: 0.00, lon: 110.00, dist: 10.00},
+			{name: "Nyx III", sys: "Nyx", lat: 0.00, lon: -139.43, dist: 40.00},
 			{name: "People's Service Station Alpha", sys: "Nyx", lat: 0.00, lon: -162.60, dist: 48.00},
 			{name: "People's Service Station Delta", sys: "Nyx", lat: 0.00, lon: -97.70, dist: 48.00},
 			{name: "People's Service Station Lambda", sys: "Nyx", lat: 0.00, lon: 25.50, dist: 48.00},
@@ -751,47 +594,61 @@
 			{name: "Pyro Gateway", sys: "Nyx", lat: 0.00, lon: 120.00, dist: 24.00}
         ].sort((a, b) => a.name.localeCompare(b.name));
 
-        let contractType = 'single-multi';
+        // **OPTIMIZATION 1: Location lookup Map for O(1) access**
+        const locationsByName = new Map(locations.map(loc => [loc.name, loc]));
+
+        let contractType = 'auto-cards';
+        let contracts = [];
         let tracking = {};
         let currentRoute = null;
+        let showAllContractLocations = false;
         let showAllMapLocations = false;
         let mapPerspectiveMode = false;
+        let mapSearchMode = false;
+        let mapSearchQuery = '';
+        let mapSearchSelectedName = null;
+        let mapSearchKeyboardIndex = 0;
         let routeInputsCollapsed = false;
 
+        // **OPTIMIZATION 2: Cache common DOM elements**
+        const domCache = {
+            systemSelect: null,
+            shipSelect: null,
+            startLocation: null,
+            systemMap: null,
+            route: null,
+            statusBox: null,
+            progressInfo: null,
+            pickups: null,
+            dropoffs: null
+        };
+
+        function getDOM(key) {
+            if (!domCache[key]) {
+                const map = {
+                    systemSelect: () => document.getElementById('systemSelect'),
+                    shipSelect: () => document.getElementById('shipSelect'),
+                    startLocation: () => document.getElementById('startLocation'),
+                    systemMap: () => document.getElementById('systemMap'),
+                    route: () => document.getElementById('route'),
+                    statusBox: () => document.getElementById('statusBox'),
+                    progressInfo: () => document.getElementById('progressInfo'),
+                    pickups: () => document.getElementById('pickups'),
+                    dropoffs: () => document.getElementById('dropoffs'),
+                    contractsList: () => document.getElementById('contractsList')
+                };
+                domCache[key] = map[key]?.();
+            }
+            return domCache[key];
+        }
+
         const haulingLocationNames = new Set([
-            // Pyro hauling / main usable contract locations
-            "Checkmate",
-            "Dudley & Daughters",
-            "Endgame",
-            "Gaslight",
-            "Megumi Refueling",
-            "Nyx Gateway",
-            "Orbituary",
-            "Patch City",
-            "Rat's Nest",
-            "Rod's Fuel 'N Supplies",
-            "Ruin Station",
-            "Starlight Service Station",
-            "Stanton Gateway",
-
-            // Stanton main contract / gateway locations
-            "Area18 (ArcCorp)",
-            "ArcCorp",
-            "Baijini Point",
-            "Crusader",
-            "Everus Harbor",
-            "Grim HEX",
-            "Hurston",
-            "Lorville (Hurston)",
-            "Microtech",
-            "New Babbage (Microtech)",
-            "Orison (Crusader)",
-            "Pyro Gateway",
-            "Nyx Gateway (Stanton)",
-
-            // Nyx main contract / gateway locations
-            "Levski",
-            "Stanton Gateway"
+            "Checkmate", "Dudley & Daughters", "Endgame", "Gaslight", "Megumi Refueling",
+            "Nyx Gateway", "Orbituary", "Patch City", "Rat's Nest", "Rod's Fuel 'N Supplies",
+            "Ruin Station", "Starlight Service Station", "Stanton Gateway",
+            "Area18 (ArcCorp)", "ArcCorp", "Baijini Point", "Crusader", "Everus Harbor",
+            "Grim HEX", "Hurston", "Lorville (Hurston)", "Microtech", "New Babbage (Microtech)",
+            "Orison (Crusader)", "Pyro Gateway", "Nyx Gateway (Stanton)", "Levski"
         ]);
 
         function isHaulingLocation(loc) {
@@ -807,20 +664,39 @@
             });
         }
 
+        function syncShowAllContractLocationToggle() {
+            const toggle = document.getElementById('showAllLocationsToggle');
+            if (toggle) toggle.checked = showAllContractLocations;
+        }
+
+        function syncShowAllMapLocationToggle() {
+            const toggle = document.getElementById('showAllLocationsMapToggle');
+            if (toggle) toggle.checked = showAllMapLocations;
+        }
+
+        function setShowAllContractLocations(value) {
+            showAllContractLocations = Boolean(value);
+            localStorage.setItem('scShowAllContractLocations', showAllContractLocations ? '1' : '0');
+            syncShowAllContractLocationToggle();
+            updateLocationOptions();
+            updateUI();
+        }
+
         function setShowAllMapLocations(value) {
             showAllMapLocations = Boolean(value);
             localStorage.setItem('scShowAllMapLocations', showAllMapLocations ? '1' : '0');
-            const toggle = document.getElementById('showAllLocationsToggle');
-            if (toggle) toggle.checked = showAllMapLocations;
-            updateLocationOptions();
-            updateUI();
+            syncShowAllMapLocationToggle();
             drawSystemMap(currentRoute?.path || []);
+        }
+
+        function loadContractLocationSetting() {
+            showAllContractLocations = localStorage.getItem('scShowAllContractLocations') === '1';
+            syncShowAllContractLocationToggle();
         }
 
         function loadMapLocationSetting() {
             showAllMapLocations = localStorage.getItem('scShowAllMapLocations') === '1';
-            const toggle = document.getElementById('showAllLocationsToggle');
-            if (toggle) toggle.checked = showAllMapLocations;
+            syncShowAllMapLocationToggle();
         }
 
         function setMapPerspectiveMode(value) {
@@ -828,6 +704,7 @@
             localStorage.setItem('scMapPerspectiveMode', mapPerspectiveMode ? '1' : '0');
             const toggle = document.getElementById('mapPerspectiveToggle');
             if (toggle) toggle.checked = mapPerspectiveMode;
+            resetMapZoom();
             drawSystemMap(currentRoute?.path || []);
         }
 
@@ -837,7 +714,14 @@
             if (toggle) toggle.checked = mapPerspectiveMode;
         }
 
-        let mapViewBox = { x: 0, y: 0, w: 1000, h: 640 };
+        function getDefaultMapViewBox() {
+            // Default view is intentionally zoomed in a bit.
+            // The old full 1000x640 view left the actual system tiny on wide screens.
+            if (mapPerspectiveMode) return { x: 0, y: 18, w: 740, h: 474 };
+            return { x: 0, y: 0, w: 840, h: 538 };
+        }
+
+        let mapViewBox = getDefaultMapViewBox();
         let mapIsDragging = false;
         let mapDragStart = null;
         let mapSvgStart = null;
@@ -845,13 +729,13 @@
         let mapHoverHandlersReady = false;
 
         function applyMapViewBox() {
-            const svg = document.getElementById('systemMap');
+            const svg = getDOM('systemMap');
             if (!svg) return;
             svg.setAttribute('viewBox', `${mapViewBox.x} ${mapViewBox.y} ${mapViewBox.w} ${mapViewBox.h}`);
         }
 
         function zoomMap(factor, clientX = null, clientY = null) {
-            const svg = document.getElementById('systemMap');
+            const svg = getDOM('systemMap');
             if (!svg) return;
 
             const rect = svg.getBoundingClientRect();
@@ -873,27 +757,25 @@
         }
 
         function resetMapZoom() {
-            mapViewBox = { x: 0, y: 0, w: 1000, h: 640 };
+            mapViewBox = getDefaultMapViewBox();
             applyMapViewBox();
         }
 
         function initMapInteractions() {
             if (mapInteractionsReady) return;
-            const svg = document.getElementById('systemMap');
+            const svg = getDOM('systemMap');
             if (!svg) return;
             mapInteractionsReady = true;
             applyMapViewBox();
 
             svg.addEventListener('wheel', (e) => {
+                if (!e.ctrlKey && !e.shiftKey) return;
                 e.preventDefault();
                 zoomMap(e.deltaY < 0 ? 1.18 : 0.85, e.clientX, e.clientY);
             }, { passive: false });
 
             svg.addEventListener('pointerdown', (e) => {
-                // Do not start map dragging when clicking markers.
-                // This lets native click / double-click events reach gateways reliably.
                 if (e.target.closest('.map-object')) return;
-
                 mapIsDragging = true;
                 mapDragStart = { x: e.clientX, y: e.clientY };
                 mapSvgStart = { ...mapViewBox };
@@ -923,90 +805,119 @@
             });
         }
 
-
-
 		const mapConfig = {
 			Stanton: {
-				color: '#60a5fa',
+				color: '#22c55e',
 				rings: [12.85,19.14,28.91,43.45],
 				label: 'STANTON SYSTEM',
-
-				major: [
-					'Hurston',
-					'Crusader',
-					'ArcCorp',
-					'Microtech',
-					'Pyro Gateway',
-					'Nyx Gateway (Stanton)'
-				]
+				major: ['Hurston', 'Crusader', 'ArcCorp', 'Microtech', 'Pyro Gateway', 'Nyx Gateway (Stanton)']
 			},
-
 			Pyro: {
-				color: '#f97316',
+				color: '#ef4444',
 				rings: [8.27,10.59,17.80,42.92,68.33],
 				label: 'PYRO SYSTEM',
-
-				major: [
-					'Checkmate',
-					'Patch City',
-					'Gaslight',
-					'Orbituary',
-					'Ruin Station',
-					'Stanton Gateway'
-				]
+				major: ['Checkmate', 'Patch City', 'Gaslight', 'Orbituary', 'Ruin Station', 'Stanton Gateway']
 			},
-
 			Nyx: {
-				color: '#8b5cf6',
+				color: '#3b82f6',
 				rings: [7.0, 10.0, 15.00, 40.00],
 				label: 'NYX SYSTEM',
-				major: [
-					'Levski',
-					'Stanton Gateway'
-				]
+				major: ['Levski', 'Stanton Gateway']
 			}
 		};
 
         function projectMapPoint(x, y, cx, cy) {
             if (!mapPerspectiveMode) return { x, y };
-
-            // "Leaned back" tactical-table projection:
-            // x stays true to the longitude, y is compressed toward the horizon.
-            // This keeps the real route/distance maths unchanged while making the map feel angled.
             const tilt = 0.52;
-            return {
-                x,
-                y: cy + (y - cy) * tilt
-            };
+            return { x, y: cy + (y - cy) * tilt };
         }
 
-        function mapPoint(loc, cx, cy, scale) {
+        function isSurfaceLocation(loc) {
+            return Boolean(loc && loc.surfaceOf && loc.surfacePos);
+        }
+
+        function getParentBodyLocation(loc) {
+            if (!isSurfaceLocation(loc)) return null;
+            return locations.find(parent => parent.sys === loc.sys && parent.name === loc.surfaceOf) || null;
+        }
+
+        function getSurfaceOffset(loc, surfaceRadius = 18) {
+            if (!isSurfaceLocation(loc)) return { x: 0, y: 0 };
+            const pos = loc.surfacePos;
+            const length = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z) || 1;
+            const nx = pos.x / length;
+            const ny = pos.y / length;
+            const nz = pos.z / length;
+            let dx = nx * surfaceRadius;
+            let dy = -ny * surfaceRadius - nz * 5;
+            if (Math.abs(dx) + Math.abs(dy) < 3) {
+                dx = surfaceRadius * 0.7;
+                dy = -surfaceRadius * 0.7;
+            }
+            if (mapPerspectiveMode) dy *= 0.7;
+            return { x: dx, y: dy };
+        }
+
+        function orbitalMapPoint(loc, cx, cy, scale) {
             const lonRad = loc.lon * Math.PI / 180;
             const x = cx + loc.dist * scale * Math.cos(lonRad);
             const y = cy - loc.dist * scale * Math.sin(lonRad);
             return projectMapPoint(x, y, cx, cy);
         }
+
+        function mapPoint(loc, cx, cy, scale) {
+            if (isSurfaceLocation(loc)) {
+                const parent = getParentBodyLocation(loc);
+                if (parent) {
+                    const parentPt = orbitalMapPoint(parent, cx, cy, scale);
+                    const off = getSurfaceOffset(loc);
+                    return { x: parentPt.x + off.x, y: parentPt.y + off.y };
+                }
+            }
+            return orbitalMapPoint(loc, cx, cy, scale);
+        }
+
+        function getMapSelectedSystem() {
+            const mapSelect = document.getElementById('mapSystemSelect');
+            if (mapSelect && mapConfig[mapSelect.value]) return mapSelect.value;
+            const saved = localStorage.getItem('scMapSystem');
+            if (mapConfig[saved]) return saved;
+            const contractSelectValue = getDOM('systemSelect')?.value;
+            return mapConfig[contractSelectValue] ? contractSelectValue : 'Stanton';
+        }
+
+        function setMapSystem(system, options = {}) {
+            const { redraw = true, reset = true, save = true } = options;
+            const nextSystem = mapConfig[system] ? system : 'Stanton';
+            const mapSelect = document.getElementById('mapSystemSelect');
+            if (mapSelect) mapSelect.value = nextSystem;
+            if (save) localStorage.setItem('scMapSystem', nextSystem);
+            if (reset) resetMapZoom();
+            if (redraw) drawSystemMap(currentRoute?.path || []);
+        }
+
+        function loadMapSystemSetting() {
+            const saved = localStorage.getItem('scMapSystem');
+            const contractSelectValue = getDOM('systemSelect')?.value;
+            const initialSystem = mapConfig[saved] ? saved : mapConfig[contractSelectValue] ? contractSelectValue : 'Stanton';
+            setMapSystem(initialSystem, { redraw: false, reset: false, save: false });
+        }
 		
         function getMapPlotPoint(loc) {
-            const selected = document.getElementById('systemSelect')?.value || loc.sys || 'Stanton';
-            const system = mapConfig[selected] ? selected : loc.sys;
+            const system = mapConfig[loc?.sys] ? loc.sys : getMapSelectedSystem();
             const cfg = mapConfig[system] || mapConfig.Stanton;
             const cx = 500, cy = 320;
             const locs = locations.filter(l => l.sys === system);
-            const maxRing = locs.length || cfg.rings.length
-                ? Math.max(...cfg.rings, ...locs.map(l => l.dist))
-                : 1;
+            const maxRing = locs.length || cfg.rings.length ? Math.max(...cfg.rings, ...locs.map(l => l.dist)) : 1;
             const scale = (cfg.mapRadius || 300) / maxRing;
             return mapPoint(loc, cx, cy, scale);
         }
 
         function centerToLocation(name) {
-            const loc = locations.find(l => l.name === name);
+            const loc = locationsByName.get(name);
             if (!loc) return;
-
-            const svg = document.getElementById('systemMap');
+            const svg = getDOM('systemMap');
             if (svg) svg.classList.add('map-jump-out');
-
             setTimeout(() => {
                 const pt = getMapPlotPoint(loc);
                 const zoomW = 260;
@@ -1016,7 +927,6 @@
                 mapViewBox.w = zoomW;
                 mapViewBox.h = zoomH;
                 applyMapViewBox();
-
                 if (svg) {
                     svg.classList.remove('map-jump-out');
                     svg.classList.add('map-jump-in');
@@ -1036,19 +946,17 @@
 			const destination = getGatewayDestination(name);
 			if(!destination) return;
 
-			const select = document.getElementById("systemSelect");
-			if(!select) return;
+			const currentMapSystem = getMapSelectedSystem();
 
-			// If already in destination system, just center on the gateway
-			if(select.value === destination) {
+			if(currentMapSystem === destination) {
 				centerToLocation(name);
 				return;
 			}
 
-			const svg = document.getElementById('systemMap');
+			const svg = getDOM('systemMap');
 			const panel = document.querySelector('.system-map-panel');
 			const banner = document.getElementById('mapJumpBanner');
-			const fromSystem = select.value === 'All' ? 'current system' : select.value;
+			const fromSystem = currentMapSystem || 'current system';
 
 			if(banner)
 				banner.textContent = `${fromSystem} → ${destination}`;
@@ -1062,11 +970,7 @@
 			}
 
 			setTimeout(() => {
-				select.value = destination;
-				resetMapZoom();
-				updateLocationOptions();
-				updateUI();
-				saveState();
+				setMapSystem(destination, { redraw: true, reset: true, save: true });
 
 				if(svg){
 					svg.classList.remove('map-jump-out');
@@ -1081,11 +985,23 @@
 		}
 
 
-        function classifyLocation(name) {
-            const n = name.toLowerCase();
+        function classifyLocation(nameOrLoc) {
+            const loc = typeof nameOrLoc === 'object' ? nameOrLoc : null;
+            if (isSurfaceLocation(loc)) return 'surface';
+            const name = loc ? loc.name : nameOrLoc;
+            const n = String(name || '').toLowerCase();
             if (n.includes('gateway')) return 'gateway';
             if (n.includes('hurston') || n.includes('crusader') || n.includes('arccorp') || n.includes('microtech') || n.includes('pyro ')) return 'planet';
             return 'station';
+        }
+
+        function describeLocationForUi(loc) {
+            const type = classifyLocation(loc);
+            if (type === 'surface') {
+                const altitude = loc.surfacePos?.altitude !== undefined ? ` • alt ${Number(loc.surfacePos.altitude).toFixed(0)}m` : '';
+                return `${loc.sys} • surface spot on ${loc.surfaceOf}${altitude}`;
+            }
+            return `${loc.sys} • ${type} • lat ${loc.lat}° • lon ${loc.lon}° • ${loc.dist} GM`;
         }
 
         function shortMapLabel(name) {
@@ -1095,20 +1011,21 @@
                 .replace(' (Hurston)', '')
                 .replace(' (Microtech)', '')
                 .replace(' (Crusader)', '')
-                .replace(' Station', '')
-                .replace('Shallow Fields', 'Shallow Fields')
-                .replace('Beautiful Glen', 'Beautiful Glen');
+                .replace(' Station', '');
         }
 
         function escapeSvg(text) {
             return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
+        function escapeHtml(text) {
+            return escapeSvg(text);
+        }
+
         function splitMapLabel(label, maxChars = 18) {
             const words = String(label).split(' ');
             const lines = [];
             let line = '';
-
             words.forEach(word => {
                 const test = line ? `${line} ${word}` : word;
                 if (test.length > maxChars && line) {
@@ -1118,7 +1035,6 @@
                     line = test;
                 }
             });
-
             if (line) lines.push(line);
             return lines.length ? lines : [String(label)];
         }
@@ -1127,37 +1043,22 @@
             const width = Math.max(...lines.map(line => line.length)) * fontSize * 0.62;
             const height = lines.length * fontSize * 1.25;
             let boxX = x;
-
             if (anchor === 'end') boxX = x - width;
             else if (anchor === 'middle') boxX = x - width / 2;
-
-            return {
-                x: boxX - 4,
-                y: y - fontSize - 4,
-                w: width + 8,
-                h: height + 8
-            };
+            return { x: boxX - 4, y: y - fontSize - 4, w: width + 8, h: height + 8 };
         }
 
         function boxesOverlap(a, b) {
-            return !(
-                a.x + a.w < b.x ||
-                b.x + b.w < a.x ||
-                a.y + a.h < b.y ||
-                b.y + b.h < a.y
-            );
+            return !(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y || b.y + b.h < a.y);
         }
 
         function clampLabelBox(box, x, y, viewW = 1000, viewH = 640) {
-            let dx = 0;
-            let dy = 0;
+            let dx = 0, dy = 0;
             const margin = 10;
-
             if (box.x < margin) dx = margin - box.x;
             if (box.x + box.w > viewW - margin) dx = (viewW - margin) - (box.x + box.w);
             if (box.y < margin) dy = margin - box.y;
             if (box.y + box.h > viewH - margin) dy = (viewH - margin) - (box.y + box.h);
-
             return { x: x + dx, y: y + dy };
         }
 
@@ -1168,7 +1069,6 @@
             const baseAngle = Math.atan2(vy, vx);
             const angleOffsets = [0, 20, -20, 40, -40, 60, -60, 90, -90, 120, -120, 180].map(a => a * Math.PI / 180);
             const distanceSteps = [18, 28, 38, 50, 64];
-
             let best = null;
             let bestScore = Infinity;
 
@@ -1180,25 +1080,19 @@
                     const dirY = Math.sin(angle);
                     let x = pt.x + dirX * offset;
                     let y = pt.y + dirY * offset;
-
-                    // Text baseline feels too low below the marker, so lift it slightly.
                     if (dirY > 0.25) y -= 5;
-
                     const anchor = dirX > 0.25 ? 'start' : dirX < -0.25 ? 'end' : 'middle';
                     let box = estimateLabelBox(x, y, lines, fontSize, anchor);
                     const clamped = clampLabelBox(box, x, y);
                     x = clamped.x;
                     y = clamped.y;
                     box = estimateLabelBox(x, y, lines, fontSize, anchor);
-
                     const overlapCount = occupiedBoxes.filter(other => boxesOverlap(box, other)).length;
                     const score = overlapCount * 10000 + Math.abs(angleOffset) * 100 + extraDistance;
-
                     if (!overlapCount) {
                         if (reserveSpace) occupiedBoxes.push(box);
                         return { x, y, anchor, lines, angle, box };
                     }
-
                     if (score < bestScore) {
                         bestScore = score;
                         best = { x, y, anchor, lines, angle, box };
@@ -1216,22 +1110,178 @@
             ).join('');
         }
 
+        function normaliseSearchText(value) {
+            return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        }
+
+        function getMapSearchScopeSystem() {
+            return 'All';
+        }
+
+        function mapSearchMatchesLocation(loc, query = mapSearchQuery) {
+            const q = normaliseSearchText(query);
+            if (q.length < 2) return false;
+            const haystack = normaliseSearchText(`${loc.name} ${loc.sys} ${classifyLocation(loc)} ${loc.surfaceOf || ''} ${isHaulingLocation(loc) ? 'hauling contract' : 'extra lpoint marker'}`);
+            return q.split(' ').every(part => haystack.includes(part));
+        }
+
+        function getMapSearchResults() {
+            const q = normaliseSearchText(mapSearchQuery);
+            if (q.length < 2) return [];
+            return locations
+                .filter(loc => mapSearchMatchesLocation(loc, q))
+                .sort((a, b) => {
+                    const an = normaliseSearchText(a.name);
+                    const bn = normaliseSearchText(b.name);
+                    const aStarts = an.startsWith(q) ? 0 : 1;
+                    const bStarts = bn.startsWith(q) ? 0 : 1;
+                    if (aStarts !== bStarts) return aStarts - bStarts;
+                    if (a.sys !== b.sys) return a.sys.localeCompare(b.sys);
+                    return a.name.localeCompare(b.name);
+                })
+                .slice(0, 24);
+        }
+
+        function updateMapSearchResults() {
+            const panel = document.getElementById('mapSearchPanel');
+            const toggle = document.getElementById('mapSearchToggle');
+            const resultsEl = document.getElementById('mapSearchResults');
+            const input = document.getElementById('mapSearchInput');
+
+            if (panel) panel.classList.toggle('active', mapSearchMode);
+            if (toggle) {
+                toggle.classList.toggle('active', mapSearchMode);
+                toggle.textContent = mapSearchMode ? '⌕ Search On' : '⌕ Search Map';
+            }
+            if (input && input.value !== mapSearchQuery) input.value = mapSearchQuery;
+            if (!resultsEl) return;
+            if (!mapSearchMode) return;
+
+            const q = normaliseSearchText(mapSearchQuery);
+            if (q.length < 2) {
+                resultsEl.innerHTML = `<div class="map-search-empty">Type at least 2 characters to scan all systems.</div>`;
+                return;
+            }
+
+            const results = getMapSearchResults();
+            if (!results.length) {
+                resultsEl.innerHTML = `<div class="map-search-empty">No matches for "${escapeHtml(mapSearchQuery)}" across all systems.</div>`;
+                return;
+            }
+
+            mapSearchKeyboardIndex = Math.max(0, Math.min(mapSearchKeyboardIndex, results.length - 1));
+            resultsEl.innerHTML = results.map((loc, idx) => {
+                const active = loc.name === mapSearchSelectedName || idx === mapSearchKeyboardIndex;
+                const type = classifyLocation(loc);
+                return `
+                    <div class="map-search-result ${active ? 'active' : ''}" data-name="${escapeHtml(loc.name)}" onclick="selectMapSearchResult(this.dataset.name)">
+                        <span><b>${escapeHtml(loc.name)}</b><small>${escapeHtml(describeLocationForUi(loc))}</small></span>
+                        <span class="map-search-chip">${type === 'surface' ? 'Surface' : isHaulingLocation(loc) ? 'Hauling' : 'Known'}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleMapSearchMode(forceValue = null) {
+            mapSearchMode = forceValue === null ? !mapSearchMode : Boolean(forceValue);
+            if (!mapSearchMode) {
+                mapSearchQuery = '';
+                mapSearchSelectedName = null;
+                mapSearchKeyboardIndex = 0;
+            }
+            updateMapSearchResults();
+            drawSystemMap(currentRoute?.path || []);
+            if (mapSearchMode) {
+                setTimeout(() => document.getElementById('mapSearchInput')?.focus(), 20);
+            }
+        }
+
+        function handleMapSearchInput(value) {
+            mapSearchMode = true;
+            mapSearchQuery = value;
+            mapSearchSelectedName = null;
+            mapSearchKeyboardIndex = 0;
+            updateMapSearchResults();
+            drawSystemMap(currentRoute?.path || []);
+        }
+
+        function handleMapSearchKeydown(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                clearMapSearch();
+                return;
+            }
+            const results = getMapSearchResults();
+            if (!results.length) return;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                mapSearchKeyboardIndex = Math.min(results.length - 1, mapSearchKeyboardIndex + 1);
+                updateMapSearchResults();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                mapSearchKeyboardIndex = Math.max(0, mapSearchKeyboardIndex - 1);
+                updateMapSearchResults();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                selectMapSearchResult(results[mapSearchKeyboardIndex].name);
+            }
+        }
+
+        function clearMapSearch() {
+            mapSearchQuery = '';
+            mapSearchSelectedName = null;
+            mapSearchKeyboardIndex = 0;
+            const input = document.getElementById('mapSearchInput');
+            if (input) input.value = '';
+            updateMapSearchResults();
+            drawSystemMap(currentRoute?.path || []);
+        }
+
+        function selectMapSearchResult(name) {
+            const loc = locationsByName.get(name);
+            if (!loc) return;
+            mapSearchMode = true;
+            mapSearchSelectedName = name;
+            mapSearchQuery = name;
+            if (getMapSelectedSystem() !== loc.sys) {
+                setMapSystem(loc.sys, { redraw: false, reset: true, save: true });
+            }
+            updateMapSearchResults();
+            drawSystemMap(currentRoute?.path || []);
+            centerToLocation(name);
+            const info = document.getElementById('mapHoverInfo');
+            if (info) info.textContent = `SCAN LOCK: ${loc.name} | ${describeLocationForUi(loc)}`;
+        }
+
         function drawSystemMap(routePath = []) {
-            const svg = document.getElementById('systemMap');
+            const svg = getDOM('systemMap');
             if (!svg) return;
             initMapInteractions();
             applyMapViewBox();
 
-            const selected = document.getElementById('systemSelect')?.value || 'Stanton';
-            const system = mapConfig[selected] ? selected : 'Stanton';
+            const system = getMapSelectedSystem();
             const cfg = mapConfig[system];
             const cx = 500, cy = 320;
             const allSystemLocs = locations.filter(l => l.sys === system);
-            const locs = getVisibleLocationsForSystem(system, routePath);
-            const maxRing = allSystemLocs.length || cfg.rings.length
-                ? Math.max(...cfg.rings, ...allSystemLocs.map(l => l.dist))
-                : 1;
+            const searchResultNameSet = new Set(mapSearchMode ? getMapSearchResults().filter(l => l.sys === system).map(l => l.name) : []);
+            const selectedSearchLoc = mapSearchSelectedName ? locationsByName.get(mapSearchSelectedName) : null;
+            let locs = getVisibleLocationsForSystem(system, routePath);
+
+            if (mapSearchMode && normaliseSearchText(mapSearchQuery).length >= 2) {
+                const forcedNames = new Set([
+                    ...routePath,
+                    ...searchResultNameSet,
+                    ...(selectedSearchLoc && selectedSearchLoc.sys === system ? [selectedSearchLoc.name] : [])
+                ]);
+                allSystemLocs.forEach(loc => {
+                    if (forcedNames.has(loc.name) && isSurfaceLocation(loc)) forcedNames.add(loc.surfaceOf);
+                });
+                locs = allSystemLocs.filter(loc => forcedNames.has(loc.name));
+            }
+            
+            const maxRing = allSystemLocs.length || cfg.rings.length ? Math.max(...cfg.rings, ...allSystemLocs.map(l => l.dist)) : 1;
             const scale = (cfg.mapRadius || 300) / maxRing;
+            const sysColor = cfg.color || '#f97316';
 
             svg.innerHTML = `
                 <defs>
@@ -1241,28 +1291,31 @@
                         <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.6"/>
                     </radialGradient>
                     <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="var(--accent)" stop-opacity="1"/>
-                        <stop offset="40%" stop-color="var(--accent)" stop-opacity="0.55"/>
-                        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                        <stop offset="0%" stop-color="${sysColor}" stop-opacity="1"/>
+                        <stop offset="40%" stop-color="${sysColor}" stop-opacity="0.55"/>
+                        <stop offset="100%" stop-color="${sysColor}" stop-opacity="0"/>
                     </radialGradient>
+                    <marker id="routeArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto" markerUnits="strokeWidth">
+                        <path class="map-route-arrow" d="M 0 0 L 10 5 L 0 10 z"/>
+                    </marker>
                 </defs>
                 <rect x="0" y="0" width="1000" height="640" fill="transparent" pointer-events="none"/>
-                <text x="24" y="42" fill="var(--accent)" font-family="Courier New" font-size="26" font-weight="700">${cfg.label}</text>
+                <text x="24" y="42" fill="${sysColor}" font-family="Courier New" font-size="32" font-weight="900" letter-spacing="2">${cfg.label}</text>
                 <line class="map-axis" x1="40" y1="${cy}" x2="960" y2="${cy}"/>
                 <line class="map-axis" x1="${cx}" y1="40" x2="${cx}" y2="600"/>
-                <text x="955" y="${cy-8}" fill="#777" font-family="Courier New" font-size="10">0° / +X</text>
-                <text x="${cx+8}" y="52" fill="#777" font-family="Courier New" font-size="10">+90°</text>
+                <text x="955" y="${cy-8}" fill="#aaa" font-family="Courier New" font-size="11" font-weight="700">0° / +X</text>
+                <text x="${cx+8}" y="52" fill="#aaa" font-family="Courier New" font-size="11" font-weight="700">+90°</text>
                 <circle cx="${cx}" cy="${cy}" r="28" fill="url(#starGlow)"/>
-                <circle class="map-star" cx="${cx}" cy="${cy}" r="7"/>
-                <text x="${cx+12}" y="${cy+4}" fill="#777" font-family="Courier New" font-size="8">STAR</text>
-                <text x="24" y="62" fill="#777" font-family="Courier New" font-size="9">${showAllMapLocations ? 'SHOWING ALL LOCATIONS' : 'HAULING LOCATIONS ONLY'} • ${mapPerspectiveMode ? 'LEANED-BACK VIEW' : 'FLAT VIEW'} • ${locs.length}/${allSystemLocs.length}</text>
+                <circle class="map-star" cx="${cx}" cy="${cy}" r="7" fill="${sysColor}"/>
+                <text x="${cx+12}" y="${cy+4}" fill="#aaa" font-family="Courier New" font-size="9" font-weight="700">STAR</text>
+                <text x="24" y="62" fill="#aaa" font-family="Courier New" font-size="10" font-weight="600">${showAllMapLocations ? 'SHOWING ALL LOCATIONS' : 'HAULING LOCATIONS ONLY'} • ${mapPerspectiveMode ? 'LEANED-BACK VIEW' : 'FLAT VIEW'} • ${mapSearchMode ? 'GLOBAL SCAN' : 'MAP VIEW'} • ${locs.length}/${allSystemLocs.length}</text>
             `;
 
             if (locs.length === 0) {
                 svg.innerHTML += `
-                    <text x="500" y="315" fill="var(--accent)" font-family="Courier New" font-size="18" font-weight="700" text-anchor="middle">${cfg.label}</text>
-                    <text x="500" y="342" fill="#999" font-family="Courier New" font-size="12" text-anchor="middle">NO LOCATION COORDINATES ADDED YET</text>
-                    <text x="500" y="364" fill="#777" font-family="Courier New" font-size="10" text-anchor="middle">Add Nyx locations and gateways to the locations[] list when ready.</text>
+                    <text x="500" y="315" fill="${sysColor}" font-family="Courier New" font-size="28" font-weight="900" text-anchor="middle" letter-spacing="1">${cfg.label}</text>
+                    <text x="500" y="360" fill="#ccc" font-family="Courier New" font-size="13" text-anchor="middle" font-weight="700">NO LOCATION COORDINATES ADDED YET</text>
+                    <text x="500" y="385" fill="#aaa" font-family="Courier New" font-size="11" text-anchor="middle">Add Nyx locations and gateways to the locations[] list when ready.</text>
                 `;
             }
 
@@ -1270,34 +1323,36 @@
                 const rr = r * scale;
                 if (mapPerspectiveMode) {
                     const ry = rr * 0.52;
-                    svg.innerHTML += `<ellipse class="map-ring" cx="${cx}" cy="${cy}" rx="${rr}" ry="${ry}"/>`;
-                    svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-ry-5}">${r.toFixed(2)} GM</text>`;
+                    svg.innerHTML += `<ellipse class="map-ring" cx="${cx}" cy="${cy}" rx="${rr}" ry="${ry}" style="stroke: ${sysColor}"/>`;
+                    svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-ry-5}" style="fill: ${sysColor}">${r.toFixed(2)} GM</text>`;
                 } else {
-                    svg.innerHTML += `<circle class="map-ring" cx="${cx}" cy="${cy}" r="${rr}"/>`;
-                    svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-rr-5}">${r.toFixed(2)} GM</text>`;
+                    svg.innerHTML += `<circle class="map-ring" cx="${cx}" cy="${cy}" r="${rr}" style="stroke: ${sysColor}"/>`;
+                    svg.innerHTML += `<text class="map-ring-label" x="${cx+6}" y="${cy-rr-5}" style="fill: ${sysColor}">${r.toFixed(2)} GM</text>`;
                 }
             });
 
-            const routeNameSet = new Set(routePath);
-            const routePts = routePath
-                .map(name => locs.find(l => l.name === name))
-                .filter(Boolean)
-                .map(loc => mapPoint(loc, cx, cy, scale));
+            const routeNameSet = getRouteNamesForMapSystem(system, routePath);
+            const routeSegments = getRouteMapSegmentsForSystem(system)
+                .map(seg => ({
+                    from: mapPoint(seg.from, cx, cy, scale),
+                    to: mapPoint(seg.to, cx, cy, scale)
+                }));
             const occupiedLabelBoxes = [];
             const plottedLocations = locs.map((loc, idx) => {
                 const pt = mapPoint(loc, cx, cy, scale);
-                const cls = classifyLocation(loc.name);
+                const cls = classifyLocation(loc);
                 const major = cfg.major.some(m => loc.name.toLowerCase() === m.toLowerCase());
                 const isRoute = routeNameSet.has(loc.name);
-                const r = cls === 'planet' ? 6 : cls === 'gateway' ? 7 : major ? 3 : 1.5;
-                return { loc, idx, pt, cls, major, isRoute, r, label: shortMapLabel(loc.name) };
+                const isSearchResult = searchResultNameSet.has(loc.name);
+                const isSearchSelected = mapSearchSelectedName === loc.name;
+                const r = isSearchSelected ? 5.5 : cls === 'planet' ? 5 : cls === 'gateway' ? 4.5 : cls === 'surface' ? 2.8 : major ? 2.4 : isSearchResult ? 2.6 : 1.4;
+                return { loc, idx, pt, cls, major, isRoute, isSearchResult, isSearchSelected, r, label: shortMapLabel(loc.name) };
             });
 
-            // Reserve label space for the important labels first, then place the hidden hover labels.
             [...plottedLocations]
-                .sort((a, b) => Number(b.major || b.isRoute) - Number(a.major || a.isRoute))
+                .sort((a, b) => Number(b.isSearchSelected || b.major || b.isRoute || b.isSearchResult) - Number(a.isSearchSelected || a.major || a.isRoute || a.isSearchResult))
                 .forEach(item => {
-                    const fontSize = item.isRoute ? 8 : item.major ? 8.5 : 6.5;
+                    const fontSize = item.isSearchSelected ? 10 : item.isRoute || item.isSearchResult ? 8 : item.major ? 8.5 : 6.5;
                     item.labelPlacement = placeSmartMapLabel(
                         item.loc,
                         item.pt,
@@ -1307,31 +1362,47 @@
                         item.label,
                         fontSize,
                         occupiedLabelBoxes,
-                        item.major || item.isRoute
+                        item.major || item.isRoute || item.isSearchResult || item.isSearchSelected
                     );
                 });
 
-            plottedLocations.forEach(({ loc, pt, cls, major, isRoute, r, labelPlacement }) => {
-                const labelClass = `${major ? 'major' : ''} ${isRoute ? 'route-label' : ''}`;
-                const fontSize = isRoute ? 8 : major ? 8.5 : 6.5;
+            plottedLocations.forEach(({ loc, pt, cls, major, isRoute, isSearchResult, isSearchSelected, r, labelPlacement }) => {
+                const labelClass = `${major ? 'major' : ''} ${isRoute ? 'route-label' : ''} ${isSearchResult ? 'search-label' : ''} ${isSearchSelected ? 'search-selected-label' : ''}`;
+                const fontSize = isSearchSelected ? 10 : isRoute || isSearchResult ? 8 : major ? 8.5 : 6.5;
+                const pointClass = `${cls} ${isSearchResult ? 'search-result' : ''} ${isSearchSelected ? 'search-selected' : ''}`;
                 const leaderEndX = labelPlacement.anchor === 'end' ? labelPlacement.x + 4 : labelPlacement.anchor === 'start' ? labelPlacement.x - 4 : labelPlacement.x;
                 const leaderEndY = labelPlacement.y - fontSize * 0.35;
+                const labelFill = isSearchSelected ? sysColor : isRoute ? '#4ade80' : major ? sysColor : '#f2f2f2';
+                const leaderStroke = isSearchSelected ? sysColor : isRoute ? '#4ade80' : major ? sysColor : '#d8d8d8';
 
                 svg.innerHTML += `
-                   <g class="map-object ${cls === 'gateway' ? 'gateway-link' : ''}" data-name="${escapeSvg(loc.name)}" data-lon="${loc.lon}" data-dist="${loc.dist}" data-lat="${loc.lat}" ondblclick="handleMapDoubleClick(this.dataset.name); event.preventDefault(); event.stopPropagation();">
-                        <title>${escapeSvg(loc.name)} | lon ${loc.lon}° | dist ${loc.dist} GM</title>
-                        <circle class="map-point ${cls}" cx="${pt.x.toFixed(2)}" cy="${pt.y.toFixed(2)}" r="${r}" ${isRoute ? 'style="fill:var(--ok);stroke:var(--ok);filter:drop-shadow(0 0 6px var(--ok));"' : ''}></circle>
+                   <g class="map-object ${cls === 'gateway' ? 'gateway-link' : ''}" data-name="${escapeSvg(loc.name)}" data-lon="${loc.lon}" data-dist="${loc.dist}" data-lat="${loc.lat}" data-desc="${escapeSvg(describeLocationForUi(loc))}" ondblclick="handleMapDoubleClick(this.dataset.name); event.preventDefault(); event.stopPropagation();">
+                        <title>${escapeSvg(loc.name)} | ${escapeSvg(describeLocationForUi(loc))}</title>
+                        ${cls === 'surface' && getParentBodyLocation(loc) ? (() => { const pp = mapPoint(getParentBodyLocation(loc), cx, cy, scale); return `<line class="map-surface-link" x1="${pp.x.toFixed(2)}" y1="${pp.y.toFixed(2)}" x2="${pt.x.toFixed(2)}" y2="${pt.y.toFixed(2)}" style="stroke: ${sysColor}"></line>`; })() : ''}
+                        ${isSearchSelected ? `<circle class="map-search-pulse" cx="${pt.x.toFixed(2)}" cy="${pt.y.toFixed(2)}" r="${(r + 5).toFixed(2)}" style="stroke: ${sysColor}"></circle>` : ''}
+                        <circle class="map-point ${pointClass}" cx="${pt.x.toFixed(2)}" cy="${pt.y.toFixed(2)}" r="${r}" ${isRoute && !isSearchSelected ? `style="fill:${sysColor};stroke:${sysColor};filter:drop-shadow(0 0 6px ${sysColor});"` : ''}></circle>
                         ${cls === 'station' ? `<g class="map-station-cross" opacity="0.4" stroke-width="1"><line x1="${(pt.x - r - 0.5).toFixed(2)}" y1="${pt.y.toFixed(2)}" x2="${(pt.x + r + 0.5).toFixed(2)}" y2="${pt.y.toFixed(2)}"/><line x1="${pt.x.toFixed(2)}" y1="${(pt.y - r - 0.5).toFixed(2)}" x2="${pt.x.toFixed(2)}" y2="${(pt.y + r + 0.5).toFixed(2)}"/></g>` : ''}
-                        <line class="map-label-leader ${labelClass}" x1="${pt.x.toFixed(2)}" y1="${pt.y.toFixed(2)}" x2="${leaderEndX.toFixed(2)}" y2="${leaderEndY.toFixed(2)}"/>
-                        <text class="map-label ${labelClass}" x="${labelPlacement.x.toFixed(2)}" y="${labelPlacement.y.toFixed(2)}" text-anchor="${labelPlacement.anchor}">${renderSvgTextLines(labelPlacement.lines, labelPlacement.x, labelPlacement.y, fontSize)}</text>
+                        <line class="map-label-leader ${labelClass}" x1="${pt.x.toFixed(2)}" y1="${pt.y.toFixed(2)}" x2="${leaderEndX.toFixed(2)}" y2="${leaderEndY.toFixed(2)}" style="stroke: ${leaderStroke}"/>
+                        <text class="map-label ${labelClass}" x="${labelPlacement.x.toFixed(2)}" y="${labelPlacement.y.toFixed(2)}" text-anchor="${labelPlacement.anchor}" style="fill: ${labelFill}">${renderSvgTextLines(labelPlacement.lines, labelPlacement.x, labelPlacement.y, fontSize)}</text>
                     </g>`;
             });
 
-            if (routePts.length > 1) {
-                const d = routePts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(' ');
-                svg.innerHTML += `<path class="map-route-line" d="${d}"/>`;
+            if (routeSegments.length) {
+                routeSegments.forEach(seg => {
+                    const a = seg.from;
+                    const b = seg.to;
+                    const dx = b.x - a.x;
+                    const dy = b.y - a.y;
+                    const length = Math.sqrt(dx * dx + dy * dy);
+                    if (length < 2) return;
+                    const endPad = Math.min(10, Math.max(4, length * 0.08));
+                    const endX = b.x - (dx / length) * endPad;
+                    const endY = b.y - (dy / length) * endPad;
+                    svg.innerHTML += `<line class="map-route-segment" x1="${a.x.toFixed(2)}" y1="${a.y.toFixed(2)}" x2="${endX.toFixed(2)}" y2="${endY.toFixed(2)}" style="stroke: var(--ok)"></line>`;
+                });
             }
             attachMapHoverHandlers();
+            updateMapSearchResults();
         }
 
         let lastMapDoubleClickAt = 0;
@@ -1351,7 +1422,7 @@
         }
 
         function attachMapHoverHandlers() {
-            const svg = document.getElementById('systemMap');
+            const svg = getDOM('systemMap');
             const info = document.getElementById('mapHoverInfo');
             if (!svg || !info || mapHoverHandlersReady) return;
             mapHoverHandlersReady = true;
@@ -1367,10 +1438,8 @@
             svg.addEventListener('mousemove', (e) => {
                 const mapObject = e.target.closest('.map-object');
                 if (mapObject) {
-                    let txt = `${mapObject.dataset.name} | lat ${mapObject.dataset.lat}° | lon ${mapObject.dataset.lon}° | dist ${mapObject.dataset.dist} GM`;
-                    txt += mapObject.dataset.name.includes("Gateway")
-                        ? " • Double-click to jump"
-                        : " • Double-click to center";
+                    let txt = `${mapObject.dataset.name} | ${mapObject.dataset.desc || `lat ${mapObject.dataset.lat}° | lon ${mapObject.dataset.lon}° | dist ${mapObject.dataset.dist} GM`}`;
+                    txt += mapObject.dataset.name.includes("Gateway") ? " • Double-click to jump" : " • Double-click to center";
                     info.textContent = txt;
                 }
             });
@@ -1390,41 +1459,344 @@
             };
         }
 
+        function getRouteDistanceLocation(loc) {
+            if (isSurfaceLocation(loc)) {
+                const parent = getParentBodyLocation(loc);
+                if (parent) return parent;
+            }
+            return loc;
+        }
+
         function getDistance(locA, locB) {
-            const a = sphericalToCartesian(locA.lat, locA.lon, locA.dist);
-            const b = sphericalToCartesian(locB.lat, locB.lon, locB.dist);
+            const routeLocA = getRouteDistanceLocation(locA);
+            const routeLocB = getRouteDistanceLocation(locB);
+            const a = sphericalToCartesian(routeLocA.lat, routeLocA.lon, routeLocA.dist);
+            const b = sphericalToCartesian(routeLocB.lat, routeLocB.lon, routeLocB.dist);
             return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
         }
 
+        const gatewayConnections = [
+            { a: { sys: 'Pyro', name: 'Stanton Gateway' }, b: { sys: 'Stanton', name: 'Pyro Gateway' } },
+            { a: { sys: 'Pyro', name: 'Nyx Gateway' }, b: { sys: 'Nyx', name: 'Pyro Gateway' } },
+            { a: { sys: 'Stanton', name: 'Nyx Gateway (Stanton)' }, b: { sys: 'Nyx', name: 'Stanton Gateway' } }
+        ];
+
+        function findLocationByName(name, preferredSys = null) {
+            if (!name) return null;
+            if (preferredSys) {
+                const exact = locations.find(l => l.name === name && l.sys === preferredSys);
+                if (exact) return exact;
+            }
+            return locationsByName.get(name) || null;
+        }
+
+        function findGatewaySide(fromSys, toSys) {
+            for (const link of gatewayConnections) {
+                if (link.a.sys === fromSys && link.b.sys === toSys) {
+                    return {
+                        exit: findLocationByName(link.a.name, link.a.sys),
+                        entry: findLocationByName(link.b.name, link.b.sys),
+                        fromSys,
+                        toSys
+                    };
+                }
+                if (link.b.sys === fromSys && link.a.sys === toSys) {
+                    return {
+                        exit: findLocationByName(link.b.name, link.b.sys),
+                        entry: findLocationByName(link.a.name, link.a.sys),
+                        fromSys,
+                        toSys
+                    };
+                }
+            }
+            return null;
+        }
+
+        function getNeighbourSystems(sys) {
+            const set = new Set();
+            gatewayConnections.forEach(link => {
+                if (link.a.sys === sys) set.add(link.b.sys);
+                if (link.b.sys === sys) set.add(link.a.sys);
+            });
+            return [...set];
+        }
+
+        function enumerateSystemPaths(fromSys, toSys) {
+            if (fromSys === toSys) return [[fromSys]];
+            const results = [];
+            const queue = [[fromSys]];
+            const maxDepth = new Set(locations.map(l => l.sys)).size || 3;
+
+            while (queue.length) {
+                const path = queue.shift();
+                const last = path[path.length - 1];
+                if (path.length > maxDepth) continue;
+
+                getNeighbourSystems(last).forEach(next => {
+                    if (path.includes(next)) return;
+                    const candidate = [...path, next];
+                    if (next === toSys) results.push(candidate);
+                    else queue.push(candidate);
+                });
+            }
+
+            return results;
+        }
+
+        function buildTravelPlan(fromLoc, toLoc) {
+            if (!fromLoc || !toLoc) return { distance: 0, legs: [], pathNames: [] };
+            if (fromLoc.name === toLoc.name && fromLoc.sys === toLoc.sys) {
+                return { distance: 0, legs: [], pathNames: [fromLoc.name] };
+            }
+
+            if (fromLoc.sys === toLoc.sys) {
+                const distance = getDistance(fromLoc, toLoc);
+                return {
+                    distance,
+                    legs: [{ type: 'travel', from: fromLoc, to: toLoc, distance }],
+                    pathNames: [fromLoc.name, toLoc.name]
+                };
+            }
+
+            const systemPaths = enumerateSystemPaths(fromLoc.sys, toLoc.sys);
+            let best = { distance: Infinity, legs: [], pathNames: [] };
+
+            systemPaths.forEach(systemPath => {
+                let current = fromLoc;
+                let distance = 0;
+                const legs = [];
+                const pathNames = [fromLoc.name];
+                let valid = true;
+
+                for (let i = 0; i < systemPath.length - 1; i++) {
+                    const fromSys = systemPath[i];
+                    const toSys = systemPath[i + 1];
+                    const gateway = findGatewaySide(fromSys, toSys);
+                    if (!gateway?.exit || !gateway?.entry) {
+                        valid = false;
+                        break;
+                    }
+
+                    if (current.name !== gateway.exit.name || current.sys !== gateway.exit.sys) {
+                        const d = getDistance(current, gateway.exit);
+                        legs.push({ type: 'travel', from: current, to: gateway.exit, distance: d });
+                        distance += d;
+                        pathNames.push(gateway.exit.name);
+                    }
+
+                    legs.push({ type: 'jump', from: gateway.exit, to: gateway.entry, fromSys, toSys, distance: 0 });
+                    pathNames.push(gateway.entry.name);
+                    current = gateway.entry;
+                }
+
+                if (valid) {
+                    if (current.name !== toLoc.name || current.sys !== toLoc.sys) {
+                        const d = getDistance(current, toLoc);
+                        legs.push({ type: 'travel', from: current, to: toLoc, distance: d });
+                        distance += d;
+                        pathNames.push(toLoc.name);
+                    }
+
+                    if (distance < best.distance) best = { distance, legs, pathNames };
+                }
+            });
+
+            return Number.isFinite(best.distance) ? best : { distance: getDistance(fromLoc, toLoc), legs: [{ type: 'travel', from: fromLoc, to: toLoc, distance: getDistance(fromLoc, toLoc) }], pathNames: [fromLoc.name, toLoc.name] };
+        }
+
+        function getTravelDistance(locA, locB) {
+            return buildTravelPlan(locA, locB).distance;
+        }
+
+        function appendTravelPlanSteps(steps, fromLoc, toLoc, idPrefix) {
+            const plan = buildTravelPlan(fromLoc, toLoc);
+            let travelIdx = 0;
+            let jumpIdx = 0;
+
+            plan.legs.forEach(leg => {
+                if (leg.type === 'jump') {
+                    steps.push({
+                        id: `${idPrefix}-jump-${jumpIdx++}`,
+                        text: `⇄ JUMP: ${leg.fromSys} → ${leg.toSys} via ${leg.from.name} / ${leg.to.name}`,
+                        clickable: false
+                    });
+                } else if (leg.distance > 0.05) {
+                    const crosses = leg.from.sys !== leg.to.sys ? ` (${leg.from.sys} → ${leg.to.sys})` : '';
+                    steps.push({
+                        id: `${idPrefix}-travel-${travelIdx++}`,
+                        text: `↳ TRAVEL: ${leg.from.name} → ${leg.to.name}${crosses} — ${leg.distance.toFixed(1)}GM`,
+                        clickable: false
+                    });
+                }
+            });
+
+            return plan;
+        }
+
+        function addTravelPlanMapSegments(mapSegments, plan) {
+            if (!Array.isArray(mapSegments) || !plan?.legs) return;
+
+            plan.legs.forEach(leg => {
+                if (!leg?.from || !leg?.to) return;
+
+                mapSegments.push({
+                    type: leg.type,
+                    from: { name: leg.from.name, sys: leg.from.sys },
+                    to: { name: leg.to.name, sys: leg.to.sys },
+                    fromSys: leg.fromSys || leg.from.sys,
+                    toSys: leg.toSys || leg.to.sys
+                });
+            });
+        }
+
+        function getRouteNamesForMapSystem(system, routePath = []) {
+            const names = new Set();
+
+            if (currentRoute?.mapSegments?.length) {
+                currentRoute.mapSegments.forEach(seg => {
+                    if (seg.from?.sys === system) names.add(seg.from.name);
+                    if (seg.to?.sys === system) names.add(seg.to.name);
+                });
+                return names;
+            }
+
+            (routePath || []).forEach(name => {
+                const loc = findLocationByName(name, system);
+                if (loc?.sys === system) names.add(loc.name);
+            });
+
+            return names;
+        }
+
+        function getRouteMapSegmentsForSystem(system) {
+            if (!currentRoute?.mapSegments?.length) return [];
+
+            return currentRoute.mapSegments
+                .filter(seg => seg.type !== 'jump')
+                .map(seg => ({
+                    from: findLocationByName(seg.from?.name, seg.from?.sys),
+                    to: findLocationByName(seg.to?.name, seg.to?.sys)
+                }))
+                .filter(seg => seg.from && seg.to && seg.from.sys === system && seg.to.sys === system);
+        }
+
+        function orderStopsWithinSystem(startLoc, stops, endLoc = null) {
+            if (!stops.length) return { ordered: [], totalDist: 0, legs: [] };
+            return optimiseOpenRoute(startLoc, stops, endLoc);
+        }
+
+        function orderSystemsForStops(startLoc, stops, endLoc = null) {
+            const grouped = new Map();
+            stops.forEach(stop => {
+                const loc = findLocationByName(stop.name);
+                if (!loc) return;
+                if (!grouped.has(loc.sys)) grouped.set(loc.sys, []);
+                grouped.get(loc.sys).push(stop);
+            });
+
+            const systems = [...grouped.keys()];
+            if (systems.length <= 1) return systems;
+
+            const n = systems.length;
+            const size = 1 << n;
+            const dp = Array.from({ length: size }, () => Array(n).fill(Infinity));
+            const parent = Array.from({ length: size }, () => Array(n).fill(-1));
+
+            const nearestStopLocInSystem = (fromLoc, sys) => {
+                const sysStops = grouped.get(sys) || [];
+                let best = null;
+                let bestD = Infinity;
+                sysStops.forEach(stop => {
+                    const loc = findLocationByName(stop.name);
+                    if (!loc) return;
+                    const d = getTravelDistance(fromLoc, loc);
+                    if (d < bestD) {
+                        bestD = d;
+                        best = loc;
+                    }
+                });
+                return best;
+            };
+
+            for (let i = 0; i < n; i++) {
+                const loc = nearestStopLocInSystem(startLoc, systems[i]);
+                dp[1 << i][i] = loc ? getTravelDistance(startLoc, loc) : Infinity;
+            }
+
+            for (let mask = 0; mask < size; mask++) {
+                for (let last = 0; last < n; last++) {
+                    if (!Number.isFinite(dp[mask][last])) continue;
+                    const lastStops = grouped.get(systems[last]) || [];
+                    const lastLoc = lastStops.length ? findLocationByName(lastStops[lastStops.length - 1].name) : startLoc;
+
+                    for (let next = 0; next < n; next++) {
+                        if (mask & (1 << next)) continue;
+                        const nextLoc = nearestStopLocInSystem(lastLoc, systems[next]);
+                        if (!nextLoc) continue;
+                        const nextMask = mask | (1 << next);
+                        const candidate = dp[mask][last] + getTravelDistance(lastLoc, nextLoc);
+                        if (candidate < dp[nextMask][next]) {
+                            dp[nextMask][next] = candidate;
+                            parent[nextMask][next] = last;
+                        }
+                    }
+                }
+            }
+
+            const fullMask = size - 1;
+            let bestLast = 0;
+            let bestTotal = Infinity;
+            for (let last = 0; last < n; last++) {
+                let candidate = dp[fullMask][last];
+                if (endLoc) {
+                    const lastStops = grouped.get(systems[last]) || [];
+                    const lastLoc = lastStops.length ? findLocationByName(lastStops[lastStops.length - 1].name) : startLoc;
+                    candidate += getTravelDistance(lastLoc, endLoc);
+                }
+                if (candidate < bestTotal) {
+                    bestTotal = candidate;
+                    bestLast = last;
+                }
+            }
+
+            let orderIndexes = [];
+            let mask = fullMask;
+            let last = bestLast;
+            while (last !== -1) {
+                orderIndexes.push(last);
+                const prev = parent[mask][last];
+                mask ^= (1 << last);
+                last = prev;
+            }
+            orderIndexes.reverse();
+            return orderIndexes.map(i => systems[i]);
+        }
+
         function getSelectableLocations() {
-            const system = document.getElementById('systemSelect').value;
+            const system = getDOM('systemSelect')?.value;
             return locations.filter(loc => {
                 if (system !== 'All' && loc.sys !== system) return false;
-                return showAllMapLocations || isHaulingLocation(loc);
+                return showAllContractLocations || isHaulingLocation(loc);
             });
         }
 
         function updateLocationOptions() {
-            const start = document.getElementById('startLocation');
+            const start = getDOM('startLocation');
+            if (!start) return;
+
             const currentStart = start.value;
-            start.innerHTML = '<option value="">Current Location</option>';
-            getSelectableLocations().forEach(loc => {
-                const opt = document.createElement('option');
-                opt.value = loc.name;
-                opt.textContent = `${loc.name} (${loc.sys})`;
-                start.appendChild(opt);
-            });
+            start.innerHTML = `
+                <option value="">Current Location</option>
+                ${getLocationHTML()}
+            `;
+
             if (currentStart && Array.from(start.options).some(opt => opt.value === currentStart)) {
                 start.value = currentStart;
             }
-            drawSystemMap(currentRoute?.path || []);
         }
 
         function setContractType(type, sourceEvent = null) {
-            if (routeInputsCollapsed) {
-                // Route is locked in calculate mode. Use Edit Inputs before changing mode.
-                return;
-            }
+            if (routeInputsCollapsed) return;
             if (!sourceEvent && typeof window !== 'undefined') sourceEvent = window.event;
             contractType = type;
             routeInputsCollapsed = false;
@@ -1440,25 +1812,17 @@
         }
 
         function applyContractGridLayout() {
-            const pickups = document.getElementById('pickups');
-            const dropoffs = document.getElementById('dropoffs');
+            const pickups = getDOM('pickups');
+            const dropoffs = getDOM('dropoffs');
             if (!pickups || !dropoffs) return;
 
-            pickups.style.display = '';
-            pickups.style.gridTemplateColumns = '';
-            pickups.style.gap = '';
-            dropoffs.style.display = '';
-            dropoffs.style.gridTemplateColumns = '';
-            dropoffs.style.gap = '';
+            pickups.style.cssText = '';
+            dropoffs.style.cssText = '';
 
             if (contractType === 'single-multi') {
-                dropoffs.style.display = 'grid';
-                dropoffs.style.gridTemplateColumns = 'repeat(2, 1fr)';
-                dropoffs.style.gap = '8px';
+                dropoffs.classList.add('two-col');
             } else if (contractType === 'multi-single') {
-                pickups.style.display = 'grid';
-                pickups.style.gridTemplateColumns = 'repeat(2, 1fr)';
-                pickups.style.gap = '8px';
+                pickups.classList.add('two-col');
             } else {
                 dropoffs.style.display = 'none';
             }
@@ -1474,22 +1838,22 @@
                 pickupLabel.textContent = 'Pickup (1)';
                 dropoffLabel.textContent = 'Dropoffs (up to 10)';
                 dropoffLabel.style.display = 'block';
-                renderPickups(1);
-                renderDropoffs(10);
+                renderLocations('pickups', 1, 'pickup');
+                renderLocations('dropoffs', 10, 'dropoff');
             } else if (contractType === 'multi-single') {
                 pickupLabel.textContent = 'Pickups (up to 10)';
                 dropoffLabel.textContent = 'Dropoff (1)';
                 dropoffLabel.style.display = 'block';
-                renderPickups(10);
-                renderDropoffs(1);
+                renderLocations('pickups', 10, 'pickup');
+                renderLocations('dropoffs', 1, 'dropoff');
             } else {
                 pickupLabel.textContent = 'Pickups + Destinations (up to 15)';
                 dropoffLabel.style.display = 'none';
-                renderPickupsMultiMulti(15);
+                renderLocationsMultiMulti(15);
             }
 
             pickupLabel.style.display = 'block';
-            document.getElementById('pickups').style.display = 'block';
+            getDOM('pickups').style.display = 'block';
             applyContractGridLayout();
         }
 
@@ -1522,7 +1886,7 @@
         }
 
         function buildRouteInputSummaryHtml() {
-            const start = document.getElementById('startLocation')?.value || 'Current Location';
+            const start = getDOM('startLocation')?.value || 'Current Location';
             const ship = selectedText('#shipSelect') || 'No ship selected';
             const system = selectedText('#systemSelect') || 'All Systems';
             const { pickups, dropoffs } = collectContractSelections();
@@ -1576,8 +1940,8 @@
             routeInputsCollapsed = true;
             const pickupLabel = document.getElementById('pickupLabel');
             const dropoffLabel = document.getElementById('dropoffLabel');
-            const pickups = document.getElementById('pickups');
-            const dropoffs = document.getElementById('dropoffs');
+            const pickups = getDOM('pickups');
+            const dropoffs = getDOM('dropoffs');
             const summary = document.getElementById('routeInputSummary');
             const calcBtn = document.getElementById('calculateBtn');
 
@@ -1598,8 +1962,8 @@
             hideRouteInputSummary();
             const pickupLabel = document.getElementById('pickupLabel');
             const dropoffLabel = document.getElementById('dropoffLabel');
-            const pickups = document.getElementById('pickups');
-            const dropoffs = document.getElementById('dropoffs');
+            const pickups = getDOM('pickups');
+            const dropoffs = getDOM('dropoffs');
 
             setContractTypeControlsVisible(true);
             if (pickupLabel) pickupLabel.style.display = 'block';
@@ -1610,22 +1974,17 @@
         }
 
         function focusRouteOutput() {
-            const panel = document.getElementById('route')?.closest('.panel');
+            const panel = getDOM('route')?.closest('.panel');
             if (!panel) return;
             panel.classList.add('route-focus');
             setTimeout(() => panel.classList.remove('route-focus'), 900);
         }
 
-        function getLocationsBySystem() {
-            return getSelectableLocations();
-        }
-
         function getLocationHTML() {
-            const system = document.getElementById('systemSelect').value;
-            const locs = getLocationsBySystem();
+            const system = getDOM('systemSelect')?.value;
+            const locs = getSelectableLocations();
             
             if (system === 'All') {
-                // Group by system with optgroups
                 const systems = [...new Set(locs.map(l => l.sys))].sort();
                 let html = '';
                 systems.forEach(sys => {
@@ -1638,34 +1997,39 @@
                 });
                 return html;
             } else {
-                // Single system, alphabetical
                 return locs.sort((a, b) => a.name.localeCompare(b.name))
                     .map(l => `<option value="${l.name}">${l.name}</option>`)
                     .join('');
             }
         }
 
-        function renderPickups(max) {
-            const container = document.getElementById('pickups');
+        // **OPTIMIZATION 3: Consolidated render function for pickups/dropoffs**
+        function renderLocations(containerId, max, type) {
+            const container = getDOM(containerId.replace('#', ''));
+            if (!container) return;
             container.innerHTML = '';
+            const selectClass = type === 'pickup' ? 'pickup-select' : 'dropoff-select';
+            const cargoClass = type === 'pickup' ? 'pickup-cargo' : 'dropoff-cargo';
+            const hasCargoInput = (type === 'pickup' && contractType === 'multi-single') || (type === 'dropoff' && contractType === 'single-multi');
+
             for (let i = 1; i <= max; i++) {
                 const row = document.createElement('div');
                 row.className = 'contract-row';
                 row.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 60px; gap: 6px;">
-                        <select class="pickup-select" data-idx="${i}" onchange="updateStatus()">
+                    <div style="display: grid; grid-template-columns: 1fr ${hasCargoInput ? '60px' : ''}; gap: 6px;">
+                        <select class="${selectClass}" data-idx="${i}" onchange="updateStatus()">
                             <option value="">[ Skip ]</option>
                             ${getLocationHTML()}
                         </select>
-                        <input type="number" class="pickup-cargo" data-idx="${i}" placeholder="SCU" min="0" onchange="updateStatus()">
+                        ${hasCargoInput ? `<input type="number" class="${cargoClass}" data-idx="${i}" placeholder="SCU" min="0" onchange="updateStatus()">` : ''}
                     </div>
                 `;
                 container.appendChild(row);
             }
         }
 
-        function renderPickupsMultiMulti(max) {
-            const container = document.getElementById('pickups');
+        function renderLocationsMultiMulti(max) {
+            const container = getDOM('pickups');
             container.innerHTML = '';
             for (let i = 1; i <= max; i++) {
                 const row = document.createElement('div');
@@ -1681,26 +2045,6 @@
                             ${getLocationHTML()}
                         </select>
                         <input type="number" class="pickup-cargo" data-idx="${i}" placeholder="SCU" min="0" onchange="updateStatus()">
-                    </div>
-                `;
-                container.appendChild(row);
-            }
-        }
-
-        function renderDropoffs(max) {
-            const container = document.getElementById('dropoffs');
-            container.innerHTML = '';
-            for (let i = 1; i <= max; i++) {
-                const row = document.createElement('div');
-                row.className = 'contract-row';
-                const hasCargoInput = contractType === 'single-multi';
-                row.innerHTML = `
-                    <div style="display: grid; grid-template-columns: ${hasCargoInput ? '1fr 60px' : '1fr'}; gap: 6px;">
-                        <select class="dropoff-select" data-idx="${i}" onchange="updateStatus()">
-                            <option value="">[ Skip ]</option>
-                            ${getLocationHTML()}
-                        </select>
-                        ${hasCargoInput ? `<input type="number" class="dropoff-cargo" data-idx="${i}" placeholder="SCU" min="0" onchange="updateStatus()">` : ''}
                     </div>
                 `;
                 container.appendChild(row);
@@ -1739,9 +2083,9 @@
         }
 
         function updateStatus() {
-            const shipSelect = document.getElementById('shipSelect');
-            if (!shipSelect.value) {
-                document.getElementById('statusBox').innerHTML = '';
+            const shipSelect = getDOM('shipSelect');
+            if (!shipSelect?.value) {
+                getDOM('statusBox').innerHTML = '';
                 return;
             }
 
@@ -1762,12 +2106,12 @@
                 statusText = `⚠ CHECK | ${carriedCargo}/${capacity} SCU${cargoNote}`;
             }
 
-            document.getElementById('statusBox').innerHTML = `<div class="${statusClass}">${statusText}</div>`;
+            getDOM('statusBox').innerHTML = `<div class="${statusClass}">${statusText}</div>`;
             saveState();
         }
 
         function calculateRoute() {
-            const start = document.getElementById('startLocation').value;
+            const start = getDOM('startLocation')?.value;
             
             if (contractType === 'multi-multi') {
                 calculateMultiMultiRoute(start);
@@ -1783,7 +2127,7 @@
                 })).filter(d => d.name);
 
                 if (pickups.length === 0 || dropoffs.length === 0) {
-                    document.getElementById('route').textContent = 'Add pickups and dropoffs to calculate route.';
+                    getDOM('route').textContent = 'Add pickups and dropoffs to calculate route.';
                     return;
                 }
 
@@ -1807,7 +2151,7 @@
             })).filter(p => p.name && p.destination);
 
             if (pickups.length === 0) {
-                document.getElementById('route').textContent = 'Add pickups with destinations to calculate route.';
+                getDOM('route').textContent = 'Add pickups with destinations to calculate route.';
                 return;
             }
 
@@ -1815,20 +2159,18 @@
             let totalDist = 0;
             let totalCargo = pickups.reduce((sum, p) => sum + p.cargo, 0);
             
-            const startLoc = locations.find(l => l.name === start) || locations.find(l => l.name === pickups[0].name);
+            const startLoc = locationsByName.get(start) || locationsByName.get(pickups[0].name);
             let current = startLoc;
 
-            // Create delivery pairs (pickup -> destination) and optimize route
             let remaining = [...pickups];
             let pairNum = 1;
 
             while (remaining.length > 0) {
-                // Find nearest pickup location
                 let nearestPickupIdx = 0;
                 let minPickupDist = Infinity;
 
                 remaining.forEach((p, pidx) => {
-                    const pLoc = locations.find(l => l.name === p.name);
+                    const pLoc = locationsByName.get(p.name);
                     const d = getDistance(current, pLoc);
                     if (d < minPickupDist) {
                         minPickupDist = d;
@@ -1837,9 +2179,8 @@
                 });
 
                 const pickup = remaining.splice(nearestPickupIdx, 1)[0];
-                const pickupLoc = locations.find(l => l.name === pickup.name);
+                const pickupLoc = locationsByName.get(pickup.name);
                 
-                // Add pickup step
                 steps.push({
                     id: `pickup-${pairNum-1}`, 
                     text: `${pairNum}. PICKUP: ${pickup.name} (${pickup.cargo}SCU) — ${minPickupDist.toFixed(1)}GM`, 
@@ -1848,8 +2189,7 @@
                 totalDist += minPickupDist;
                 current = pickupLoc;
 
-                // Travel to destination and deliver
-                const destLoc = locations.find(l => l.name === pickup.destination);
+                const destLoc = locationsByName.get(pickup.destination);
                 const deliveryDist = getDistance(current, destLoc);
                 steps.push({
                     id: `deliver-${pairNum-1}`, 
@@ -1875,21 +2215,17 @@
         }
 
         function optimiseOpenRoute(startLoc, stops, endLoc = null) {
-            // Exact shortest-path order for up to 12 stops.
-            // This fixes the old nearest-neighbour route, which could choose a locally-close stop
-            // but create a bad long leg later.
             const validStops = stops
                 .map((stop, originalIndex) => ({
                     ...stop,
                     originalIndex,
-                    loc: locations.find(l => l.name === stop.name)
+                    loc: locationsByName.get(stop.name)
                 }))
                 .filter(stop => stop.loc);
 
             const n = validStops.length;
             if (!startLoc || n === 0) return { ordered: validStops, totalDist: 0, legs: [] };
 
-            // Safety fallback. Current UI uses 10 max, so the exact solver is normally used.
             if (n > 12) {
                 let remaining = [...validStops];
                 let current = startLoc;
@@ -1901,7 +2237,7 @@
                     let nearestIdx = 0;
                     let minDist = Infinity;
                     remaining.forEach((stop, idx) => {
-                        const d = getDistance(current, stop.loc);
+                        const d = getTravelDistance(current, stop.loc);
                         if (d < minDist) {
                             minDist = d;
                             nearestIdx = idx;
@@ -1916,7 +2252,7 @@
                 }
 
                 if (endLoc) {
-                    const finalDist = getDistance(current, endLoc);
+                    const finalDist = getTravelDistance(current, endLoc);
                     legs.push(finalDist);
                     totalDist += finalDist;
                 }
@@ -1929,7 +2265,7 @@
             const parent = Array.from({ length: size }, () => Array(n).fill(-1));
 
             for (let i = 0; i < n; i++) {
-                dp[1 << i][i] = getDistance(startLoc, validStops[i].loc);
+                dp[1 << i][i] = getTravelDistance(startLoc, validStops[i].loc);
             }
 
             for (let mask = 0; mask < size; mask++) {
@@ -1940,7 +2276,7 @@
                         if (mask & (1 << next)) continue;
 
                         const nextMask = mask | (1 << next);
-                        const candidate = dp[mask][last] + getDistance(validStops[last].loc, validStops[next].loc);
+                        const candidate = dp[mask][last] + getTravelDistance(validStops[last].loc, validStops[next].loc);
 
                         if (candidate < dp[nextMask][next]) {
                             dp[nextMask][next] = candidate;
@@ -1955,7 +2291,7 @@
             let bestTotal = Infinity;
 
             for (let last = 0; last < n; last++) {
-                const endCost = endLoc ? getDistance(validStops[last].loc, endLoc) : 0;
+                const endCost = endLoc ? getTravelDistance(validStops[last].loc, endLoc) : 0;
                 const candidate = dp[fullMask][last] + endCost;
                 if (candidate < bestTotal) {
                     bestTotal = candidate;
@@ -1981,13 +2317,13 @@
             let current = startLoc;
 
             ordered.forEach(stop => {
-                const d = getDistance(current, stop.loc);
+                const d = getTravelDistance(current, stop.loc);
                 legs.push(d);
                 current = stop.loc;
             });
 
             if (endLoc) {
-                legs.push(getDistance(current, endLoc));
+                legs.push(getTravelDistance(current, endLoc));
             }
 
             return { ordered, totalDist: bestTotal, legs };
@@ -1995,15 +2331,22 @@
 
         function routeSingleToMulti(start, pickups, dropoffs) {
             const pickup = pickups[0];
-            const pickupLoc = locations.find(l => l.name === pickup.name);
-            const startLoc = locations.find(l => l.name === start) || pickupLoc;
+            const pickupLoc = findLocationByName(pickup.name);
+            const startLoc = findLocationByName(start) || pickupLoc;
             const solved = optimiseOpenRoute(pickupLoc, dropoffs, null);
 
             let totalDist = 0;
             let steps = [];
+            let path = [startLoc?.name].filter(Boolean);
+            let mapSegments = [];
+            let current = startLoc;
 
-            if (startLoc && pickupLoc && startLoc.name !== pickupLoc.name) {
-                totalDist += getDistance(startLoc, pickupLoc);
+            if (current && pickupLoc) {
+                const plan = appendTravelPlanSteps(steps, current, pickupLoc, 'to-pickup-0');
+                addTravelPlanMapSegments(mapSegments, plan);
+                totalDist += plan.distance;
+                path.push(...plan.pathNames.slice(1));
+                current = pickupLoc;
             }
 
             steps.push({
@@ -2011,70 +2354,122 @@
                 text: `PICKUP: ${pickup.name} (${pickup.cargo}SCU)`,
                 clickable: true
             });
+            if (!path.includes(pickup.name)) path.push(pickup.name);
 
             solved.ordered.forEach((drop, idx) => {
-                const d = solved.legs[idx] || 0;
-                totalDist += d;
+                const dropLoc = findLocationByName(drop.name);
+                if (current && dropLoc) {
+                    const plan = appendTravelPlanSteps(steps, current, dropLoc, `to-dropoff-${idx}`);
+                    addTravelPlanMapSegments(mapSegments, plan);
+                    totalDist += plan.distance;
+                    path.push(...plan.pathNames.slice(1));
+                    current = dropLoc;
+                }
                 steps.push({
                     id: `dropoff-${idx}`,
-                    text: `  ${idx + 1}. ${drop.name} — ${d.toFixed(1)}GM ${drop.cargo ? `(${drop.cargo}SCU)` : ''}`,
+                    text: `DROP ${idx + 1}: ${drop.name}${drop.cargo ? ` (${drop.cargo}SCU)` : ''}`,
                     clickable: true
                 });
             });
 
             return {
-                type: 'Single Pickup → Multi Dropoff (Exact Optimised)',
+                type: 'Single Pickup → Multi Dropoff (Gateway Aware)',
                 steps,
                 totalDist: totalDist.toFixed(1),
                 totalCargo: pickup.cargo,
                 startName: startLoc?.name || '',
-                path: [startLoc?.name, pickup.name, ...solved.ordered.map(drop => drop.name)].filter(Boolean)
+                path: path.filter(Boolean),
+                mapSegments
             };
         }
 
         function routeMultiToSingle(start, pickups, dropoffs) {
             const dropoff = dropoffs[0];
-            const dropoffLoc = locations.find(l => l.name === dropoff.name);
-            const startLoc = locations.find(l => l.name === start) || locations.find(l => l.name === pickups[0].name);
-            const solved = optimiseOpenRoute(startLoc, pickups, dropoffLoc);
-
+            const dropoffLoc = findLocationByName(dropoff.name);
+            const startLoc = findLocationByName(start) || findLocationByName(pickups[0].name);
+            let current = startLoc;
             let steps = [];
+            let totalDist = 0;
             let totalCargo = pickups.reduce((sum, p) => sum + p.cargo, 0);
+            let path = [startLoc?.name].filter(Boolean);
+            let mapSegments = [];
 
-            solved.ordered.forEach((pickup, idx) => {
-                const d = solved.legs[idx] || 0;
+            const grouped = new Map();
+            pickups.forEach(pickup => {
+                const loc = findLocationByName(pickup.name);
+                if (!loc) return;
+                if (!grouped.has(loc.sys)) grouped.set(loc.sys, []);
+                grouped.get(loc.sys).push(pickup);
+            });
+
+            const systemOrder = orderSystemsForStops(startLoc, pickups, dropoffLoc);
+            let pickupIndex = 0;
+
+            systemOrder.forEach(sys => {
+                const systemPickups = grouped.get(sys) || [];
+                if (!systemPickups.length) return;
+
                 steps.push({
-                    id: `pickup-${idx}`,
-                    text: `  ${idx + 1}. ${pickup.name} (${pickup.cargo}SCU) — ${d.toFixed(1)}GM`,
-                    clickable: true
+                    phase: `system-${sys}`,
+                    text: `── ${sys.toUpperCase()} PICKUPS ──`,
+                    clickable: false
+                });
+
+                const orderedInSystem = orderStopsWithinSystem(current, systemPickups, null).ordered;
+
+                orderedInSystem.forEach(pickup => {
+                    const pickupLoc = findLocationByName(pickup.name);
+                    if (current && pickupLoc) {
+                        const plan = appendTravelPlanSteps(steps, current, pickupLoc, `to-pickup-${pickupIndex}`);
+                        addTravelPlanMapSegments(mapSegments, plan);
+                        totalDist += plan.distance;
+                        path.push(...plan.pathNames.slice(1));
+                        current = pickupLoc;
+                    }
+
+                    steps.push({
+                        id: `pickup-${pickupIndex}`,
+                        text: `PICKUP ${pickupIndex + 1}: ${pickup.name} (${pickup.cargo}SCU)`,
+                        clickable: true
+                    });
+                    pickupIndex++;
                 });
             });
 
-            const finalDist = solved.legs[solved.ordered.length] || 0;
+            if (dropoffLoc && current) {
+                steps.push({
+                    phase: 'delivery-run',
+                    text: `── DELIVERY TO ${dropoffLoc.sys.toUpperCase()} ──`,
+                    clickable: false
+                });
+                const plan = appendTravelPlanSteps(steps, current, dropoffLoc, 'to-dropoff-0');
+                addTravelPlanMapSegments(mapSegments, plan);
+                totalDist += plan.distance;
+                path.push(...plan.pathNames.slice(1));
+                current = dropoffLoc;
+            }
+
             steps.push({
                 id: 'dropoff-0',
-                text: `DROPOFF: ${dropoff.name} — ${finalDist.toFixed(1)}GM`,
+                text: `DROPOFF: ${dropoff.name} (${totalCargo}SCU total)`,
                 clickable: true
             });
 
             return {
-                type: 'Multi Pickup → Single Dropoff (Exact Optimised)',
+                type: 'Multi Pickup → Single Dropoff (Gateway Aware)',
                 steps,
-                totalDist: solved.totalDist.toFixed(1),
+                totalDist: totalDist.toFixed(1),
                 totalCargo,
                 startName: startLoc?.name || '',
-                path: [startLoc?.name, ...solved.ordered.map(pickup => pickup.name), dropoff.name].filter(Boolean)
+                path: path.filter(Boolean),
+                mapSegments
             };
-        }
-
-        function escapeHtml(text) {
-            return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
         function renderRoute(route) {
             currentRoute = route;
-            const container = document.getElementById('route');
-            const startName = route.startName || route.path?.[0] || document.getElementById('startLocation')?.value || 'Current Location';
+            const container = getDOM('route');
+            const startName = route.startName || route.path?.[0] || getDOM('startLocation')?.value || 'Current Location';
             let html = `<div class="route-header">${route.type}</div>`;
             html += `<div class="route-header">${'═'.repeat(50)}</div>`;
             html += `<div class="route-line" style="color: var(--ok); border-left: 2px solid var(--ok); background:#1f3a1f; margin-bottom:6px;">START: ${escapeHtml(startName)}</div>`;
@@ -2107,7 +2502,7 @@
         function updateProgressInfo(steps) {
             const clickableSteps = steps.filter(s => s.clickable).length;
             const completedSteps = Object.keys(tracking).filter(k => tracking[k]).length;
-            document.getElementById('progressInfo').textContent = `Progress: ${completedSteps}/${clickableSteps}`;
+            getDOM('progressInfo').textContent = `Progress: ${completedSteps}/${clickableSteps}`;
         }
 
         function toggleStep(id) {
@@ -2186,9 +2581,10 @@
         function saveState() {
             const state = {
                 contractType,
-                system: document.getElementById('systemSelect').value,
-                ship: document.getElementById('shipSelect').value,
-                start: document.getElementById('startLocation').value,
+                system: getDOM('systemSelect')?.value,
+                mapSystem: getMapSelectedSystem(),
+                ship: getDOM('shipSelect')?.value,
+                start: getDOM('startLocation')?.value,
                 pickups: Array.from(document.querySelectorAll('.pickup-select')).map((sel, i) => ({
                     location: sel.value,
                     cargo: document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`)?.value || '',
@@ -2219,14 +2615,14 @@
                 });
             }
 
-            if (state.system) document.getElementById('systemSelect').value = state.system;
-            if (state.ship) document.getElementById('shipSelect').value = state.ship;
+            if (state.system) getDOM('systemSelect').value = state.system;
+            if (state.mapSystem && mapConfig[state.mapSystem]) setMapSystem(state.mapSystem, { redraw: false, reset: false, save: true });
+            if (state.ship) getDOM('shipSelect').value = state.ship;
 
             updateLocationOptions();
-            if (state.start) document.getElementById('startLocation').value = state.start;
+            if (state.start) getDOM('startLocation').value = state.start;
 
             updateUI();
-            
             applyContractGridLayout();
 
             setTimeout(() => {
@@ -2261,10 +2657,769 @@
             updateTrackingDisplay();
         }
 
+
+
+        /* === Contract Cards Rework Layer === */
+        const SC_CUSTOM_LOCATIONS_KEY = 'scCustomHaulingLocations';
+        const SC_CARD_STATE_VERSION = 2;
+
+        const builtInExtraLocations = [
+            {name: "Pyro II", sys: "Pyro", lat: 0.00, lon: -55.23, dist: 10.62, hauling: true},
+            {name: "Pyro III", sys: "Pyro", lat: 0.00, lon: -35.26, dist: 17.79, hauling: true},
+            {name: "Pyro IV", sys: "Pyro", lat: 0.00, lon: -95.22, dist: 47.21, hauling: true},
+            {name: "Pyro V", sys: "Pyro", lat: 0.00, lon: -15.20, dist: 42.92, hauling: true},
+            {name: "Pyro VI", sys: "Pyro", lat: 0.00, lon: 134.77, dist: 68.32, hauling: true},
+            {name: "Shepherd's Rest", sys: "Pyro", lat: 0.00, lon: -40.23, dist: 17.79, hauling: true},
+            {name: "Port Tressler", sys: "Stanton", lat: 0.00, lon: 58.86, dist: 43.44, hauling: true},
+            {name: "NB Int. Spaceport", sys: "Stanton", lat: 0.00, lon: 58.86, dist: 43.44, hauling: true},
+            {name: "Sakura Sun Goldenrod Wreckcenter", sys: "Stanton", lat: 0.00, lon: 58.86, dist: 43.44, hauling: true},
+            {name: "Rayari McGrath Research Outpost", sys: "Stanton", lat: 0.00, lon: 58.92, dist: 43.39, hauling: true},
+            {name: "Rayari Cantwell Research Outpost", sys: "Stanton", lat: 0.00, lon: 58.92, dist: 43.39, hauling: true},
+            {name: "HDMS-Hahn", sys: "Stanton", lat: 0.00, lon: 0.00, dist: 12.85, hauling: true},
+            {name: "HDMS-Lathan", sys: "Stanton", lat: 0.00, lon: 0.00, dist: 12.85, hauling: true},
+            {name: "Shubin Mining Facility SMO-13", sys: "Stanton", lat: 0.00, lon: 58.92, dist: 43.39, hauling: true}
+        ];
+        for (let i = 1; i <= 10; i++) {
+            builtInExtraLocations.push({
+                name: `Onyx Facility S4A${i}`,
+                sys: 'Stanton',
+                lat: 0.00,
+                lon: 58.92,
+                dist: 43.39,
+                hauling: true,
+                parent: 'Calliope',
+                type: 'onyx'
+            });
+        }
+
+        const locationAliasEntries = [
+            ["Endgame (Terminus L3)", "Endgame"],
+            ["Megumi Refueling (Terminus L5)", "Megumi Refueling"],
+            ["Rat's Nest at the L5 Lagrange of Pyro V", "Rat's Nest"],
+            ["Checkmate at the L4 Lagrange of Pyro II", "Checkmate"],
+            ["Patch City at the L3 Lagrange of Pyro II", "Patch City"],
+            ["Gaslight at the L2 Lagrange of Pyro V", "Gaslight"],
+            ["Ruin Station above Pyro VI", "Ruin Station"],
+            ["Ruin Station above Pyro VI.", "Ruin Station"],
+            ["Shepherd's Rest on Pyro III", "Shepherd's Rest"],
+            ["Port Tressler above microTech", "Port Tressler"],
+            ["NB Int. Spaceport on microTech", "NB Int. Spaceport"],
+            ["Sakura Sun Goldenrod Wreckcenter on microTech", "Sakura Sun Goldenrod Wreckcenter"],
+            ["Rayari lab on Cellin", "Rayari lab on Cellin"]
+        ];
+
+        function upsertLocation(loc) {
+            if (!loc?.name || !loc?.sys) return;
+            const clean = {
+                lat: 0,
+                lon: 0,
+                dist: 0,
+                hauling: true,
+                ...loc,
+                lat: Number(loc.lat) || 0,
+                lon: Number(loc.lon) || 0,
+                dist: Number(loc.dist) || 0
+            };
+            const existingIndex = locations.findIndex(l => l.name === clean.name);
+            if (existingIndex >= 0) locations[existingIndex] = {...locations[existingIndex], ...clean};
+            else locations.push(clean);
+            locationsByName.set(clean.name, clean);
+            haulingLocationNames.add(clean.name);
+        }
+
+        function loadExtraLocations() {
+            builtInExtraLocations.forEach(upsertLocation);
+            try {
+                const saved = JSON.parse(localStorage.getItem(SC_CUSTOM_LOCATIONS_KEY) || '[]');
+                if (Array.isArray(saved)) saved.forEach(loc => upsertLocation({...loc, custom: true, hauling: true}));
+            } catch {}
+            locations.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function normaliseLocationText(raw) {
+            return String(raw || '')
+                .replace(/\s+/g, ' ')
+                .replace(/[.。]+$/g, '')
+                .trim();
+        }
+
+        function stripLocationSuffix(raw) {
+            return normaliseLocationText(raw)
+                .replace(/\s+above\s+.+$/i, '')
+                .replace(/\s+on\s+.+$/i, '')
+                .replace(/\s+at\s+the\s+.+$/i, '')
+                .replace(/\s+at\s+.+$/i, '')
+                .trim();
+        }
+
+        function findLocationByName(name, preferredSys = null) {
+            if (!name) return null;
+            const raw = normaliseLocationText(name);
+            const lower = raw.toLowerCase();
+            const aliasHit = locationAliasEntries.find(([alias]) => alias.toLowerCase() === lower);
+            const candidates = [];
+            if (aliasHit) candidates.push(aliasHit[1]);
+            candidates.push(raw, stripLocationSuffix(raw));
+
+            for (const candidate of candidates) {
+                if (!candidate) continue;
+                if (preferredSys) {
+                    const exact = locations.find(l => l.name === candidate && l.sys === preferredSys);
+                    if (exact) return exact;
+                }
+                if (locationsByName.has(candidate)) return locationsByName.get(candidate);
+                const caseHit = locations.find(l => l.name.toLowerCase() === candidate.toLowerCase());
+                if (caseHit) return caseHit;
+            }
+            return null;
+        }
+
+        function canonicalLocationName(raw) {
+            const found = findLocationByName(raw);
+            return found ? found.name : normaliseLocationText(raw);
+        }
+
+        function isHaulingLocation(loc) {
+            return Boolean(loc?.hauling) || haulingLocationNames.has(loc?.name) || String(loc?.name || '').toLowerCase().includes('gateway');
+        }
+
+        function uid(prefix) {
+            return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function safeNumber(value) {
+            const n = parseFloat(value);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        function fmtScu(value) {
+            const n = safeNumber(value);
+            return Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, '');
+        }
+
+        function selectOptionsHtml(value = '') {
+            const selectedValue = canonicalLocationName(value);
+            const found = selectedValue ? findLocationByName(selectedValue) : null;
+            const selectedOption = selectedValue
+                ? `<option value="${escapeHtml(selectedValue)}" selected>${found ? '' : '⚠ '}${escapeHtml(selectedValue)}${found ? '' : ' [not in locations]'}</option>`
+                : '';
+            return '<option value="">[ Select location ]</option>' + selectedOption + getLocationHTML();
+        }
+
+        function setSelectValue(select, value) {
+            if (!select) return;
+            const canonical = canonicalLocationName(value);
+            if (canonical && Array.from(select.options).some(opt => opt.value === canonical)) select.value = canonical;
+            else if (canonical) select.value = canonical;
+        }
+
+        function makeBlankContract() {
+            return {
+                id: uid('contract'),
+                name: `Contract ${contracts.length + 1}`,
+                collapsed: false,
+                lines: [makeBlankLine()]
+            };
+        }
+
+        function makeBlankLine() {
+            return {
+                id: uid('line'),
+                dropoff: '',
+                cargo: '',
+                scu: '',
+                pickups: [makeBlankPickup()]
+            };
+        }
+
+        function makeBlankPickup(location = '') {
+            return { id: uid('pickup'), location, scu: '' };
+        }
+
+        function addContract(contract = null) {
+            contracts.push(contract || makeBlankContract());
+            renderContracts();
+            updateStatus();
+        }
+
+        function duplicateContract(contractIndex) {
+            const source = contracts[contractIndex];
+            if (!source) return;
+            const copy = JSON.parse(JSON.stringify(source));
+            copy.id = uid('contract');
+            copy.name = `${source.name || 'Contract'} Copy`;
+            copy.collapsed = false;
+            copy.lines.forEach(line => {
+                line.id = uid('line');
+                line.pickups.forEach(p => p.id = uid('pickup'));
+            });
+            contracts.splice(contractIndex + 1, 0, copy);
+            renderContracts();
+            updateStatus();
+        }
+
+        function removeContract(contractIndex) {
+            contracts.splice(contractIndex, 1);
+            renderContracts();
+            updateStatus();
+        }
+
+        function toggleContract(contractIndex) {
+            if (!contracts[contractIndex]) return;
+            contracts[contractIndex].collapsed = !contracts[contractIndex].collapsed;
+            renderContracts();
+            saveState();
+        }
+
+        function updateContractName(contractIndex, value) {
+            if (!contracts[contractIndex]) return;
+            contracts[contractIndex].name = value;
+            saveState();
+        }
+
+        function addDeliveryLine(contractIndex) {
+            contracts[contractIndex]?.lines.push(makeBlankLine());
+            renderContracts();
+            updateStatus();
+        }
+
+        function removeDeliveryLine(contractIndex, lineIndex) {
+            const contract = contracts[contractIndex];
+            if (!contract) return;
+            contract.lines.splice(lineIndex, 1);
+            if (!contract.lines.length) contract.lines.push(makeBlankLine());
+            renderContracts();
+            updateStatus();
+        }
+
+        function updateLineField(contractIndex, lineIndex, field, value) {
+            const line = contracts[contractIndex]?.lines[lineIndex];
+            if (!line) return;
+            line[field] = field === 'dropoff' ? canonicalLocationName(value) : value;
+            renderContracts();
+            updateStatus();
+        }
+
+        function addPickup(contractIndex, lineIndex) {
+            const line = contracts[contractIndex]?.lines[lineIndex];
+            if (!line) return;
+            line.pickups.push(makeBlankPickup());
+            renderContracts();
+            updateStatus();
+        }
+
+        function removePickup(contractIndex, lineIndex, pickupIndex) {
+            const line = contracts[contractIndex]?.lines[lineIndex];
+            if (!line) return;
+            line.pickups.splice(pickupIndex, 1);
+            if (!line.pickups.length) line.pickups.push(makeBlankPickup());
+            renderContracts();
+            updateStatus();
+        }
+
+        function updatePickupField(contractIndex, lineIndex, pickupIndex, field, value) {
+            const pickup = contracts[contractIndex]?.lines[lineIndex]?.pickups[pickupIndex];
+            if (!pickup) return;
+            pickup[field] = field === 'location' ? canonicalLocationName(value) : value;
+            renderContracts();
+            updateStatus();
+        }
+
+        function getContractStats(contract) {
+            const pickups = new Set();
+            const dropoffs = new Set();
+            const cargos = new Set();
+            let totalScu = 0;
+            (contract.lines || []).forEach(line => {
+                if (line.dropoff) dropoffs.add(canonicalLocationName(line.dropoff));
+                if (line.cargo) cargos.add(line.cargo.trim());
+                totalScu += safeNumber(line.scu);
+                (line.pickups || []).forEach(p => { if (p.location) pickups.add(canonicalLocationName(p.location)); });
+            });
+            let shape = 'Fill in contract';
+            if (pickups.size === 1 && dropoffs.size === 1) shape = '1 pickup → 1 drop';
+            else if (pickups.size === 1 && dropoffs.size > 1) shape = '1 pickup → multi drop';
+            else if (pickups.size > 1 && dropoffs.size === 1) shape = `${pickups.size} pickups → 1 drop`;
+            else if (pickups.size > 1 && dropoffs.size > 1) shape = `${pickups.size} pickups → ${dropoffs.size} drops`;
+            return {pickups, dropoffs, cargos, totalScu, shape};
+        }
+
+        function renderContracts() {
+            const root = document.getElementById('contractsList');
+            if (!root) return;
+            if (!contracts.length) {
+                root.innerHTML = `<div class="empty-contracts"><b>No contracts yet.</b><br>Click <b>+ Add Contract</b>, fill the drop-off, then add the pickup location(s) the mission lists underneath it.</div>`;
+                return;
+            }
+            root.innerHTML = contracts.map((contract, ci) => renderContractCard(contract, ci)).join('');
+            contracts.forEach((contract, ci) => {
+                (contract.lines || []).forEach((line, li) => {
+                    setSelectValue(document.querySelector(`select[data-role="dropoff"][data-contract="${ci}"][data-line="${li}"]`), line.dropoff);
+                    (line.pickups || []).forEach((pickup, pi) => {
+                        setSelectValue(document.querySelector(`select[data-role="pickup"][data-contract="${ci}"][data-line="${li}"][data-pickup="${pi}"]`), pickup.location);
+                    });
+                });
+            });
+        }
+
+        function renderContractCard(contract, ci) {
+            const stats = getContractStats(contract);
+            const cargos = [...stats.cargos].slice(0, 3).join(', ') || 'No cargo yet';
+            const collapsedClass = contract.collapsed ? 'collapsed' : '';
+            return `<article class="contract-card ${contract.collapsed ? '' : 'active'}">
+                <div class="contract-head">
+                    <div>
+                        <div class="contract-title">
+                            <button class="secondary" onclick="toggleContract(${ci})" title="Collapse / expand" style="margin:0;">${contract.collapsed ? '▸' : '▾'}</button>
+                            <input value="${escapeHtml(contract.name || `Contract ${ci + 1}`)}" onchange="updateContractName(${ci}, this.value)" oninput="contracts[${ci}].name=this.value; saveState();">
+                        </div>
+                        <div class="contract-summary">
+                            <span class="contract-pill good">${escapeHtml(stats.shape)}</span>
+                            <span class="contract-pill">${fmtScu(stats.totalScu)} SCU</span>
+                            <span class="contract-pill">${escapeHtml(cargos)}</span>
+                            <span class="contract-pill warn">${contract.lines?.length || 0} delivery line${(contract.lines?.length || 0) === 1 ? '' : 's'}</span>
+                        </div>
+                    </div>
+                    <div class="contract-actions">
+                        <button class="secondary" onclick="addDeliveryLine(${ci})">＋ Line</button>
+                        <button class="secondary" onclick="duplicateContract(${ci})">Copy</button>
+                        <button class="secondary" onclick="removeContract(${ci})">Delete</button>
+                    </div>
+                </div>
+                <div class="contract-body ${collapsedClass}">
+                    ${(contract.lines || []).map((line, li) => renderDeliveryLine(line, ci, li, contract.lines.length)).join('')}
+                    <button class="secondary" onclick="addDeliveryLine(${ci})" style="margin:0;">＋ Add another delivery line</button>
+                </div>
+            </article>`;
+        }
+
+        function renderDeliveryLine(line, ci, li, lineCount) {
+            return `<div class="delivery-line">
+                <div class="line-top">
+                    <div>
+                        <label>Drop-off</label>
+                        <select data-role="dropoff" data-contract="${ci}" data-line="${li}" onchange="updateLineField(${ci}, ${li}, 'dropoff', this.value)">${selectOptionsHtml(line.dropoff)}</select>
+                        <div class="mini-note">Matches the first mission line: Deliver cargo to this place.</div>
+                    </div>
+                    <div>
+                        <label>Cargo</label>
+                        <input value="${escapeHtml(line.cargo || '')}" placeholder="Waste / Potassium" onchange="updateLineField(${ci}, ${li}, 'cargo', this.value)" oninput="contracts[${ci}].lines[${li}].cargo=this.value; saveState();">
+                    </div>
+                    <div>
+                        <label>Total SCU</label>
+                        <input type="number" min="0" step="0.1" value="${escapeHtml(line.scu || '')}" placeholder="SCU" onchange="updateLineField(${ci}, ${li}, 'scu', this.value)" oninput="contracts[${ci}].lines[${li}].scu=this.value; saveState(); updateStatus();">
+                    </div>
+                    <button class="secondary" onclick="removeDeliveryLine(${ci}, ${li})" style="margin:0;" ${lineCount <= 1 ? 'disabled' : ''}>Remove</button>
+                </div>
+                <div class="section-title">
+                    <b>Pickup location(s)</b>
+                    <button class="secondary" onclick="addPickup(${ci}, ${li})" style="margin:0; padding:6px 8px; font-size:8px;">＋ Pickup</button>
+                </div>
+                <div class="pickup-list">
+                    ${(line.pickups || []).map((pickup, pi) => renderPickupRow(pickup, ci, li, pi, line.pickups.length)).join('')}
+                </div>
+            </div>`;
+        }
+
+        function renderPickupRow(pickup, ci, li, pi, pickupCount) {
+            return `<div class="pickup-row">
+                <div>
+                    <label>Collect from</label>
+                    <select data-role="pickup" data-contract="${ci}" data-line="${li}" data-pickup="${pi}" onchange="updatePickupField(${ci}, ${li}, ${pi}, 'location', this.value)">${selectOptionsHtml(pickup.location)}</select>
+                </div>
+                <div>
+                    <label>SCU here</label>
+                    <input type="number" min="0" step="0.1" value="${escapeHtml(pickup.scu || '')}" placeholder="auto" onchange="updatePickupField(${ci}, ${li}, ${pi}, 'scu', this.value)" oninput="contracts[${ci}].lines[${li}].pickups[${pi}].scu=this.value; saveState(); updateStatus();">
+                </div>
+                <button class="secondary" onclick="removePickup(${ci}, ${li}, ${pi})" style="margin:0;" ${pickupCount <= 1 ? 'disabled' : ''}>Remove</button>
+            </div>`;
+        }
+
+        function updateLocationOptions() {
+            const start = getDOM('startLocation');
+            if (start) {
+                const currentStart = start.value;
+                start.innerHTML = `<option value="">Current Location</option>${getLocationHTML()}`;
+                setSelectValue(start, currentStart);
+            }
+            renderContracts();
+        }
+
+        function updateUI() {
+            renderContracts();
+            updateStatus();
+        }
+
+        function getCargoSummary() {
+            const tasks = buildRouteTasks({quiet: true});
+            const carriedCargo = tasks.reduce((sum, task) => sum + task.totalScu, 0);
+            const uniquePickups = new Set();
+            const uniqueDrops = new Set();
+            tasks.forEach(task => {
+                uniqueDrops.add(task.dropoff);
+                task.pickups.forEach(p => uniquePickups.add(p.location));
+            });
+            const cargoNote = tasks.length ? ` | ${tasks.length} line${tasks.length === 1 ? '' : 's'} | ${uniquePickups.size} pickup${uniquePickups.size === 1 ? '' : 's'} → ${uniqueDrops.size} drop${uniqueDrops.size === 1 ? '' : 's'}` : '';
+            return { carriedCargo, deliveryCargo: carriedCargo, cargoNote, cargoProblem: false, cargoWarn: false };
+        }
+
+        function selectedShipCapacity() {
+            const shipSelect = getDOM('shipSelect');
+            if (!shipSelect?.value) return 0;
+            return parseInt(shipSelect.options[shipSelect.selectedIndex].getAttribute('data-capacity')) || 0;
+        }
+
+        function updateStatus() {
+            const shipSelect = getDOM('shipSelect');
+            const statusBox = getDOM('statusBox');
+            if (!statusBox) return;
+            const { carriedCargo, cargoNote } = getCargoSummary();
+            if (!shipSelect?.value) {
+                statusBox.innerHTML = carriedCargo ? `<div class="status-box warn">⚠ ${carriedCargo} SCU planned | Select a ship to check capacity${cargoNote}</div>` : '';
+                saveState();
+                return;
+            }
+            const capacity = selectedShipCapacity();
+            let statusClass = 'status-box';
+            let statusText = `✓ OK | ${carriedCargo}/${capacity} SCU${cargoNote}`;
+            if (carriedCargo > capacity) {
+                statusClass += ' error';
+                statusText = `✗ OVERLOAD | ${carriedCargo}/${capacity} SCU (+${carriedCargo - capacity})${cargoNote}`;
+            } else if (carriedCargo > capacity * 0.8) {
+                statusClass += ' warn';
+                statusText = `⚠ CHECK | ${carriedCargo}/${capacity} SCU${cargoNote}`;
+            }
+            statusBox.innerHTML = `<div class="${statusClass}">${escapeHtml(statusText)}</div>`;
+            saveState();
+        }
+
+        function splitPickupAmount(total, pickups, index) {
+            const explicit = safeNumber(pickups[index]?.scu);
+            if (explicit > 0) return explicit;
+            const explicitTotal = pickups.reduce((sum, p) => sum + safeNumber(p.scu), 0);
+            const blanks = pickups.filter(p => safeNumber(p.scu) <= 0).length;
+            if (explicitTotal > 0 && blanks > 0) return Math.max(0, (total - explicitTotal) / blanks);
+            if (pickups.length > 0) return total / pickups.length;
+            return total;
+        }
+
+        function buildRouteTasks(options = {}) {
+            const warnings = [];
+            const tasks = [];
+            contracts.forEach((contract, ci) => {
+                (contract.lines || []).forEach((line, li) => {
+                    const dropoffLoc = findLocationByName(line.dropoff);
+                    const totalScu = safeNumber(line.scu);
+                    const pickupRows = (line.pickups || []).filter(p => p.location);
+                    if (!line.dropoff && !pickupRows.length && !line.cargo && !line.scu) return;
+                    if (!dropoffLoc) {
+                        warnings.push(`${contract.name || `Contract ${ci + 1}`} line ${li + 1}: drop-off not found: ${line.dropoff || '[blank]'}`);
+                        return;
+                    }
+                    const validPickups = pickupRows.map((pickup, pi) => {
+                        const loc = findLocationByName(pickup.location);
+                        if (!loc) {
+                            warnings.push(`${contract.name || `Contract ${ci + 1}`} line ${li + 1}: pickup not found: ${pickup.location}`);
+                            return null;
+                        }
+                        return {
+                            id: `${contract.id}:${line.id}:${pickup.id}`,
+                            location: loc.name,
+                            loc,
+                            scu: splitPickupAmount(totalScu, pickupRows, pi)
+                        };
+                    }).filter(Boolean);
+                    if (!validPickups.length) {
+                        warnings.push(`${contract.name || `Contract ${ci + 1}`} line ${li + 1}: add at least one valid pickup.`);
+                        return;
+                    }
+                    tasks.push({
+                        id: `${contract.id}:${line.id}`,
+                        contractName: contract.name || `Contract ${ci + 1}`,
+                        lineNumber: li + 1,
+                        cargo: line.cargo || 'Cargo',
+                        totalScu,
+                        dropoff: dropoffLoc.name,
+                        dropoffLoc,
+                        pickups: validPickups
+                    });
+                });
+            });
+            if (!options.quiet) buildRouteTasks.lastWarnings = warnings;
+            return tasks;
+        }
+        buildRouteTasks.lastWarnings = [];
+
+        function getStartLocationForTasks(startName, tasks) {
+            const chosen = findLocationByName(startName);
+            if (chosen) return chosen;
+            const firstPickup = tasks.flatMap(t => t.pickups)[0]?.loc;
+            return firstPickup || tasks[0]?.dropoffLoc || null;
+        }
+
+        function calculateRoute() {
+            const tasks = buildRouteTasks();
+            const warnings = [...(buildRouteTasks.lastWarnings || [])];
+            if (!contracts.length) {
+                getDOM('route').textContent = 'Add at least one contract first.';
+                return;
+            }
+            if (!tasks.length) {
+                getDOM('route').innerHTML = `<div class="route-header">No valid route yet</div>${warnings.map(w => `<div class="route-line" style="color:#ff8a8a;">⚠ ${escapeHtml(w)}</div>`).join('')}`;
+                return;
+            }
+
+            const startLoc = getStartLocationForTasks(getDOM('startLocation')?.value, tasks);
+            if (!startLoc) {
+                getDOM('route').textContent = 'Could not find a valid start or pickup location.';
+                return;
+            }
+
+            const picked = new Set();
+            const delivered = new Set();
+            const cargoByTask = new Map();
+            let current = startLoc;
+            let currentCargo = 0;
+            let maxCargo = 0;
+            let totalDist = 0;
+            const steps = [];
+            const path = [startLoc.name];
+            const mapSegments = [];
+            tracking = {};
+
+            function taskPickedAmount(task) {
+                return task.pickups.reduce((sum, p) => sum + (picked.has(p.id) ? p.scu : 0), 0);
+            }
+
+            function allTaskPicked(task) {
+                return task.pickups.every(p => picked.has(p.id));
+            }
+
+            function processAt(loc, prefix) {
+                const actions = [];
+                let changed = true;
+                while (changed) {
+                    changed = false;
+                    tasks.forEach(task => {
+                        if (delivered.has(task.id)) return;
+                        if (task.dropoff !== loc.name || !allTaskPicked(task)) return;
+                        const amount = cargoByTask.get(task.id) || taskPickedAmount(task) || task.totalScu;
+                        delivered.add(task.id);
+                        cargoByTask.delete(task.id);
+                        currentCargo = Math.max(0, currentCargo - amount);
+                        actions.push({kind: 'drop', task, amount});
+                        changed = true;
+                    });
+                    tasks.forEach(task => {
+                        task.pickups.forEach(pickup => {
+                            if (picked.has(pickup.id) || pickup.location !== loc.name) return;
+                            picked.add(pickup.id);
+                            cargoByTask.set(task.id, (cargoByTask.get(task.id) || 0) + pickup.scu);
+                            currentCargo += pickup.scu;
+                            maxCargo = Math.max(maxCargo, currentCargo);
+                            actions.push({kind: 'pickup', task, pickup, amount: pickup.scu});
+                            changed = true;
+                        });
+                    });
+                }
+                actions.forEach((action, idx) => {
+                    const actionId = `${prefix}-${action.kind}-${idx}`;
+                    if (action.kind === 'pickup') {
+                        steps.push({
+                            id: actionId,
+                            text: `PICKUP: ${loc.name} — ${fmtScu(action.amount)} SCU ${action.task.cargo} → ${action.task.dropoff} [${action.task.contractName}]`,
+                            clickable: true
+                        });
+                    } else {
+                        steps.push({
+                            id: actionId,
+                            text: `DROP: ${loc.name} — ${fmtScu(action.amount)} SCU ${action.task.cargo} [${action.task.contractName}]`,
+                            clickable: true
+                        });
+                    }
+                });
+                return actions.length;
+            }
+
+            processAt(current, 'start');
+            let guard = 0;
+            while (delivered.size < tasks.length && guard++ < 300) {
+                const candidates = [];
+                tasks.forEach(task => {
+                    if (!delivered.has(task.id) && allTaskPicked(task)) {
+                        candidates.push({type: 'drop', loc: task.dropoffLoc, task});
+                    }
+                    task.pickups.forEach(pickup => {
+                        if (!picked.has(pickup.id)) candidates.push({type: 'pickup', loc: pickup.loc, task, pickup});
+                    });
+                });
+
+                const unique = new Map();
+                candidates.forEach(candidate => {
+                    if (!candidate.loc) return;
+                    const key = `${candidate.loc.sys}:${candidate.loc.name}`;
+                    if (!unique.has(key)) unique.set(key, candidate.loc);
+                });
+                if (!unique.size) break;
+
+                let bestLoc = null;
+                let bestDistance = Infinity;
+                unique.forEach(loc => {
+                    const d = getTravelDistance(current, loc);
+                    if (d < bestDistance) {
+                        bestDistance = d;
+                        bestLoc = loc;
+                    }
+                });
+                if (!bestLoc) break;
+
+                const plan = appendTravelPlanSteps(steps, current, bestLoc, `leg-${guard}`);
+                addTravelPlanMapSegments(mapSegments, plan);
+                totalDist += plan.distance;
+                path.push(...plan.pathNames.slice(1));
+                current = bestLoc;
+                processAt(current, `stop-${guard}`);
+            }
+
+            if (delivered.size < tasks.length) {
+                warnings.push(`Route stopped with ${tasks.length - delivered.size} delivery line(s) unfinished. Check missing locations or impossible cargo entries.`);
+            }
+
+            const uniquePickups = new Set();
+            const uniqueDrops = new Set();
+            tasks.forEach(task => {
+                uniqueDrops.add(task.dropoff);
+                task.pickups.forEach(p => uniquePickups.add(p.location));
+            });
+            let detected = 'Auto contract route';
+            if (uniquePickups.size === 1 && uniqueDrops.size === 1) detected = 'Single Pickup → Single Dropoff';
+            else if (uniquePickups.size === 1 && uniqueDrops.size > 1) detected = 'Single Pickup → Multi Dropoff';
+            else if (uniquePickups.size > 1 && uniqueDrops.size === 1) detected = 'Multi Pickup → Single Dropoff';
+            else if (uniquePickups.size > 1 && uniqueDrops.size > 1) detected = 'Multi Pickup → Multi Dropoff';
+
+            warnings.forEach((warning, idx) => {
+                steps.unshift({ id: `warning-${idx}`, text: `⚠ ${warning}`, clickable: false });
+            });
+
+            renderRoute({
+                type: `${detected} (Contract Cards / Gateway Aware)`,
+                steps,
+                totalDist: totalDist.toFixed(1),
+                totalCargo: fmtScu(maxCargo),
+                startName: startLoc.name,
+                path: path.filter(Boolean),
+                mapSegments
+            });
+            saveState();
+            focusRouteOutput();
+        }
+
+function toggleCustomLocationPanel() {
+            document.getElementById('customLocationPanel')?.classList.toggle('open');
+            showCustomLocations();
+        }
+
+function addCustomLocation() {
+            const name = document.getElementById('customLocName')?.value.trim();
+            const sys = document.getElementById('customLocSystem')?.value || 'Stanton';
+            const lat = safeNumber(document.getElementById('customLocLat')?.value);
+            const lon = safeNumber(document.getElementById('customLocLon')?.value);
+            const dist = safeNumber(document.getElementById('customLocDist')?.value);
+            if (!name) { alert('Give the location a name first.'); return; }
+            let saved = [];
+            try { saved = JSON.parse(localStorage.getItem(SC_CUSTOM_LOCATIONS_KEY) || '[]'); } catch {}
+            saved = saved.filter(loc => loc.name !== name);
+            const loc = {name, sys, lat, lon, dist, hauling: true, custom: true};
+            saved.push(loc);
+            localStorage.setItem(SC_CUSTOM_LOCATIONS_KEY, JSON.stringify(saved));
+            upsertLocation(loc);
+            updateLocationOptions();
+            showCustomLocations();
+            document.getElementById('customLocName').value = '';
+        }
+
+        function showCustomLocations() {
+            const el = document.getElementById('customLocationList');
+            if (!el) return;
+            let saved = [];
+            try { saved = JSON.parse(localStorage.getItem(SC_CUSTOM_LOCATIONS_KEY) || '[]'); } catch {}
+            if (!saved.length) {
+                el.innerHTML = 'No custom locations saved yet.';
+                return;
+            }
+            el.innerHTML = saved.map(loc => {
+                const removeArg = JSON.stringify(loc.name).replace(/"/g, '&quot;');
+                return `<div style="display:flex;gap:8px;justify-content:space-between;align-items:center;border-top:1px solid #333;padding:6px 0;">
+                    <span>${escapeHtml(loc.name)} — ${escapeHtml(loc.sys)} (${fmtScu(loc.lat)}, ${fmtScu(loc.lon)}, ${fmtScu(loc.dist)} GM)</span>
+                    <button class="secondary" style="margin:0; padding:5px 8px; font-size:8px;" onclick="removeCustomLocation(${removeArg})">Remove</button>
+                </div>`;
+            }).join('');
+        }
+
+        function removeCustomLocation(name) {
+            let saved = [];
+            try { saved = JSON.parse(localStorage.getItem(SC_CUSTOM_LOCATIONS_KEY) || '[]'); } catch {}
+            saved = saved.filter(loc => loc.name !== name);
+            localStorage.setItem(SC_CUSTOM_LOCATIONS_KEY, JSON.stringify(saved));
+            const index = locations.findIndex(loc => loc.name === name && loc.custom);
+            if (index >= 0) locations.splice(index, 1);
+            locationsByName.delete(name);
+            updateLocationOptions();
+            showCustomLocations();
+        }
+
+        function buildRouteInputSummaryHtml() {
+            const stats = getCargoSummary();
+            return `<strong>Route calculated</strong><div class="summary-grid"><div class="summary-card"><b>Contracts</b>${contracts.length}</div><div class="summary-card"><b>Max Cargo</b>${stats.carriedCargo} SCU</div></div>`;
+        }
+
+        function collapseRouteInputs() { /* cards stay visible; manual collapse is per contract */ }
+        function unlockRouteInputs() { renderContracts(); }
+        function hideRouteInputSummary() {}
+
+        function saveState() {
+            const state = {
+                version: SC_CARD_STATE_VERSION,
+                contractType: 'auto-cards',
+                system: getDOM('systemSelect')?.value,
+                mapSystem: getMapSelectedSystem(),
+                ship: getDOM('shipSelect')?.value,
+                start: getDOM('startLocation')?.value,
+                contracts
+            };
+            localStorage.setItem('scContractState', JSON.stringify(state));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('scContractState');
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+                    if (state.system) getDOM('systemSelect').value = state.system;
+                    if (state.mapSystem && mapConfig[state.mapSystem]) setMapSystem(state.mapSystem, { redraw: false, reset: false, save: true });
+                    if (state.ship) getDOM('shipSelect').value = state.ship;
+                    contracts = Array.isArray(state.contracts) ? state.contracts : [];
+                } catch {
+                    contracts = [];
+                }
+            }
+            updateLocationOptions();
+            const savedStart = (() => { try { return JSON.parse(saved || '{}').start; } catch { return ''; } })();
+            if (savedStart) setSelectValue(getDOM('startLocation'), savedStart);
+            if (!contracts.length) addContract();
+            else renderContracts();
+            loadTracking();
+            updateStatus();
+            showCustomLocations();
+        }
+
         window.onload = () => {
+            loadExtraLocations();
             loadTheme();
+            loadContractLocationSetting();
             loadMapLocationSetting();
             loadMapPerspectiveSetting();
+            loadMapSystemSetting();
             updateLocationOptions();
             loadState();
             drawSystemMap(currentRoute?.path || []);
