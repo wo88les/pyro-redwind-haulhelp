@@ -8,6 +8,7 @@
         :root {
             --accent: #f97316;
             --accent-hover: #ff8c42;
+            --accent-rgb: 249, 115, 22;
             --accent-text: #0f0f0f;
             --ok: #4ade80;
             --trans: all 0.2s;
@@ -40,7 +41,7 @@
         button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
         button.secondary { background: #262626; color: #e0e0e0; border-color: #333; }
         button.secondary:hover { border-color: var(--accent); color: var(--accent); }
-        button.secondary.active { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(249,115,22,0.22); }
+        button.secondary.active { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px rgba(var(--accent-rgb),0.22); }
         
         .contract-row { background: #262626; border: 1px solid #333; padding: 10px; margin-bottom: 6px; }
         .route-input-summary { display: none; background: #141414; border: 1px solid #333; border-left: 3px solid var(--ok); padding: 12px; margin: 12px 0; font-size: 10px; line-height: 1.5; }
@@ -64,9 +65,20 @@
 
         #settingsPanel { background: #1a1a1a; border: 1px solid #2a2a2a; padding: 12px; margin-bottom: 12px; }
 
-        .theme-ball { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; box-shadow: 0 0 0 rgba(255,255,255,0); transition: var(--trans); }
-        .theme-ball:hover { transform: scale(1.15); box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
-        .theme-ball.active { border-color: #ffffff; box-shadow: 0 0 16px rgba(255, 255, 255, 0.8); }
+        .theme-panel { background:#141414; border:1px solid #2a2a2a; padding:10px; }
+        .theme-panel > small { display:block; color:#777; font-size:9px; line-height:1.35; margin-bottom:10px; }
+        .theme-picker-wrap { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+        .theme-wheel-wrap { position:relative; width:210px; height:210px; flex:0 0 auto; }
+        .theme-wheel-canvas { width:210px; height:210px; display:block; border-radius:50%; background:#111; box-shadow: inset 0 0 0 1px #2f2f2f, 0 0 0 1px #202020; cursor:crosshair; }
+        .theme-wheel-marker { position:absolute; width:16px; height:16px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 2px rgba(0,0,0,0.7); transform:translate(-50%, -50%); pointer-events:none; }
+        .theme-slider-wrap { display:flex; align-items:center; gap:12px; }
+        .theme-value-slider { -webkit-appearance: slider-vertical; appearance: slider-vertical; width:26px; height:210px; background:transparent; cursor:pointer; }
+        .theme-meta { display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
+        .theme-color-fallback { width:54px; height:34px; padding:2px; border:1px solid #333; background:#202020; cursor:pointer; }
+        .theme-current { display:flex; align-items:center; gap:8px; color:#aaa; font-size:10px; font-family:'Courier New', monospace; }
+        .theme-current-chip { width:28px; height:18px; border:1px solid #fff; background:var(--accent); box-shadow:0 0 10px rgba(var(--accent-rgb),0.45); }
+        .theme-meta-note { color:#666; font-size:8px; text-transform:uppercase; letter-spacing:.8px; }
+        @media (max-width: 700px) { .theme-wheel-wrap { width:180px; height:180px; } .theme-wheel-canvas { width:180px; height:180px; } .theme-value-slider { height:180px; } }
         
         #route { grid-column: 1 / -1; background: #262626; padding: 12px; border: 1px solid #333; min-height: 350px; font-size: 10px; line-height: 1.6; font-family: 'Courier New', monospace; overflow-y: auto; max-height: 700px; color: #e0e0e0; }
         .route-line { padding: 4px 6px; margin: 1px 0; cursor: pointer; user-select: none; transition: var(--trans); }
@@ -90,7 +102,7 @@
         .construction-banner { background:#111; border:2px solid var(--accent); color:var(--accent); padding:12px 18px; margin-bottom:16px; font-family:"Courier New", monospace; text-transform:uppercase; letter-spacing:1px; }
         .construction-banner strong { color:#fff; display:block; margin-bottom:6px; }
 
-        .map-search-panel { display: none; grid-template-columns: 1.2fr 2fr; gap: 10px; align-items: start; margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(249,115,22,0.10), rgba(17,17,17,0.96)); border: 1px solid var(--accent); box-shadow: 0 0 18px rgba(249,115,22,0.10) inset; }
+        .map-search-panel { display: none; grid-template-columns: 1.2fr 2fr; gap: 10px; align-items: start; margin: 10px 0; padding: 12px; background: linear-gradient(135deg, rgba(var(--accent-rgb),0.10), rgba(17,17,17,0.96)); border: 1px solid var(--accent); box-shadow: 0 0 18px rgba(var(--accent-rgb),0.10) inset; }
         .map-search-panel.active { display: grid; }
         @media (max-width: 900px) { .map-search-panel.active { grid-template-columns: 1fr; } }
 
@@ -101,10 +113,10 @@
         .map-search-hint { color: #888; font-family: 'Courier New', monospace; font-size: 9px; line-height: 1.4; }
         .map-search-results { display: grid; gap: 6px; max-height: 210px; overflow-y: auto; padding-right: 4px; }
         .map-search-result { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; background: rgba(38,38,38,0.92); border: 1px solid #333; color: #ddd; cursor: pointer; font-family: 'Courier New', monospace; font-size: 10px; transition: var(--trans); }
-        .map-search-result:hover, .map-search-result.active { border-color: var(--accent); color: #fff; background: rgba(249,115,22,0.14); }
+        .map-search-result:hover, .map-search-result.active { border-color: var(--accent); color: #fff; background: rgba(var(--accent-rgb),0.14); }
         .map-search-result b { color: #fff; display: block; font-size: 11px; margin-bottom: 2px; }
         .map-search-result small { color: #888; }
-        .map-search-chip { color: var(--accent); border: 1px solid rgba(249,115,22,0.45); padding: 3px 6px; font-size: 8px; text-transform: uppercase; }
+        .map-search-chip { color: var(--accent); border: 1px solid rgba(var(--accent-rgb),0.45); padding: 3px 6px; font-size: 8px; text-transform: uppercase; }
         .map-search-empty { color: #888; font-family: 'Courier New', monospace; font-size: 10px; padding: 10px; border: 1px dashed #333; background: #111; }
 
         .map-point.search-result { stroke: var(--accent); stroke-width: 2.8; filter: drop-shadow(0 0 8px var(--accent)); }
@@ -125,7 +137,7 @@
         .system-map-panel { grid-column: 1 / -1; background: #111; border: 1px solid #2a2a2a; padding: 16px; overflow: hidden; position: relative; max-height: 70vh; }
         .map-shell { position: relative; width: 100%; height: 60vh; background: #050505; border: 1px solid #333; }
         .map-toolbar { display: none; }
-        #systemMap { width: 100%; height: 100%; display: block; background: radial-gradient(circle at center, rgba(249,115,22,0.08), rgba(0,0,0,0.85) 55%, #050505 100%); border: 1px solid #333; cursor: grab; user-select: none; touch-action: none; transition: opacity 0.28s ease, transform 0.28s ease, filter 0.28s ease; transform-origin: center center; }
+        #systemMap { width: 100%; height: 100%; display: block; background: radial-gradient(circle at center, rgba(var(--accent-rgb),0.08), rgba(0,0,0,0.85) 55%, #050505 100%); border: 1px solid #333; cursor: grab; user-select: none; touch-action: none; transition: opacity 0.28s ease, transform 0.28s ease, filter 0.28s ease; transform-origin: center center; }
         #systemMap.dragging { cursor: grabbing; }
         #systemMap.map-jump-out { opacity: 0.08; transform: scale(0.78); filter: blur(2px); }
         #systemMap.map-jump-in { opacity: 1; transform: scale(1); filter: blur(0); }
@@ -163,7 +175,7 @@
         .gateway-link { cursor: pointer; }
         .gateway-link:hover .map-point { stroke:#4ade80; stroke-width:1.4; filter:drop-shadow(0 0 6px #4ade80); }
 
-        .map-sidebar { position: absolute; top: 14px; right: 14px; z-index: 8; width: min(285px, calc(100% - 28px)); max-height: calc(100% - 28px); overflow-y: auto; padding: 12px; background: linear-gradient(180deg, rgba(10,10,10,0.94), rgba(18,18,18,0.86)); border: 1px solid rgba(249,115,22,0.45); box-shadow: 0 0 22px rgba(0,0,0,0.55), inset 0 0 18px rgba(249,115,22,0.06); backdrop-filter: blur(6px); }
+        .map-sidebar { position: absolute; top: 14px; right: 14px; z-index: 8; width: min(285px, calc(100% - 28px)); max-height: calc(100% - 28px); overflow-y: auto; padding: 12px; background: linear-gradient(180deg, rgba(10,10,10,0.94), rgba(18,18,18,0.86)); border: 1px solid rgba(var(--accent-rgb),0.45); box-shadow: 0 0 22px rgba(0,0,0,0.55), inset 0 0 18px rgba(var(--accent-rgb),0.06); backdrop-filter: blur(6px); }
         .map-sidebar .map-title { color: var(--accent); font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
         .map-sidebar-subtitle { color: #777; font-family: 'Courier New', monospace; font-size: 8px; margin: 2px 0 10px; text-transform: uppercase; letter-spacing: 0.8px; }
         .map-sidebar .map-system-control { width: 100%; margin-bottom: 8px; justify-content: space-between; }
@@ -188,7 +200,7 @@
         .map-sidebar .map-search-chip { justify-self: start; }
         .map-sidebar .map-help { margin: 10px 0 0; padding-top: 8px; border-top: 1px solid #2a2a2a; color: #777; font-family: 'Courier New', monospace; font-size: 9px; line-height: 1.35; }
 
-        .map-hover-info { position: absolute; left: 14px; bottom: 14px; z-index: 7; max-width: min(640px, calc(100% - 330px)); min-width: 0; padding: 8px 10px; background: rgba(5,5,5,0.78); border: 1px solid rgba(249,115,22,0.28); color: var(--accent); text-align: left; pointer-events: none; }
+        .map-hover-info { position: absolute; left: 14px; bottom: 14px; z-index: 7; max-width: min(640px, calc(100% - 330px)); min-width: 0; padding: 8px 10px; background: rgba(5,5,5,0.78); border: 1px solid rgba(var(--accent-rgb),0.28); color: var(--accent); text-align: left; pointer-events: none; }
         .map-jump-banner { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; z-index: 5; font-family: 'Courier New', monospace; color: var(--accent); font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 0 12px #000; }
         .system-map-panel.map-jumping .map-jump-banner { display: flex; }
 
@@ -226,8 +238,8 @@
         .contract-help { color:#9a9a9a; font-size:10px; line-height:1.45; margin: 6px 0 10px; }
         .contract-list { display:grid; gap:10px; margin-top:10px; }
         .contract-card { background:#202020; border:1px solid #333; overflow:hidden; }
-        .contract-card.active { border-color:var(--accent); box-shadow:0 0 0 1px rgba(249,115,22,0.16), 0 0 16px rgba(249,115,22,0.08); }
-        .contract-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; padding:10px; background:linear-gradient(90deg, rgba(249,115,22,0.12), rgba(38,38,38,0)); border-bottom:1px solid #333; }
+        .contract-card.active { border-color:var(--accent); box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.16), 0 0 16px rgba(var(--accent-rgb),0.08); }
+        .contract-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; padding:10px; background:linear-gradient(90deg, rgba(var(--accent-rgb),0.12), rgba(38,38,38,0)); border-bottom:1px solid #333; }
         .contract-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
         .contract-title input { max-width:220px; flex:0 1 220px; }
         .contract-value { display:flex; align-items:center; gap:6px; flex:0 1 190px; }
@@ -237,7 +249,7 @@
         .contract-summary { display:flex; gap:5px; flex-wrap:wrap; margin-top:7px; }
         .contract-pill { display:inline-flex; align-items:center; gap:4px; background:#161616; border:1px solid #333; color:#ddd; padding:4px 7px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; }
         .contract-pill.good { color:var(--ok); border-color:rgba(74,222,128,0.45); background:rgba(74,222,128,0.08); }
-        .contract-pill.warn { color:var(--accent); border-color:rgba(249,115,22,0.45); background:rgba(249,115,22,0.08); }
+        .contract-pill.warn { color:var(--accent); border-color:rgba(var(--accent-rgb),0.45); background:rgba(var(--accent-rgb),0.08); }
         .contract-actions { display:flex; gap:5px; justify-content:flex-end; flex-wrap:wrap; }
         .contract-actions button { padding:6px 8px; font-size:8px; margin:0; }
         .contract-body { padding:10px; display:grid; gap:10px; }
@@ -611,11 +623,22 @@
 
     <div id="settingsPanel" style="display: none;">
         <h2>Display Theme</h2>
-        <div style="display: flex; gap: 12px;">
-            <div class="theme-ball" data-theme="orange" style="background: #f97316;" onclick="setThemeColor('orange')" title="Orange"></div>
-            <div class="theme-ball" data-theme="purple" style="background: #a855f7;" onclick="setThemeColor('purple')" title="Purple"></div>
-            <div class="theme-ball" data-theme="green" style="background: #22c55e;" onclick="setThemeColor('green')" title="Green"></div>
-            <div class="theme-ball" data-theme="blue" style="background: #3b82f6;" onclick="setThemeColor('blue')" title="Blue"></div>
+        <div class="theme-panel">
+            <small>Pick an accent colour with the wheel. Use the slider to make it brighter or darker.</small>
+            <div class="theme-picker-wrap">
+                <div class="theme-wheel-wrap">
+                    <canvas id="themeWheel" class="theme-wheel-canvas" width="210" height="210" aria-label="Theme colour wheel"></canvas>
+                    <span id="themeWheelMarker" class="theme-wheel-marker" aria-hidden="true"></span>
+                </div>
+                <div class="theme-slider-wrap">
+                    <input id="themeValueSlider" class="theme-value-slider" type="range" min="0" max="100" value="100" orient="vertical" oninput="handleThemeValueSlider(this.value)">
+                    <div class="theme-meta">
+                        <div class="theme-current"><span class="theme-current-chip"></span><span id="themeCurrentValue">#f97316</span></div>
+                        <input id="themeColorPicker" class="theme-color-fallback" type="color" value="#f97316" oninput="setThemeAccent(this.value)">
+                        <div class="theme-meta-note">Fine tune / fallback</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h2>Contract Locations</h2>
@@ -624,13 +647,6 @@
                 <small>Off = hauling locations only in the contract/start dropdowns. On = every known station, L-point and extra marker.</small>
             </span>
             <input id="showAllLocationsToggle" type="checkbox" onchange="setShowAllContractLocations(this.checked)">
-        </label>
-
-        <label class="settings-row" for="mapPerspectiveToggle">
-            <span>Leaned-back map perspective
-                <small>Turns the flat orbital map into a tilted tactical-table view.</small>
-            </span>
-            <input id="mapPerspectiveToggle" type="checkbox" onchange="setMapPerspectiveMode(this.checked)">
         </label>
     </div>
     
@@ -927,7 +943,7 @@
         let currentRoute = null;
         let showAllContractLocations = false;
         let showAllMapLocations = false;
-        let mapPerspectiveMode = false;
+        let mapPerspectiveMode = true;
         let mapSearchMode = false;
         let mapSearchQuery = '';
         let mapSearchSelectedName = null;
@@ -1024,19 +1040,19 @@
             syncShowAllMapLocationToggle();
         }
 
-        function setMapPerspectiveMode(value) {
-            mapPerspectiveMode = Boolean(value);
-            localStorage.setItem('scMapPerspectiveMode', mapPerspectiveMode ? '1' : '0');
-            const toggle = document.getElementById('mapPerspectiveToggle');
-            if (toggle) toggle.checked = mapPerspectiveMode;
+        function setMapPerspectiveMode(value = true) {
+            // Leaned-back view is now the only/default map view.
+            mapPerspectiveMode = true;
+            localStorage.setItem('scMapPerspectiveMode', '1');
             resetMapZoom();
             drawSystemMap(currentRoute?.path || []);
         }
 
         function loadMapPerspectiveSetting() {
-            mapPerspectiveMode = localStorage.getItem('scMapPerspectiveMode') === '1';
-            const toggle = document.getElementById('mapPerspectiveToggle');
-            if (toggle) toggle.checked = mapPerspectiveMode;
+            // Ignore old saved “flat view” preferences so everyone gets the cleaner leaned-back map by default.
+            mapPerspectiveMode = true;
+            localStorage.setItem('scMapPerspectiveMode', '1');
+            mapViewBox = getDefaultMapViewBox();
         }
 
         function getDefaultMapViewBox() {
@@ -1633,7 +1649,7 @@
                 <circle cx="${cx}" cy="${cy}" r="28" fill="url(#starGlow)"/>
                 <circle class="map-star" cx="${cx}" cy="${cy}" r="7" fill="${sysColor}"/>
                 <text x="${cx+12}" y="${cy+4}" fill="#aaa" font-family="Courier New" font-size="9" font-weight="700">STAR</text>
-                <text x="24" y="62" fill="#aaa" font-family="Courier New" font-size="10" font-weight="600">${showAllMapLocations ? 'SHOWING ALL LOCATIONS' : 'HAULING LOCATIONS ONLY'} • ${mapPerspectiveMode ? 'LEANED-BACK VIEW' : 'FLAT VIEW'} • ${mapSearchMode ? 'GLOBAL SCAN' : 'MAP VIEW'} • ${locs.length}/${allSystemLocs.length}</text>
+                <text x="24" y="62" fill="#aaa" font-family="Courier New" font-size="10" font-weight="600">${showAllMapLocations ? 'SHOWING ALL LOCATIONS' : 'HAULING LOCATIONS ONLY'} • LEANED-BACK VIEW • ${mapSearchMode ? 'GLOBAL SCAN' : 'MAP VIEW'} • ${locs.length}/${allSystemLocs.length}</text>
             `;
 
             if (locs.length === 0) {
@@ -2879,33 +2895,247 @@
             document.getElementById('clearModal').classList.remove('active');
         }
 
-        const themeColors = {
-            orange: { accent: '#f97316', hover: '#ff8c42' },
-            green: { accent: '#22c55e', hover: '#4ade80' },
-            purple: { accent: '#a855f7', hover: '#c084fc' },
-            blue: { accent: '#3b82f6', hover: '#60a5fa' }
-        };
+        const themeSwatchColors = [
+            '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1',
+            '#dc2626', '#ea580c', '#d97706', '#ca8a04', '#65a30d', '#16a34a', '#059669', '#0d9488', '#0891b2', '#0284c7', '#2563eb', '#4f46e5',
+            '#f87171', '#fb923c', '#fbbf24', '#fde047', '#a3e635', '#4ade80', '#34d399', '#2dd4bf', '#22d3ee', '#38bdf8', '#60a5fa', '#818cf8',
+            '#991b1b', '#9a3412', '#92400e', '#854d0e', '#3f6212', '#166534', '#065f46', '#115e59', '#155e75', '#075985', '#1d4ed8', '#3730a3',
+            '#ec4899', '#d946ef', '#c026d3', '#a855f7', '#8b5cf6', '#7c3aed', '#6d28d9', '#be185d', '#db2777', '#e11d48', '#f43f5e', '#fb7185',
+            '#f9a8d4', '#f0abfc', '#e879f9', '#c084fc', '#a78bfa', '#8b5cf6', '#9333ea', '#9d174d', '#be123c', '#e11d48', '#fda4af', '#fecdd3',
+            '#ffffff', '#d4d4d4', '#a3a3a3', '#737373', '#525252', '#404040', '#1f2937', '#334155', '#475569', '#64748b', '#94a3b8', '#cbd5e1'
+        ];
 
-        function setThemeColor(color) {
-            if (!themeColors[color]) return;
-            const theme = themeColors[color];
-            document.documentElement.style.setProperty('--accent', theme.accent);
-            document.documentElement.style.setProperty('--accent-hover', theme.hover);
-            localStorage.setItem('scThemeColor', color);
+        function normaliseHexColor(value, fallback = '#f97316') {
+            if (typeof value !== 'string') return fallback;
+            const trimmed = value.trim();
+            if (/^#[0-9a-fA-F]{6}$/.test(trimmed)) return trimmed.toLowerCase();
+            return fallback;
+        }
+
+        function hexToRgb(hex) {
+            const clean = normaliseHexColor(hex).slice(1);
+            return {
+                r: parseInt(clean.slice(0, 2), 16),
+                g: parseInt(clean.slice(2, 4), 16),
+                b: parseInt(clean.slice(4, 6), 16)
+            };
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+        }
+
+
+        const themePickerState = { h: 24, s: 0.91, v: 0.97, ready: false };
+
+        function hsvToRgb(h, s, v) {
+            const c = v * s;
+            const hp = ((h % 360) + 360) % 360 / 60;
+            const x = c * (1 - Math.abs((hp % 2) - 1));
+            let [r1, g1, b1] = [0, 0, 0];
+            if (hp >= 0 && hp < 1) [r1, g1, b1] = [c, x, 0];
+            else if (hp < 2) [r1, g1, b1] = [x, c, 0];
+            else if (hp < 3) [r1, g1, b1] = [0, c, x];
+            else if (hp < 4) [r1, g1, b1] = [0, x, c];
+            else if (hp < 5) [r1, g1, b1] = [x, 0, c];
+            else [r1, g1, b1] = [c, 0, x];
+            const m = v - c;
+            return {
+                r: Math.round((r1 + m) * 255),
+                g: Math.round((g1 + m) * 255),
+                b: Math.round((b1 + m) * 255)
+            };
+        }
+
+        function rgbToHsv(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            const d = max - min;
+            let h = 0;
+            const s = max === 0 ? 0 : d / max;
+            const v = max;
+            if (d !== 0) {
+                if (max === r) h = 60 * (((g - b) / d) % 6);
+                else if (max === g) h = 60 * (((b - r) / d) + 2);
+                else h = 60 * (((r - g) / d) + 4);
+            }
+            if (h < 0) h += 360;
+            return { h, s, v };
+        }
+
+        function getThemeWheelElements() {
+            return {
+                canvas: document.getElementById('themeWheel'),
+                marker: document.getElementById('themeWheelMarker'),
+                slider: document.getElementById('themeValueSlider')
+            };
+        }
+
+        function updateThemeValueSliderBackground() {
+            const { slider } = getThemeWheelElements();
+            if (!slider) return;
+            const { r, g, b } = hsvToRgb(themePickerState.h, themePickerState.s, 1);
+            slider.style.background = `linear-gradient(to top, #000000 0%, rgb(${r}, ${g}, ${b}) 100%)`;
+        }
+
+        function positionThemeWheelMarker() {
+            const { canvas, marker } = getThemeWheelElements();
+            if (!canvas || !marker) return;
+            const rect = canvas.getBoundingClientRect();
+            const radius = canvas.width / 2;
+            const usable = radius - 8;
+            const angle = (themePickerState.h * Math.PI / 180);
+            const dist = themePickerState.s * usable;
+            const x = radius + Math.cos(angle) * dist;
+            const y = radius - Math.sin(angle) * dist;
+            marker.style.left = `${(x / canvas.width) * rect.width}px`;
+            marker.style.top = `${(y / canvas.height) * rect.height}px`;
+        }
+
+        function drawThemeWheel() {
+            const { canvas } = getThemeWheelElements();
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            const radius = size / 2;
+            const image = ctx.createImageData(size, size);
+            const data = image.data;
+            for (let y = 0; y < size; y++) {
+                for (let x = 0; x < size; x++) {
+                    const dx = x - radius;
+                    const dy = radius - y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const idx = (y * size + x) * 4;
+                    if (dist > radius) {
+                        data[idx + 3] = 0;
+                        continue;
+                    }
+                    const sat = Math.min(1, dist / radius);
+                    let hue = Math.atan2(dy, dx) * 180 / Math.PI;
+                    if (hue < 0) hue += 360;
+                    const { r, g, b } = hsvToRgb(hue, sat, themePickerState.v);
+                    data[idx] = r;
+                    data[idx + 1] = g;
+                    data[idx + 2] = b;
+                    data[idx + 3] = 255;
+                }
+            }
+            ctx.clearRect(0, 0, size, size);
+            ctx.putImageData(image, 0, 0);
+            positionThemeWheelMarker();
+            updateThemeValueSliderBackground();
+        }
+
+        function setThemePickerFromHex(hex) {
+            const { r, g, b } = hexToRgb(hex);
+            const hsv = rgbToHsv(r, g, b);
+            themePickerState.h = hsv.h;
+            themePickerState.s = hsv.s;
+            themePickerState.v = hsv.v;
+            const { slider } = getThemeWheelElements();
+            if (slider) slider.value = Math.round(hsv.v * 100);
+            drawThemeWheel();
+        }
+
+        function setThemeFromWheelPosition(clientX, clientY) {
+            const { canvas } = getThemeWheelElements();
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (clientX - rect.left) * scaleX;
+            const y = (clientY - rect.top) * scaleY;
+            const radius = canvas.width / 2;
+            const dx = x - radius;
+            const dy = radius - y;
+            const dist = Math.min(radius, Math.sqrt(dx * dx + dy * dy));
+            let hue = Math.atan2(dy, dx) * 180 / Math.PI;
+            if (hue < 0) hue += 360;
+            themePickerState.h = hue;
+            themePickerState.s = Math.min(1, dist / radius);
+            const { r, g, b } = hsvToRgb(themePickerState.h, themePickerState.s, themePickerState.v);
+            setThemeAccent(rgbToHex(r, g, b));
+        }
+
+        function handleThemeValueSlider(value) {
+            themePickerState.v = Math.max(0, Math.min(100, Number(value || 0))) / 100;
+            const { r, g, b } = hsvToRgb(themePickerState.h, themePickerState.s, themePickerState.v);
+            setThemeAccent(rgbToHex(r, g, b));
+        }
+
+        function initThemePicker() {
+            if (themePickerState.ready) return;
+            const { canvas } = getThemeWheelElements();
+            if (!canvas) return;
+            themePickerState.ready = true;
+            let dragging = false;
+            const move = (event) => {
+                if (!dragging) return;
+                setThemeFromWheelPosition(event.clientX, event.clientY);
+            };
+            canvas.addEventListener('pointerdown', (event) => {
+                dragging = true;
+                canvas.setPointerCapture(event.pointerId);
+                setThemeFromWheelPosition(event.clientX, event.clientY);
+            });
+            canvas.addEventListener('pointermove', move);
+            const stop = (event) => {
+                dragging = false;
+                try { canvas.releasePointerCapture(event.pointerId); } catch {}
+            };
+            canvas.addEventListener('pointerup', stop);
+            canvas.addEventListener('pointercancel', stop);
+            drawThemeWheel();
+        }
+
+        function shadeHex(hex, amount = 28) {
+            const { r, g, b } = hexToRgb(hex);
+            return rgbToHex(r + amount, g + amount, b + amount);
+        }
+
+        function getAccentTextColor(hex) {
+            const { r, g, b } = hexToRgb(hex);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+            return luminance < 128 ? '#ffffff' : '#0f0f0f';
+        }
+
+        function setThemeAccent(hex) {
+            const accent = normaliseHexColor(hex);
+            const { r, g, b } = hexToRgb(accent);
+            document.documentElement.style.setProperty('--accent', accent);
+            document.documentElement.style.setProperty('--accent-hover', shadeHex(accent, 32));
+            document.documentElement.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
+            document.documentElement.style.setProperty('--accent-text', getAccentTextColor(accent));
+            localStorage.setItem('scThemeAccent', accent);
+            localStorage.removeItem('scThemeColor');
             updateThemeActive();
         }
 
+        function setThemeColor(color) {
+            // Backwards compatibility for old saved colour names and any older buttons.
+            const legacy = { orange: '#f97316', green: '#22c55e', purple: '#a855f7', blue: '#3b82f6' };
+            setThemeAccent(legacy[color] || color);
+        }
+
+        function renderThemeSwatchPanel() {
+            // Legacy no-op: old swatch panel removed in favour of compact colour wheel.
+        }
+
         function updateThemeActive() {
-            document.querySelectorAll('.theme-ball').forEach(ball => {
-                ball.classList.remove('active');
-            });
-            const current = localStorage.getItem('scThemeColor') || 'orange';
-            document.querySelector(`[data-theme="${current}"]`)?.classList.add('active');
+            const current = normaliseHexColor(localStorage.getItem('scThemeAccent') || '#f97316');
+            const picker = document.getElementById('themeColorPicker');
+            if (picker) picker.value = current;
+            const label = document.getElementById('themeCurrentValue');
+            if (label) label.textContent = current.toUpperCase();
+            setThemePickerFromHex(current);
         }
 
         function loadTheme() {
-            const color = localStorage.getItem('scThemeColor') || 'orange';
-            setThemeColor(color);
+            initThemePicker();
+            const legacyColor = localStorage.getItem('scThemeColor');
+            const legacyMap = { orange: '#f97316', green: '#22c55e', purple: '#a855f7', blue: '#3b82f6' };
+            const saved = localStorage.getItem('scThemeAccent') || legacyMap[legacyColor] || '#f97316';
+            setThemeAccent(saved);
         }
 
         function toggleSettings() {
