@@ -1427,6 +1427,45 @@
         .map-planet-detail { opacity: 0.92; }
         .map-legend-item span:last-child { min-width: 0; }
 
+        /* === Route output export tools === */
+        .route-export-feedback {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            color: var(--ok);
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .route-export-feedback.show {
+            opacity: 1;
+        }
+
+        /* === Contract list import/export tools === */
+        .contract-transfer-feedback {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            color: var(--ok);
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .contract-transfer-feedback.show {
+            opacity: 1;
+        }
+        .contract-import-input {
+            display: none;
+        }
+
 </style>
 </head>
 <body>
@@ -1476,8 +1515,27 @@
             </div>
         </div>
 
+        <h2>Custom Locations</h2>
+        <div class="contract-help">
+            Add custom map/contract markers here. Useful for Onyx clusters, new hauling stops, or temporary locations you want to test.
+        </div>
+        <button class="secondary" onclick="toggleCustomLocationPanel()" style="margin-bottom:8px;">＋ Custom Location</button>
+<div id="customLocationPanel" class="custom-location-panel">
+                <h2>Add Custom Location</h2>
+                <div class="contract-help">Use this for Onyx clusters or new hauling places you find. If you do not know exact coordinates yet, copy the parent moon/planet coordinates for now and update later.</div>
+                <div class="custom-location-grid">
+                    <div><label>Name</label><input id="customLocName" placeholder="Onyx Facility S4A8"></div>
+                    <div><label>System</label><select id="customLocSystem"><option>Stanton</option><option>Pyro</option><option>Nyx</option></select></div>
+                    <div><label>Lat</label><input id="customLocLat" type="number" step="0.01" value="0"></div>
+                    <div><label>Lon</label><input id="customLocLon" type="number" step="0.01" value="58.92"></div>
+                    <div><label>Dist</label><input id="customLocDist" type="number" step="0.01" value="43.39"></div>
+                    <button onclick="addCustomLocation()" style="margin:0;">Save</button>
+                </div>
+                <div id="customLocationList" class="contract-help" style="margin-top:10px;"></div>
+            </div>
+
     </div>
-    
+
     <div class="main-grid">
         <div class="panel" id="configPanel">
             <h2>Configuration</h2>
@@ -1587,24 +1645,13 @@
 
             <div class="contract-tools">
                 <button onclick="addContract()">＋ Add Contract</button>
-                <button class="secondary" onclick="toggleCustomLocationPanel()">＋ Custom Location</button>
+                <button class="secondary" onclick="exportContractList()">Export Contract List</button>
+                <button class="secondary" onclick="triggerContractImport()">Import Contract List</button>
+                <input id="contractImportFile" class="contract-import-input" type="file" accept=".json,application/json" onchange="importContractListFile(event)">
+                <span id="contractTransferFeedback" class="contract-transfer-feedback">Ready</span>
             </div>
 
-<div id="customLocationPanel" class="custom-location-panel">
-                <h2>Add Custom Location</h2>
-                <div class="contract-help">Use this for Onyx clusters or new hauling places you find. If you do not know exact coordinates yet, copy the parent moon/planet coordinates for now and update later.</div>
-                <div class="custom-location-grid">
-                    <div><label>Name</label><input id="customLocName" placeholder="Onyx Facility S4A8"></div>
-                    <div><label>System</label><select id="customLocSystem"><option>Stanton</option><option>Pyro</option><option>Nyx</option></select></div>
-                    <div><label>Lat</label><input id="customLocLat" type="number" step="0.01" value="0"></div>
-                    <div><label>Lon</label><input id="customLocLon" type="number" step="0.01" value="58.92"></div>
-                    <div><label>Dist</label><input id="customLocDist" type="number" step="0.01" value="43.39"></div>
-                    <button onclick="addCustomLocation()" style="margin:0;">Save</button>
-                </div>
-                <div id="customLocationList" class="contract-help" style="margin-top:10px;"></div>
-            </div>
-
-            <div id="contractsList" class="contract-list"></div>
+<div id="contractsList" class="contract-list"></div>
             <div id="routeInputSummary" class="route-input-summary"></div>
 
             <div style="margin-top: 16px;">
@@ -1619,7 +1666,10 @@
                     <div id="statusBox"></div>
                     <div id="progressInfo" class="progress-info"></div>
                 </div>
+                <button class="secondary" onclick="copyRouteOutput()">Copy Output</button>
+                <button class="secondary" onclick="downloadRouteOutput()">Export TXT</button>
                 <button class="secondary" onclick="resetTracking()">Reset Progress</button>
+                <span id="routeExportFeedback" class="route-export-feedback">Copied</span>
             </div>
             <div id="route">Add contracts to calculate a route.</div>
         </div>
@@ -5561,6 +5611,75 @@
             });
         }
 
+
+        function getRouteExportText() {
+            const routeEl = document.getElementById('route');
+            const statusEl = document.getElementById('statusBox');
+            const progressEl = document.getElementById('progressInfo');
+            const lines = [];
+
+            lines.push('SC Contract Optimizer Route Output');
+            lines.push(`Exported: ${new Date().toLocaleString()}`);
+            lines.push('');
+
+            const statusText = (statusEl?.innerText || '').trim();
+            const progressText = (progressEl?.innerText || '').trim();
+            if (statusText) lines.push(statusText);
+            if (progressText) lines.push(progressText);
+            if (statusText || progressText) lines.push('');
+
+            const routeText = (routeEl?.innerText || '').trim();
+            lines.push(routeText || 'No route calculated.');
+            return lines.join('\n').replace(/\n{3,}/g, '\n\n');
+        }
+
+        function showRouteExportFeedback(text = 'Copied') {
+            const el = document.getElementById('routeExportFeedback');
+            if (!el) return;
+            el.textContent = text;
+            el.classList.add('show');
+            clearTimeout(showRouteExportFeedback._timer);
+            showRouteExportFeedback._timer = setTimeout(() => el.classList.remove('show'), 1600);
+        }
+
+        async function copyRouteOutput() {
+            const text = getRouteExportText();
+            try {
+                await navigator.clipboard.writeText(text);
+                showRouteExportFeedback('Copied');
+            } catch (err) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    showRouteExportFeedback('Copied');
+                } catch {
+                    showRouteExportFeedback('Copy failed');
+                }
+                document.body.removeChild(ta);
+            }
+        }
+
+        function downloadRouteOutput() {
+            const text = getRouteExportText();
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+            a.href = url;
+            a.download = `sc-route-output-${stamp}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showRouteExportFeedback('Exported');
+        }
+
         function getRouteNamesForMapSystem(system, routePath = []) {
             const names = new Set();
 
@@ -7871,6 +7990,162 @@
             });
             saveState();
             focusRouteOutput();
+        }
+
+
+        function getSavedCustomLocationsForExport() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(SC_CUSTOM_LOCATIONS_KEY) || '[]');
+                return Array.isArray(saved) ? saved : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function makeContractListExportPayload() {
+            return {
+                app: 'SC Contract Optimizer',
+                exportType: 'contract-list',
+                version: SC_CARD_STATE_VERSION,
+                exportedAt: new Date().toISOString(),
+                system: getDOM('systemSelect')?.value || '',
+                mapSystem: getMapSelectedSystem(),
+                ship: getDOM('shipSelect')?.value || '',
+                start: getDOM('startLocation')?.value || '',
+                activeContractIndex,
+                contracts: JSON.parse(JSON.stringify(contracts || [])),
+                customLocations: getSavedCustomLocationsForExport(),
+                tracking: JSON.parse(JSON.stringify(tracking || {})),
+                route: currentRoute ? JSON.parse(JSON.stringify(currentRoute)) : null,
+                routeText: (document.getElementById('route')?.innerText || '').trim()
+            };
+        }
+
+        function showContractTransferFeedback(text = 'Done') {
+            const el = document.getElementById('contractTransferFeedback');
+            if (!el) return;
+            el.textContent = text;
+            el.classList.add('show');
+            clearTimeout(showContractTransferFeedback._timer);
+            showContractTransferFeedback._timer = setTimeout(() => el.classList.remove('show'), 1800);
+        }
+
+        function exportContractList() {
+            normaliseContractData();
+            const payload = makeContractListExportPayload();
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+            a.href = url;
+            a.download = `sc-contract-list-${stamp}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showContractTransferFeedback(`Exported ${payload.contracts.length}`);
+        }
+
+        function triggerContractImport() {
+            const input = document.getElementById('contractImportFile');
+            if (input) input.click();
+        }
+
+        function mergeImportedCustomLocations(importedLocations) {
+            if (!Array.isArray(importedLocations) || !importedLocations.length) return;
+            let saved = [];
+            try { saved = JSON.parse(localStorage.getItem(SC_CUSTOM_LOCATIONS_KEY) || '[]'); } catch {}
+            if (!Array.isArray(saved)) saved = [];
+
+            const byName = new Map(saved.filter(loc => loc?.name).map(loc => [loc.name, loc]));
+            importedLocations.forEach(loc => {
+                if (!loc?.name || !loc?.sys) return;
+                const clean = {
+                    name: String(loc.name).trim(),
+                    sys: mapConfig[loc.sys] ? loc.sys : 'Stanton',
+                    lat: safeNumber(loc.lat),
+                    lon: safeNumber(loc.lon),
+                    dist: safeNumber(loc.dist),
+                    hauling: true,
+                    custom: true
+                };
+                byName.set(clean.name, clean);
+                upsertLocation(clean);
+            });
+
+            const merged = [...byName.values()];
+            localStorage.setItem(SC_CUSTOM_LOCATIONS_KEY, JSON.stringify(merged));
+            locations.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function applyContractListImport(payload) {
+            const importedContracts = Array.isArray(payload)
+                ? payload
+                : Array.isArray(payload?.contracts)
+                    ? payload.contracts
+                    : null;
+
+            if (!importedContracts) {
+                throw new Error('This file does not contain a contract list.');
+            }
+
+            const count = importedContracts.length;
+            const replace = !contracts.length || confirm(`Import ${count} contract${count === 1 ? '' : 's'}? This will replace your current contract list.`);
+            if (!replace) return false;
+
+            mergeImportedCustomLocations(payload?.customLocations);
+
+            if (payload?.system && getDOM('systemSelect')) getDOM('systemSelect').value = payload.system;
+            if (payload?.mapSystem && mapConfig[payload.mapSystem]) setMapSystem(payload.mapSystem, { redraw: false, reset: false, save: true });
+            if (payload?.ship && getDOM('shipSelect')) getDOM('shipSelect').value = payload.ship;
+
+            contracts = JSON.parse(JSON.stringify(importedContracts));
+            activeContractIndex = Number.isFinite(Number(payload?.activeContractIndex)) ? Number(payload.activeContractIndex) : 0;
+            normaliseContractData();
+            clampActiveContractIndex();
+
+            updateLocationOptions();
+            if (payload?.start) setSelectValue(getDOM('startLocation'), payload.start);
+
+            tracking = payload?.tracking && typeof payload.tracking === 'object' ? payload.tracking : {};
+            saveTracking();
+
+            currentRoute = null;
+            const routeEl = document.getElementById('route');
+            if (routeEl) routeEl.textContent = 'Contract list imported. Click Calculate Route to rebuild the route output.';
+
+            renderContracts({ focusActiveTab: true });
+            updateStatus();
+            saveState();
+            showCustomLocations();
+            drawSystemMap(currentRoute?.path || []);
+            showContractTransferFeedback(`Imported ${contracts.length}`);
+            return true;
+        }
+
+        function importContractListFile(event) {
+            const input = event?.target;
+            const file = input?.files?.[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const payload = JSON.parse(String(reader.result || '{}'));
+                    applyContractListImport(payload);
+                } catch (err) {
+                    alert(`Import failed: ${err.message || err}`);
+                    showContractTransferFeedback('Import failed');
+                } finally {
+                    if (input) input.value = '';
+                }
+            };
+            reader.onerror = () => {
+                alert('Import failed: could not read the file.');
+                showContractTransferFeedback('Import failed');
+                if (input) input.value = '';
+            };
+            reader.readAsText(file);
         }
 
 function toggleCustomLocationPanel() {
