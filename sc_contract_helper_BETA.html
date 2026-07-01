@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SC Contract Optimizer - BETA 67</title>
+    <title>SC Contract Optimizer - BETA 68 - Cargo Colours</title>
     <style>
         :root {
             --accent: #f97316;
@@ -465,7 +465,30 @@
         .contract-help { color:#9a9a9a; font-size:10px; line-height:1.45; margin: 6px 0 10px; }
         .contract-list { display:grid; gap:10px; margin-top:10px; }
         .contract-card { background:#202020; border:1px solid #333; overflow:hidden; }
-        .contract-card.active { border-color:var(--accent); box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.16), 0 0 16px rgba(var(--accent-rgb),0.08); }
+        .contract-card.active { border-color:var(--contract-colour, var(--accent)); box-shadow:0 0 0 1px rgba(var(--contract-colour-rgb, var(--accent-rgb)),0.20), 0 0 18px rgba(var(--contract-colour-rgb, var(--accent-rgb)),0.10); }
+        .contract-colour-chip { width:14px; height:14px; border:1px solid rgba(255,255,255,.72); background:var(--contract-colour, var(--accent)); box-shadow:0 0 10px rgba(var(--contract-colour-rgb, var(--accent-rgb)),.42); flex:0 0 auto; }
+        .contract-colour-chip.large { width:24px; height:24px; }
+        .contract-colour-chip.tiny { width:10px; height:10px; }
+        .contract-colour-control { display:flex; align-items:end; gap:7px; min-width:145px; }
+        .contract-colour-control label { min-width:auto; white-space:nowrap; }
+        .contract-colour-control input[type=color] { width:42px; min-width:42px; max-width:42px; height:32px; padding:2px; flex:0 0 42px; background:#171717; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.55); cursor:pointer; }
+        .contract-main-tab-slot { --contract-tab-bg: rgba(var(--contract-colour-rgb, var(--accent-rgb)),0.12); }
+        .contract-main-tab-slot .contract-main-tab { border-left:4px solid var(--contract-colour, var(--accent)); background:linear-gradient(90deg, var(--contract-tab-bg), #222 48%); }
+        .contract-main-tab-slot .contract-main-tab.active { background:linear-gradient(90deg, var(--contract-colour, var(--accent)), rgba(var(--contract-colour-rgb, var(--accent-rgb)),0.82)); color:#050505; }
+        .contract-tab { border-left:3px solid var(--contract-colour, var(--accent)); }
+        .contract-head { border-left:4px solid var(--contract-colour, var(--accent)); }
+        .contract-pill.colour-pill { color:#fff; border-color:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.55); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.13); }
+        .delivery-line { box-shadow:inset 3px 0 0 rgba(var(--contract-colour-rgb, var(--accent-rgb)),.72); }
+        .pickup-row { border-left:3px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.84); background:linear-gradient(90deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.08), #101010 36%); }
+        .route-colour-legend { margin:8px 0 10px; padding:8px; background:#141414; border:1px solid #333; display:grid; gap:5px; }
+        .route-colour-legend-title { color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .route-colour-item { display:flex; align-items:center; gap:7px; color:#d6d6d6; font-size:9px; line-height:1.35; padding:4px 6px; background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.08); border-left:3px solid var(--contract-colour, var(--accent)); }
+        .route-contract-badge { display:inline-flex; align-items:center; gap:4px; min-width:34px; justify-content:center; margin-right:6px; padding:2px 6px; color:#050505; background:var(--contract-colour, var(--accent)); border:1px solid rgba(255,255,255,.42); font-weight:900; font-family:'Courier New', monospace; text-transform:uppercase; box-shadow:0 0 8px rgba(var(--contract-colour-rgb, var(--accent-rgb)),.24); }
+        .route-line.clickable { border-left-color:var(--contract-colour, #666); background:linear-gradient(90deg, rgba(var(--contract-colour-rgb, 102,102,102),.18), #333 48%); }
+        .route-line.clickable:hover { border-left-color:var(--contract-colour, var(--accent)); }
+        .route-line.clickable.completed { background:linear-gradient(90deg, rgba(74,222,128,.24), #1f3a1f 48%); border-left-color:var(--ok); color:var(--ok); }
+        .route-line.clickable.completed .route-contract-badge { background:var(--ok); color:#07110c; box-shadow:0 0 8px rgba(74,222,128,.28); }
+        @media (max-width: 900px) { .contract-colour-control { min-width:0; } }
         .contract-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; padding:10px; background:linear-gradient(90deg, rgba(var(--accent-rgb),0.12), rgba(38,38,38,0)); border-bottom:1px solid #333; }
         .contract-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
         .contract-title input { max-width:220px; flex:0 1 220px; }
@@ -659,7 +682,7 @@
         }
         .active-contract-wrap .contract-title {
             display: grid;
-            grid-template-columns: auto minmax(180px, 1fr) minmax(145px, 190px);
+            grid-template-columns: auto minmax(180px, 1fr) minmax(125px, 160px) minmax(145px, 190px);
             gap: 8px;
             align-items: end;
         }
@@ -1466,6 +1489,250 @@
             display: none;
         }
 
+
+
+        /* === BETA 19: drop-off cargo colours === */
+        .dropoff-colour-control { display:flex; align-items:end; gap:7px; min-width:125px; }
+        .dropoff-colour-control label { min-width:auto; white-space:nowrap; }
+        .dropoff-colour-control input[type=color] { width:42px; min-width:42px; max-width:42px; height:32px; padding:2px; flex:0 0 42px; background:#171717; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.55); cursor:pointer; }
+        .contract-tab { border-left:3px solid var(--contract-colour, var(--accent)); background:linear-gradient(90deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10), #242424 44%); }
+        .contract-tab.active { background:linear-gradient(90deg, var(--contract-colour, var(--accent)), rgba(var(--contract-colour-rgb, var(--accent-rgb)),.82)); color:#050505; }
+        .line-top.has-dropoff-colour { grid-template-columns:minmax(210px, 1fr) minmax(90px, 110px) minmax(92px, auto); }
+        .line-top.has-dropoff-colour.no-line-delete { grid-template-columns:minmax(210px, 1fr) minmax(90px, 110px); }
+        .delivery-line { box-shadow:inset 3px 0 0 rgba(var(--contract-colour-rgb, var(--accent-rgb)),.78); }
+        .delivery-line .line-top { background:linear-gradient(90deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10), #171717 34%); }
+        .pickup-row { border-left:3px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.84); background:linear-gradient(90deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.08), #101010 36%); }
+        .dropoff-colour-pill { color:#fff; border-color:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.55); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.13); }
+        .route-colour-legend-title::after { content:' by drop-off'; color:var(--accent); }
+        @media (max-width: 760px) {
+            .line-top.has-dropoff-colour,
+            .line-top.has-dropoff-colour.no-line-delete { grid-template-columns:1fr; }
+            .dropoff-colour-control { min-width:0; }
+        }
+
+
+        .ship-cargo-visual { margin:8px 0 12px; padding:10px; background:#111; border:1px solid #333; display:grid; gap:10px; }
+        .ship-cargo-visual-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .ship-cargo-visual-head b { color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+        .ship-cargo-visual-head small { color:#8f8f8f; display:block; margin-top:3px; font-size:9px; line-height:1.35; }
+        .ship-cargo-visual-stats { color:var(--accent); font-size:9px; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:.8px; }
+        .ship-cargo-placement-list { display:grid; gap:6px; }
+        .cargo-placement-item { display:grid; gap:4px; padding:7px 8px; border-left:3px solid var(--contract-colour, var(--accent)); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10); }
+        .cargo-placement-top { display:flex; align-items:center; gap:7px; flex-wrap:wrap; color:#f4f4f4; }
+        .cargo-placement-top b { color:#fff; }
+        .cargo-placement-path { color:#bfbfbf; font-size:9px; line-height:1.4; }
+        .ship-cargo-bays { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
+        .ship-cargo-bay { background:#141414; border:1px solid #2d2d2d; padding:8px; display:grid; gap:8px; }
+        .ship-cargo-bay-head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .ship-cargo-bay-head small { color:#777; font-size:8px; font-weight:700; }
+        .ship-cargo-levels { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:8px; }
+        .ship-cargo-layer { display:grid; gap:5px; }
+        .ship-cargo-layer-head { display:flex; justify-content:space-between; align-items:center; gap:6px; color:#d2d2d2; font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; }
+        .ship-cargo-layer-head span { color:#777; font-weight:700; }
+        .ship-cargo-cells { display:grid; grid-template-columns:repeat(18, minmax(0, 1fr)); gap:2px; }
+        .ship-cargo-cell { aspect-ratio:1 / 1; min-width:0; background:#090909; border:1px solid #252525; }
+        .ship-cargo-cell.filled { background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.34); border-color:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.76); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); }
+        .ship-cargo-cell.empty { opacity:.52; }
+        .ship-cargo-overflow { color:#ff8f8f; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; }
+        @media (max-width: 980px) { .ship-cargo-bays { grid-template-columns:1fr; } }
+        @media (max-width: 760px) { .ship-cargo-levels { grid-template-columns:1fr; } }
+
+
+        .ship-cargo-visual.region-mode { margin:8px 0 12px; padding:10px; background:#111; border:1px solid #333; display:grid; gap:10px; }
+        .ship-cargo-visual.region-mode .ship-cargo-visual-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .ship-cargo-visual.region-mode .ship-cargo-visual-head b { color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+        .ship-cargo-visual.region-mode .ship-cargo-visual-head small { color:#8f8f8f; display:block; margin-top:3px; font-size:9px; line-height:1.35; }
+        .ship-cargo-visual.region-mode .ship-cargo-visual-stats { color:var(--accent); font-size:9px; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:.8px; }
+        .ship-cargo-region-key { display:grid; gap:6px; }
+        .cargo-placement-item.region-item { display:grid; gap:4px; padding:7px 8px; border-left:3px solid var(--contract-colour, var(--accent)); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10); }
+        .cargo-placement-item.region-item .cargo-placement-top { display:flex; align-items:center; gap:7px; flex-wrap:wrap; color:#f4f4f4; }
+        .cargo-placement-item.region-item .cargo-placement-top b { color:#fff; }
+        .cargo-placement-item.region-item .cargo-placement-path { color:#bfbfbf; font-size:9px; line-height:1.4; }
+        .ship-cargo-bays.region-bays { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; }
+        .ship-cargo-bay.region-bay { background:#141414; border:1px solid #2d2d2d; padding:8px; display:grid; gap:8px; }
+        .ship-cargo-bay.region-bay .ship-cargo-bay-head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .ship-cargo-bay.region-bay .ship-cargo-bay-head small { color:#777; font-size:8px; font-weight:700; }
+        .ship-cargo-levels.region-levels { display:grid; grid-template-columns:1fr; gap:9px; }
+        .ship-cargo-layer.region-layer { display:grid; gap:5px; }
+        .ship-cargo-layer.region-layer .ship-cargo-layer-head { display:flex; justify-content:space-between; align-items:center; gap:6px; color:#d2d2d2; font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; }
+        .ship-cargo-layer.region-layer .ship-cargo-layer-head span { color:#777; font-weight:700; }
+        .ship-cargo-region-track { position:relative; width:100%; height:58px; background:linear-gradient(180deg, #0c0c0c, #090909); border:1px solid #262626; overflow:hidden; }
+        .ship-cargo-region-track::before, .ship-cargo-region-track::after { content:''; position:absolute; inset:0; pointer-events:none; }
+        .ship-cargo-region-track::before { background:linear-gradient(90deg, transparent 24.5%, rgba(255,255,255,.06) 25%, rgba(255,255,255,.06) 25.7%, transparent 26%, transparent 49.5%, rgba(255,255,255,.06) 50%, rgba(255,255,255,.06) 50.7%, transparent 51%, transparent 74.5%, rgba(255,255,255,.06) 75%, rgba(255,255,255,.06) 75.7%, transparent 76%); }
+        .ship-cargo-region-track::after { background:linear-gradient(180deg, transparent 49%, rgba(255,255,255,.04) 50%, transparent 51%); }
+        .ship-cargo-track-labels { display:flex; justify-content:space-between; gap:8px; color:#6f6f6f; font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; }
+        .ship-cargo-track-labels span { flex:1 1 25%; text-align:center; }
+        .ship-cargo-region-block { position:absolute; top:7px; bottom:7px; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.82); background:linear-gradient(180deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.68), rgba(var(--contract-colour-rgb, var(--accent-rgb)),.34)); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); overflow:hidden; }
+        .ship-cargo-region-block-label { position:absolute; inset:auto 4px 4px 4px; color:#fff; font-size:8px; font-weight:900; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.75); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .ship-cargo-region-block-label small { display:block; font-size:7px; font-weight:700; opacity:.92; }
+        .ship-cargo-region-empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#424242; font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:1px; }
+        .ship-cargo-overflow { color:#ff8f8f; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; }
+        @media (max-width: 980px) { .ship-cargo-bays.region-bays { grid-template-columns:1fr; } }
+
+
+        .hermes-cargo-visual { margin:8px 0 12px; padding:10px; background:#111; border:1px solid #333; display:grid; gap:10px; }
+        .hermes-cargo-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .hermes-cargo-head b { color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-cargo-head small { color:#8f8f8f; display:block; margin-top:3px; font-size:9px; line-height:1.4; }
+        .hermes-cargo-stats { color:var(--accent); font-size:9px; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:.8px; }
+        .hermes-cargo-actions { display:flex; gap:6px; flex-wrap:wrap; }
+        .hermes-cargo-groups { display:grid; gap:6px; }
+        .hermes-cargo-group { display:grid; gap:4px; padding:7px 8px; border-left:3px solid var(--contract-colour, var(--accent)); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10); }
+        .hermes-cargo-group-top { display:flex; align-items:center; gap:7px; flex-wrap:wrap; color:#f4f4f4; }
+        .hermes-cargo-group-top b { color:#fff; }
+        .hermes-cargo-group-note { color:#bfbfbf; font-size:9px; line-height:1.4; }
+        .hermes-bays { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+        .hermes-bay-card { background:#141414; border:1px solid #2d2d2d; padding:8px; display:grid; gap:8px; }
+        .hermes-bay-head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-bay-head small { color:#777; font-size:8px; font-weight:700; }
+        .hermes-bay-grid { display:grid; grid-template-columns:1fr; grid-auto-rows:minmax(78px, auto); gap:8px; }
+        .hermes-slot { position:relative; min-width:0; min-height:78px; background:linear-gradient(180deg, #1d2126, #111); border:1px solid #2d333b; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); overflow:hidden; }
+        .hermes-slot.layer { }
+        .hermes-slot::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,.06), transparent 45%); pointer-events:none; }
+        .hermes-slot-meta { position:absolute; inset:6px 6px auto 6px; z-index:1; display:flex; justify-content:space-between; align-items:flex-start; gap:8px; color:#cad2da; font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; pointer-events:none; }
+        .hermes-slot-meta small { display:block; margin-top:2px; color:#7f8891; font-size:7px; font-weight:700; text-transform:none; letter-spacing:0; }
+        .hermes-slot-cap { color:#f1f5f9; font-size:10px; font-weight:900; }
+        .hermes-slot-empty { position:absolute; inset:auto 8px 20px 8px; color:#515b66; font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; }
+        .hermes-slot.drag-over { border-color:var(--accent); box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.4), inset 0 0 18px rgba(var(--accent-rgb),0.12); }
+        .hermes-segment { position:absolute; left:8px; right:8px; top:30px; bottom:18px; display:flex; align-items:flex-end; justify-content:stretch; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.86); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.14); box-shadow:inset 0 0 0 1px rgba(255,255,255,.06); cursor:grab; overflow:hidden; }
+        .hermes-segment:active { cursor:grabbing; }
+        .hermes-segment-fill { position:absolute; left:0; top:0; bottom:0; width:var(--fill,100%); background:linear-gradient(180deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.84), rgba(var(--contract-colour-rgb, var(--accent-rgb)),.42)); }
+        .hermes-segment-label { position:relative; z-index:1; width:100%; padding:6px; color:#fff; font-size:8px; font-weight:900; line-height:1.2; text-shadow:0 1px 2px rgba(0,0,0,.8); }
+        .hermes-segment-label small { display:block; font-size:7px; font-weight:700; opacity:.92; }
+        .hermes-unplaced { padding:8px; border:1px solid #4a2a2a; background:#1a1111; color:#ffb4b4; font-size:9px; line-height:1.45; }
+        .hermes-unplaced b { color:#fff; }
+        .hermes-slot-track-labels { position:absolute; left:8px; right:8px; bottom:5px; display:flex; justify-content:space-between; gap:6px; color:#65707b; font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; pointer-events:none; }
+        .hermes-slot-track-labels span { flex:1 1 25%; text-align:center; }
+        @media (max-width: 980px) { .hermes-bays { grid-template-columns:1fr; } }
+
+
+        .hermes-cargo-visual.two-d-grid { margin:8px 0 12px; padding:10px; background:#111; border:1px solid #333; display:grid; gap:10px; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-head b { color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-head small { color:#8f8f8f; display:block; margin-top:3px; font-size:9px; line-height:1.4; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-stats { color:var(--accent); font-size:9px; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:.8px; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-actions { display:flex; gap:6px; flex-wrap:wrap; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-groups { display:grid; gap:6px; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-group { display:grid; gap:6px; padding:7px 8px; border-left:3px solid var(--contract-colour, var(--accent)); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10); }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-group-top { display:flex; align-items:center; gap:7px; flex-wrap:wrap; color:#f4f4f4; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-group-top b { color:#fff; }
+        .hermes-cargo-visual.two-d-grid .hermes-cargo-group-note { color:#bfbfbf; font-size:9px; line-height:1.4; }
+        .hermes-cargo-preference-buttons { display:flex; gap:5px; flex-wrap:wrap; }
+        .hermes-cargo-preference-buttons button { margin:0; padding:5px 7px; font-size:8px; }
+        .hermes-cargo-preference-buttons button.active { background:var(--contract-colour, var(--accent)); border-color:var(--contract-colour, var(--accent)); color:#050505; }
+        .hermes-2d-bays { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+        .hermes-2d-bay { background:#141414; border:1px solid #2d2d2d; padding:8px; display:grid; gap:8px; }
+        .hermes-2d-bay.drag-over { border-color:var(--accent); box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.36), inset 0 0 18px rgba(var(--accent-rgb),0.10); }
+        .hermes-2d-bay-head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-2d-bay-head small { color:#777; font-size:8px; font-weight:700; }
+        .hermes-2d-grid { position:relative; display:grid; grid-template-columns:repeat(18, minmax(0, 1fr)); grid-template-rows:repeat(4, 34px); gap:2px; padding:6px; background:#090909; border:1px solid #2d333b; overflow:hidden; }
+        .hermes-2d-cell { background:#151a1f; border:1px solid rgba(255,255,255,.045); min-width:0; }
+        .hermes-2d-region { z-index:2; margin:1px; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.86); background:linear-gradient(180deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.78), rgba(var(--contract-colour-rgb, var(--accent-rgb)),.38)); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); cursor:grab; overflow:hidden; display:flex; align-items:flex-end; min-width:0; }
+        .hermes-2d-region:active { cursor:grabbing; }
+        .hermes-2d-region-label { color:#fff; font-size:8px; font-weight:900; padding:4px; line-height:1.1; text-shadow:0 1px 2px rgba(0,0,0,.85); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .hermes-2d-region-label small { display:block; font-size:7px; font-weight:700; opacity:.92; }
+        .hermes-2d-empty { color:#515b66; font-size:8px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; padding:8px; }
+        .hermes-grid-axis { display:grid; grid-template-columns:repeat(4, 1fr); color:#65707b; font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; text-align:center; }
+        .hermes-unplaced { padding:8px; border:1px solid #4a2a2a; background:#1a1111; color:#ffb4b4; font-size:9px; line-height:1.45; }
+        .hermes-unplaced b { color:#fff; }
+        @media (max-width: 980px) { .hermes-2d-bays { grid-template-columns:1fr; } }
+
+
+        /* === BETA 26: Hermes region-split planner, not cell painting === */
+        .hermes-cargo-visual.region-split { margin:8px 0 12px; padding:10px; background:#111; border:1px solid #333; display:grid; gap:10px; }
+        .hermes-cargo-visual.region-split .hermes-cargo-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .hermes-cargo-visual.region-split .hermes-cargo-head b { color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-cargo-visual.region-split .hermes-cargo-head small { color:#8f8f8f; display:block; margin-top:3px; font-size:9px; line-height:1.4; }
+        .hermes-cargo-visual.region-split .hermes-cargo-stats { color:var(--accent); font-size:9px; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:.8px; }
+        .hermes-cargo-visual.region-split .hermes-cargo-actions { display:flex; gap:6px; flex-wrap:wrap; }
+        .hermes-region-groups { display:grid; gap:6px; }
+        .hermes-region-group { display:grid; gap:6px; padding:7px 8px; border-left:3px solid var(--contract-colour, var(--accent)); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10); }
+        .hermes-region-group-top { display:flex; align-items:center; gap:7px; flex-wrap:wrap; color:#f4f4f4; }
+        .hermes-region-group-top b { color:#fff; }
+        .hermes-region-group-note { color:#bfbfbf; font-size:9px; line-height:1.4; }
+        .hermes-region-buttons { display:flex; gap:5px; flex-wrap:wrap; }
+        .hermes-region-buttons button { margin:0; padding:5px 7px; font-size:8px; }
+        .hermes-region-buttons button.active { background:var(--contract-colour, var(--accent)); border-color:var(--contract-colour, var(--accent)); color:#050505; }
+        .hermes-region-bays { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+        .hermes-region-bay { background:#141414; border:1px solid #2d2d2d; padding:8px; display:grid; gap:8px; }
+        .hermes-region-bay.drag-over { border-color:var(--accent); box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.36), inset 0 0 18px rgba(var(--accent-rgb),0.10); }
+        .hermes-region-bay-head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-region-bay-head small { color:#777; font-size:8px; font-weight:700; }
+        .hermes-region-floor { position:relative; height:210px; background:#101010; border:1px solid #30363d; overflow:hidden; }
+        .hermes-region-floor::before {
+            content:'';
+            position:absolute;
+            inset:8px;
+            opacity:.45;
+            background:
+                linear-gradient(to right, rgba(118,137,152,.28) 1px, transparent 1px) 0 0 / calc(100% / 18) 100%,
+                linear-gradient(to bottom, rgba(118,137,152,.28) 1px, transparent 1px) 0 0 / 100% calc(100% / 4);
+            pointer-events:none;
+        }
+        .hermes-region-floor::after {
+            content:'18 × 4 GRID';
+            position:absolute;
+            right:10px;
+            bottom:8px;
+            color:#364350;
+            font-size:9px;
+            font-weight:900;
+            letter-spacing:1.2px;
+            pointer-events:none;
+        }
+        .hermes-region-block { position:absolute; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.88); background:linear-gradient(180deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.78), rgba(var(--contract-colour-rgb, var(--accent-rgb)),.42)); box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), 0 2px 10px rgba(0,0,0,.18); cursor:grab; overflow:hidden; display:flex; align-items:flex-end; min-width:54px; min-height:42px; }
+        .hermes-region-block:active { cursor:grabbing; }
+        .hermes-region-block-label { width:100%; color:#fff; font-size:9px; font-weight:900; padding:6px; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.85); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .hermes-region-block-label small { display:block; font-size:7px; font-weight:700; opacity:.92; }
+        .hermes-region-empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#46515d; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-region-axis { display:grid; grid-template-columns:repeat(4, 1fr); color:#65707b; font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; text-align:center; }
+        .hermes-region-overflow { padding:8px; border:1px solid #4a2a2a; background:#1a1111; color:#ffb4b4; font-size:9px; line-height:1.45; }
+        .hermes-region-overflow b { color:#fff; }
+        @media (max-width: 980px) { .hermes-region-bays { grid-template-columns:1fr; } }
+
+
+        /* === BETA 28: Hermes full-grid stack planner === */
+        .hermes-stack-visual { margin:8px 0 12px; padding:10px; background:#111; border:1px solid #333; display:grid; gap:10px; }
+        .hermes-stack-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .hermes-stack-head b { color:#fff; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-stack-head small { color:#8f8f8f; display:block; margin-top:3px; font-size:9px; line-height:1.4; }
+        .hermes-stack-stats { color:var(--accent); font-size:9px; font-family:'Courier New', monospace; text-transform:uppercase; letter-spacing:.8px; }
+        .hermes-stack-actions { display:flex; gap:6px; flex-wrap:wrap; }
+        .hermes-stack-groups { display:grid; gap:6px; }
+        .hermes-stack-group { display:grid; gap:6px; padding:7px 8px; border-left:3px solid var(--contract-colour, var(--accent)); background:rgba(var(--contract-colour-rgb, var(--accent-rgb)),.10); }
+        .hermes-stack-group-top { display:flex; align-items:center; gap:7px; flex-wrap:wrap; color:#f4f4f4; }
+        .hermes-stack-group-top b { color:#fff; }
+        .hermes-stack-group-note { color:#bfbfbf; font-size:9px; line-height:1.4; }
+        .hermes-stack-buttons { display:flex; gap:5px; flex-wrap:wrap; }
+        .hermes-stack-buttons button { margin:0; padding:5px 7px; font-size:8px; }
+        .hermes-stack-buttons button.active { background:var(--contract-colour, var(--accent)); border-color:var(--contract-colour, var(--accent)); color:#050505; }
+        .hermes-stack-bays { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+        .hermes-stack-bay { background:#141414; border:1px solid #2d2d2d; padding:8px; display:grid; gap:8px; }
+        .hermes-stack-bay.drag-over { border-color:var(--accent); box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.36), inset 0 0 18px rgba(var(--accent-rgb),0.10); }
+        .hermes-stack-bay-head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#fff; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-stack-bay-head small { color:#777; font-size:8px; font-weight:700; }
+        .hermes-stack-floor { position:relative; height:540px; background:#0f0f0f; border:1px solid #394148; overflow:hidden; }
+        .hermes-stack-floor::before { content:''; position:absolute; inset:0; background:
+            linear-gradient(to right, rgba(77,174,214,.40) 1px, transparent 1px) 0 0 / calc(100% / 18) 100%,
+            linear-gradient(to bottom, rgba(77,174,214,.40) 1px, transparent 1px) 0 0 / 100% calc(100% / 18);
+            pointer-events:none; }
+        .hermes-stack-outline { position:absolute; inset:5% 4% 5% 4%; border:1px solid rgba(255,64,64,.88); pointer-events:none; }
+        .hermes-stack-block { position:absolute; left:4%; width:92%; border:1px solid rgba(var(--contract-colour-rgb, var(--accent-rgb)),.88); background:linear-gradient(180deg, rgba(var(--contract-colour-rgb, var(--accent-rgb)),.82), rgba(var(--contract-colour-rgb, var(--accent-rgb)),.42)); box-shadow:inset 0 0 0 1px rgba(255,255,255,.10), 0 2px 10px rgba(0,0,0,.18); cursor:grab; overflow:hidden; display:flex; align-items:flex-end; min-height:28px; }
+        .hermes-stack-block:active { cursor:grabbing; }
+        .hermes-stack-block-label { width:100%; color:#fff; font-size:9px; font-weight:900; padding:6px; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.85); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .hermes-stack-block-label small { display:block; font-size:7px; font-weight:700; opacity:.92; }
+        .hermes-stack-resizer { position:absolute; left:0; right:0; bottom:0; height:10px; cursor:ns-resize; background:linear-gradient(180deg, rgba(255,255,255,.00), rgba(255,255,255,.22)); display:none; }
+        .hermes-stack-visual.resize-unlocked .hermes-stack-resizer { display:block; }
+        .hermes-stack-block.resizable { box-shadow:inset 0 0 0 1px rgba(255,255,255,.12), 0 0 0 1px rgba(255,255,255,.10), 0 2px 10px rgba(0,0,0,.18); }
+        .hermes-stack-empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#46515d; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; }
+        .hermes-stack-axis { display:grid; grid-template-columns:repeat(4, 1fr); color:#65707b; font-size:7px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; text-align:center; }
+        .hermes-stack-overflow { padding:8px; border:1px solid #4a2a2a; background:#1a1111; color:#ffb4b4; font-size:9px; line-height:1.45; }
+        .hermes-stack-overflow b { color:#fff; }
+        .confetti-overlay { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:9999; }
+        .confetti-piece { position:absolute; top:-24px; width:10px; height:18px; opacity:.95; animation:confettiFall var(--dur,2800ms) linear forwards; transform:translateY(0) rotate(0deg); }
+        @keyframes confettiFall { from { transform:translateY(0) rotate(0deg); opacity:1; } to { transform:translateY(110vh) rotate(720deg); opacity:0; } }
+        @media (max-width: 980px) { .hermes-stack-bays { grid-template-columns:1fr; } .hermes-stack-floor { height:420px; } }
+
 </style>
 </head>
 <body>
@@ -1552,7 +1819,7 @@
             
             <div class="control-group">
                 <label>Ship:</label>
-                <select id="shipSelect" onchange="updateStatus()">
+                <select id="shipSelect" onchange="updateStatus(); if (currentRoute) renderRoute(currentRoute)">
                     <option value="">-- Select Ship --</option>
                     <optgroup label="SMALL">
                         <option value="400i" data-capacity="42">400i (42 SCU)</option>
@@ -1578,7 +1845,7 @@
                         <option value="Carrack-Expedition" data-capacity="456">Carrack Expedition (456 SCU)</option>
                         <option value="Connie-Taurus" data-capacity="174">Constellation Taurus (174 SCU)</option>
                         <option value="Freelancer-MAX" data-capacity="120">Freelancer MAX (120 SCU)</option>
-                        <option value="Hermes" data-capacity="288">Hermes (288 SCU)</option>
+                        <option value="Hermes" data-capacity="288">Hermes (288 SCU • dual 18×4 grids)</option>
                         <option value="MOTH" data-capacity="224">MOTH (224 SCU)</option>
                         <option value="Orion" data-capacity="384">Orion (384 SCU)</option>
                         <option value="RAFT" data-capacity="192">RAFT (192 SCU)</option>
@@ -2732,9 +2999,6 @@
             "Wala", "Lyria", "Wikelo Emporium Dasi Station", "Wikelo Emporium Kinga Station", "Orison (Crusader)", "Pyro Gateway", "Nyx Gateway (Stanton)", "Microtech Calliope", "Microtech Clio", "Microtech Euterpe", "Levski"
         ]);
 
-        function isHaulingLocation(loc) {
-            return haulingLocationNames.has(loc.name) || loc.name.toLowerCase().includes('gateway');
-        }
 
         function getVisibleLocationsForSystem(system, routePath = []) {
             const routeNameSet = new Set(routePath);
@@ -2807,13 +3071,6 @@
             syncShowAllMapLocationToggle();
         }
 
-        function setMapPerspectiveMode(value = true) {
-            // Leaned-back view is now the only/default map view.
-            mapPerspectiveMode = true;
-            localStorage.setItem('scMapPerspectiveMode', '1');
-            resetMapZoom();
-            drawSystemMap(currentRoute?.path || []);
-        }
 
         function loadMapPerspectiveSetting() {
             // Ignore old saved “flat view” preferences so everyone gets the cleaner leaned-back map by default.
@@ -3033,30 +3290,12 @@
             return Math.max(0.035, Math.min(1, w / 1000));
         }
 
-        function scaledSvg(value, minValue = 0) {
-            return Math.max(minValue, value * getSvgUiScale());
-        }
 
 
         function isSurfaceLocation(loc) {
             return Boolean(loc && loc.surfaceOf && loc.surfacePos);
         }
 
-        function isPlanetaryLandingZone(loc) {
-            if (!isSurfaceLocation(loc)) return false;
-            const parent = String(loc.surfaceOf || '');
-            const surfaceType = String(loc.surfaceType || loc.type || '').toLowerCase();
-            const name = String(loc.name || '').toLowerCase();
-            const majorPlanets = new Set(['Hurston', 'Crusader', 'ArcCorp', 'Microtech']);
-            return majorPlanets.has(parent) && (
-                surfaceType.includes('landing') ||
-                surfaceType.includes('city') ||
-                name.includes('new babbage') ||
-                name.includes('lorville') ||
-                name.includes('orison') ||
-                name.includes('area18')
-            );
-        }
 
         const microtechMoonNames = new Set(["Microtech Calliope", "Microtech Clio", "Microtech Euterpe", "Daymar", "Yela", "Cellin", "Ariel"]);
 
@@ -3075,10 +3314,6 @@
             return null;
         }
 
-        function isSurfaceOnMoonBody(loc) {
-            const parent = getParentBodyLocation(loc);
-            return Boolean(parent && isMoonLocation(parent));
-        }
 
         function shouldPinSurfaceToParentOnSystemMap(loc) {
             return isSurfaceLocation(loc) && !isOrbitalStationLocation(loc);
@@ -3171,15 +3406,6 @@
             return 0;
         }
 
-        function getFamilyOrbitMembers(parent) {
-            if (!parent) return [];
-            return locations.filter(other => {
-                if (other.sys !== parent.sys) return false;
-                const otherParent = getParentBodyLocation(other);
-                if (!otherParent || otherParent.name !== parent.name) return false;
-                return isMoonLocation(other) || isOrbitalStationLocation(other);
-            });
-        }
 
         function getLocalOrbitDirection(loc, cx, cy, scale) {
             const parent = getParentBodyLocation(loc);
@@ -3298,27 +3524,7 @@
             return { x: dir.x * radius, y: dir.y * radius };
         }
 
-        function getSurfaceOffset(loc, surfaceRadius = 9) {
-            if (!isSurfaceLocation(loc)) return { x: 0, y: 0 };
-            const pos = loc.surfacePos;
-            const length = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z) || 1;
-            const nx = pos.x / length;
-            const ny = pos.y / length;
-            const nz = pos.z / length;
-            let dx = nx * surfaceRadius;
-            let dy = -ny * surfaceRadius - nz * 5;
-            if (Math.abs(dx) + Math.abs(dy) < 3) {
-                dx = surfaceRadius * 0.7;
-                dy = -surfaceRadius * 0.7;
-            }
-            if (mapPerspectiveMode) dy *= 0.7;
-            return { x: dx, y: dy };
-        }
 
-        function getMoonDisplayOffset(loc, cx, cy, scale) {
-            // No fake visual moon offset. Moons stay at their exact solar-coordinate position.
-            return { x: 0, y: 0 };
-        }
 
         const MAP_PLANETARY_DEPTH_VIEWBOX_WIDTH = 0;
         const MAP_PLANETARY_DEPTH_MIN_VIEWBOX_WIDTH = 48;
@@ -3334,13 +3540,6 @@
             return Boolean(bodyViewData[loc.name] && bodyViewData[loc.name].parent === 'Stanton Star');
         }
 
-        function getDepthFamilyParent(loc) {
-            if (!loc) return null;
-            if (isPlanetaryDepthBody(loc)) return loc;
-            const parent = getParentBodyLocation(loc);
-            if (parent && isPlanetaryDepthBody(parent)) return parent;
-            return null;
-        }
 
         function isInDepthFamily(loc, depthContext) {
             if (!depthContext?.parent || !loc) return false;
@@ -4547,9 +4746,6 @@
             return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
         }
 
-        function getMapSearchScopeSystem() {
-            return 'All';
-        }
 
         function mapSearchMatchesLocation(loc, query = mapSearchQuery) {
             const q = normaliseSearchText(query);
@@ -5006,9 +5202,6 @@
             return /cru[-\s]?l[23]/i.test(name);
         }
 
-        function isStructureLagrangeLocation(loc) {
-            return isLagrangeLocation(loc) && !isAsteroidLagrangeLocation(loc);
-        }
 
         function renderLagrangeMarker(loc, pt, r, uiScale = 1) {
             const fx = n => Number(n).toFixed(2);
@@ -5405,52 +5598,7 @@
             { a: { sys: 'Stanton', name: 'Nyx Gateway (Stanton)' }, b: { sys: 'Nyx', name: 'Stanton Gateway' } }
         ];
 
-        function getPreferredLookupSystem() {
-            const routeSystem = document.getElementById('systemSelect')?.value || '';
-            if (routeSystem && mapConfig[routeSystem]) return routeSystem;
 
-            const mapSystem = document.getElementById('mapSystemSelect')?.value || '';
-            if (mapSystem && mapConfig[mapSystem]) return mapSystem;
-
-            return null;
-        }
-
-        function findLocationByName(name, preferredSys = null) {
-            if (!name) return null;
-            const cleanName = String(name).trim();
-
-            if (preferredSys) {
-                const exact = locations.find(l => l.name === cleanName && l.sys === preferredSys);
-                if (exact) return exact;
-            }
-
-            const matches = locations.filter(l => l.name === cleanName);
-            if (matches.length === 1) return matches[0];
-
-            if (matches.length > 1) {
-                const uiPreferredSys = getPreferredLookupSystem();
-                if (uiPreferredSys) {
-                    const preferred = matches.find(l => l.sys === uiPreferredSys);
-                    if (preferred) return preferred;
-                }
-
-                // Final safety for the common ambiguous gateway names.
-                // If nothing on the UI tells us otherwise, prefer the most common hauling context.
-                if (cleanName === 'Stanton Gateway') {
-                    const pyroSide = matches.find(l => l.sys === 'Pyro');
-                    if (pyroSide) return pyroSide;
-                }
-                if (cleanName === 'Pyro Gateway') {
-                    const stantonSide = matches.find(l => l.sys === 'Stanton');
-                    if (stantonSide) return stantonSide;
-                }
-
-                return matches[0];
-            }
-
-            const caseHit = locations.find(l => l.name.toLowerCase() === cleanName.toLowerCase());
-            return caseHit || null;
-        }
 
         function findGatewaySide(fromSys, toSys) {
             for (const link of gatewayConnections) {
@@ -5792,97 +5940,7 @@
                 .filter(seg => seg.from && seg.to && seg.from.sys === system && seg.to.sys === system);
         }
 
-        function orderStopsWithinSystem(startLoc, stops, endLoc = null) {
-            if (!stops.length) return { ordered: [], totalDist: 0, legs: [] };
-            return optimiseOpenRoute(startLoc, stops, endLoc);
-        }
 
-        function orderSystemsForStops(startLoc, stops, endLoc = null) {
-            const grouped = new Map();
-            stops.forEach(stop => {
-                const loc = findLocationByName(stop.name);
-                if (!loc) return;
-                if (!grouped.has(loc.sys)) grouped.set(loc.sys, []);
-                grouped.get(loc.sys).push(stop);
-            });
-
-            const systems = [...grouped.keys()];
-            if (systems.length <= 1) return systems;
-
-            const n = systems.length;
-            const size = 1 << n;
-            const dp = Array.from({ length: size }, () => Array(n).fill(Infinity));
-            const parent = Array.from({ length: size }, () => Array(n).fill(-1));
-
-            const nearestStopLocInSystem = (fromLoc, sys) => {
-                const sysStops = grouped.get(sys) || [];
-                let best = null;
-                let bestD = Infinity;
-                sysStops.forEach(stop => {
-                    const loc = findLocationByName(stop.name);
-                    if (!loc) return;
-                    const d = getTravelDistance(fromLoc, loc);
-                    if (d < bestD) {
-                        bestD = d;
-                        best = loc;
-                    }
-                });
-                return best;
-            };
-
-            for (let i = 0; i < n; i++) {
-                const loc = nearestStopLocInSystem(startLoc, systems[i]);
-                dp[1 << i][i] = loc ? getTravelDistance(startLoc, loc) : Infinity;
-            }
-
-            for (let mask = 0; mask < size; mask++) {
-                for (let last = 0; last < n; last++) {
-                    if (!Number.isFinite(dp[mask][last])) continue;
-                    const lastStops = grouped.get(systems[last]) || [];
-                    const lastLoc = lastStops.length ? findLocationByName(lastStops[lastStops.length - 1].name) : startLoc;
-
-                    for (let next = 0; next < n; next++) {
-                        if (mask & (1 << next)) continue;
-                        const nextLoc = nearestStopLocInSystem(lastLoc, systems[next]);
-                        if (!nextLoc) continue;
-                        const nextMask = mask | (1 << next);
-                        const candidate = dp[mask][last] + getTravelDistance(lastLoc, nextLoc);
-                        if (candidate < dp[nextMask][next]) {
-                            dp[nextMask][next] = candidate;
-                            parent[nextMask][next] = last;
-                        }
-                    }
-                }
-            }
-
-            const fullMask = size - 1;
-            let bestLast = 0;
-            let bestTotal = Infinity;
-            for (let last = 0; last < n; last++) {
-                let candidate = dp[fullMask][last];
-                if (endLoc) {
-                    const lastStops = grouped.get(systems[last]) || [];
-                    const lastLoc = lastStops.length ? findLocationByName(lastStops[lastStops.length - 1].name) : startLoc;
-                    candidate += getTravelDistance(lastLoc, endLoc);
-                }
-                if (candidate < bestTotal) {
-                    bestTotal = candidate;
-                    bestLast = last;
-                }
-            }
-
-            let orderIndexes = [];
-            let mask = fullMask;
-            let last = bestLast;
-            while (last !== -1) {
-                orderIndexes.push(last);
-                const prev = parent[mask][last];
-                mask ^= (1 << last);
-                last = prev;
-            }
-            orderIndexes.reverse();
-            return orderIndexes.map(i => systems[i]);
-        }
 
         function getSelectableLocations() {
             const system = getDOM('systemSelect')?.value;
@@ -5902,204 +5960,161 @@
             input.value = total > 0 ? fmtScu(total) : '';
         }
 
-        function updateLocationOptions() {
-            const start = getDOM('startLocation');
-            if (!start) return;
 
-            const currentStart = start.value;
-            start.innerHTML = `
-                <option value="">Current Location</option>
-                ${getLocationHTML()}
-            `;
 
-            if (currentStart && Array.from(start.options).some(opt => opt.value === currentStart)) {
-                start.value = currentStart;
-            }
-        }
 
-        function setContractType(type, sourceEvent = null) {
-            if (routeInputsCollapsed) return;
-            if (!sourceEvent && typeof window !== 'undefined') sourceEvent = window.event;
-            contractType = type;
-            routeInputsCollapsed = false;
-            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
-            if (sourceEvent?.target) sourceEvent.target.classList.add('active');
-            else {
-                const idx = type === 'single-multi' ? 0 : type === 'multi-single' ? 1 : 2;
-                document.querySelectorAll('.toggle-btn')[idx]?.classList.add('active');
-            }
 
-            updateUI();
-            hideRouteInputSummary();
-        }
 
-        function applyContractGridLayout() {
-            const pickups = getDOM('pickups');
-            const dropoffs = getDOM('dropoffs');
-            if (!pickups || !dropoffs) return;
 
-            pickups.style.cssText = '';
-            dropoffs.style.cssText = '';
 
-            if (contractType === 'single-multi') {
-                dropoffs.classList.add('two-col');
-            } else if (contractType === 'multi-single') {
-                pickups.classList.add('two-col');
-            } else {
-                dropoffs.style.display = 'none';
-            }
-        }
 
-        function updateUI() {
-            const pickupLabel = document.getElementById('pickupLabel');
-            const dropoffLabel = document.getElementById('dropoffLabel');
-            routeInputsCollapsed = false;
-            hideRouteInputSummary();
-            
-            if (contractType === 'single-multi') {
-                pickupLabel.textContent = 'Pickup (1)';
-                dropoffLabel.textContent = 'Dropoffs (up to 10)';
-                dropoffLabel.style.display = 'block';
-                renderLocations('pickups', 1, 'pickup');
-                renderLocations('dropoffs', 10, 'dropoff');
-            } else if (contractType === 'multi-single') {
-                pickupLabel.textContent = 'Pickups (up to 10)';
-                dropoffLabel.textContent = 'Dropoff (1)';
-                dropoffLabel.style.display = 'block';
-                renderLocations('pickups', 10, 'pickup');
-                renderLocations('dropoffs', 1, 'dropoff');
-            } else {
-                pickupLabel.textContent = 'Pickups + Destinations (up to 15)';
-                dropoffLabel.style.display = 'none';
-                renderLocationsMultiMulti(15);
-            }
 
-            pickupLabel.style.display = 'block';
-            getDOM('pickups').style.display = 'block';
-            applyContractGridLayout();
-        }
 
-        function getContractTypeLabel() {
-            if (contractType === 'single-multi') return 'Single Pickup → Multi Dropoff';
-            if (contractType === 'multi-single') return 'Multi Pickup → Single Dropoff';
-            return 'Multi Pickup → Multi Dropoff';
-        }
 
-        function selectedText(selector) {
-            const el = document.querySelector(selector);
-            if (!el) return '';
-            const opt = el.options?.[el.selectedIndex];
-            return opt ? opt.textContent.replace(/\s+/g, ' ').trim() : el.value;
-        }
-
-        function collectContractSelections() {
-            const pickups = Array.from(document.querySelectorAll('.pickup-select')).map((sel, i) => ({
-                name: sel.value,
-                cargo: parseInt(document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`)?.value) || 0,
-                destination: document.querySelector(`.pickup-dest[data-idx="${i+1}"]`)?.value || ''
-            })).filter(p => p.name || p.destination || p.cargo);
-
-            const dropoffs = Array.from(document.querySelectorAll('.dropoff-select')).map((sel, i) => ({
-                name: sel.value,
-                cargo: parseInt(document.querySelector(`.dropoff-cargo[data-idx="${i+1}"]`)?.value) || 0
-            })).filter(d => d.name || d.cargo);
-
-            return { pickups, dropoffs };
-        }
-
-        function buildRouteInputSummaryHtml() {
-            const start = getDOM('startLocation')?.value || 'Current Location';
-            const ship = selectedText('#shipSelect') || 'No ship selected';
-            const system = selectedText('#systemSelect') || 'All Systems';
-            const { pickups, dropoffs } = collectContractSelections();
-            const cargo = getCargoSummary();
-
-            let html = `<strong>Route calculated — inputs hidden</strong>`;
-            html += `<div style="color:#aaa;">Your selected contract list is tucked away so the route is easier to read. Use Edit Inputs if you need to change anything.</div>`;
-            html += `<div class="summary-grid">`;
-            html += `<div class="summary-card"><b>Mode</b>${escapeHtml(getContractTypeLabel())}</div>`;
-            html += `<div class="summary-card"><b>System / Ship</b>${escapeHtml(system)}<br>${escapeHtml(ship)}</div>`;
-            html += `<div class="summary-card"><b>Start</b>${escapeHtml(start)}</div>`;
-            html += `<div class="summary-card"><b>Cargo</b>${cargo.carriedCargo} SCU${cargo.cargoNote ? escapeHtml(cargo.cargoNote.replace(/^ \| /, ' — ')) : ''}</div>`;
-            html += `</div>`;
-
-            html += `<div class="summary-list">`;
-            pickups.filter(p => p.name).forEach((p, idx) => {
-                const dest = p.destination ? ` → ${p.destination}` : '';
-                html += `<div class="summary-item">PICKUP ${idx + 1}: ${escapeHtml(p.name + dest)}${p.cargo ? ` — ${p.cargo} SCU` : ''}</div>`;
-            });
-            dropoffs.filter(d => d.name).forEach((d, idx) => {
-                html += `<div class="summary-item">DROPOFF ${idx + 1}: ${escapeHtml(d.name)}${d.cargo ? ` — ${d.cargo} SCU` : ''}</div>`;
-            });
-            html += `</div>`;
-            html += `<div class="summary-actions">`;
-            html += `<button class="secondary" onclick="unlockRouteInputs()" style="margin:0;">✎ Edit Inputs</button>`;
-            html += `<button onclick="calculateRoute()" style="margin:0;">↻ Recalculate</button>`;
-            html += `</div>`;
-            return html;
-        }
-
-        function hideRouteInputSummary() {
-            const summary = document.getElementById('routeInputSummary');
-            const calcBtn = document.getElementById('calculateBtn');
-            if (summary) {
-                summary.style.display = 'none';
-                summary.innerHTML = '';
-            }
-            if (calcBtn) calcBtn.textContent = '🚀 Calculate Route';
-        }
-
-        function setContractTypeControlsVisible(visible) {
-            const label = document.getElementById('contractTypeLabel');
-            const controls = document.getElementById('contractTypeControls');
-            [label, controls].forEach(el => {
-                if (!el) return;
-                el.classList.toggle('is-hidden', !visible);
-            });
-        }
-
-        function collapseRouteInputs() {
-            routeInputsCollapsed = true;
-            const pickupLabel = document.getElementById('pickupLabel');
-            const dropoffLabel = document.getElementById('dropoffLabel');
-            const pickups = getDOM('pickups');
-            const dropoffs = getDOM('dropoffs');
-            const summary = document.getElementById('routeInputSummary');
-            const calcBtn = document.getElementById('calculateBtn');
-
-            setContractTypeControlsVisible(false);
-            if (pickupLabel) pickupLabel.style.display = 'none';
-            if (dropoffLabel) dropoffLabel.style.display = 'none';
-            if (pickups) pickups.style.display = 'none';
-            if (dropoffs) dropoffs.style.display = 'none';
-            if (summary) {
-                summary.innerHTML = buildRouteInputSummaryHtml();
-                summary.style.display = 'block';
-            }
-            if (calcBtn) calcBtn.textContent = '↻ Recalculate Route';
-        }
-
-        function unlockRouteInputs() {
-            routeInputsCollapsed = false;
-            hideRouteInputSummary();
-            const pickupLabel = document.getElementById('pickupLabel');
-            const dropoffLabel = document.getElementById('dropoffLabel');
-            const pickups = getDOM('pickups');
-            const dropoffs = getDOM('dropoffs');
-
-            setContractTypeControlsVisible(true);
-            if (pickupLabel) pickupLabel.style.display = 'block';
-            if (pickups) pickups.style.display = 'block';
-            if (dropoffLabel) dropoffLabel.style.display = contractType === 'multi-multi' ? 'none' : 'block';
-            if (dropoffs) dropoffs.style.display = contractType === 'multi-multi' ? 'none' : 'block';
-            applyContractGridLayout();
-        }
 
         function focusRouteOutput() {
             const panel = getDOM('route')?.closest('.panel');
             if (!panel) return;
             panel.classList.add('route-focus');
             setTimeout(() => panel.classList.remove('route-focus'), 900);
+        }
+
+        function getRouteColourLegend(tasks = []) {
+            const byDropoff = new Map();
+            tasks.forEach(task => {
+                const key = task.dropoff || task.id;
+                if (!byDropoff.has(key)) {
+                    byDropoff.set(key, {
+                        label: task.dropoffLabel || task.contractLabel || dropoffColourLabel(byDropoff.size),
+                        colour: task.dropoffColour || task.contractColour || getDropoffAutoColour(task.dropoff, byDropoff.size),
+                        dropoff: task.dropoff || 'Drop-off pending',
+                        totalScu: 0,
+                        cargos: new Set(),
+                        contracts: new Set(),
+                        pickups: new Set()
+                    });
+                }
+                const entry = byDropoff.get(key);
+                entry.totalScu += safeNumber(task.totalScu);
+                String(task.cargo || 'Cargo').split(',').map(s => s.trim()).filter(Boolean).forEach(c => entry.cargos.add(c));
+                if (task.contractName) entry.contracts.add(task.contractName);
+                (task.pickups || []).forEach(p => { if (p.location) entry.pickups.add(p.location); });
+            });
+            return [...byDropoff.values()].sort((a, b) => {
+                const aNum = parseInt(String(a.label || '').replace(/\D+/g, ''), 10);
+                const bNum = parseInt(String(b.label || '').replace(/\D+/g, ''), 10);
+                if (Number.isFinite(aNum) && Number.isFinite(bNum) && aNum !== bNum) return aNum - bNum;
+                return String(a.dropoff || '').localeCompare(String(b.dropoff || ''), undefined, { numeric: true });
+            });
+        }
+
+        function renderRouteColourLegend(legend = []) {
+            if (!legend.length) return '';
+            const rows = legend.map(item => {
+                const colour = normaliseHexColour(item.colour);
+                const style = `--contract-colour:${colour};--contract-colour-rgb:${hexToRgbString(colour)};`;
+                const cargo = [...item.cargos].slice(0, 3).join(', ') || 'Cargo';
+                const contracts = [...item.contracts].slice(0, 2).join(', ') || 'Contract';
+                const pickups = [...item.pickups].slice(0, 2).join(', ') || 'pickup pending';
+                return `<div class="route-colour-item" style="${style}"><span class="contract-colour-chip" aria-hidden="true"></span><b>${escapeHtml(item.label)}</b> ${escapeHtml(item.dropoff)} — ${fmtScu(item.totalScu)} SCU — ${escapeHtml(cargo)} — from ${escapeHtml(pickups)} — ${escapeHtml(contracts)}</div>`;
+            }).join('');
+            return `<div class="route-colour-legend"><div class="route-colour-legend-title">Combined cargo colours</div>${rows}</div>`;
+        }
+
+        function mergeTasksByDropoff(tasks = []) {
+            const grouped = new Map();
+
+            tasks.forEach((task, taskIndex) => {
+                const dropKey = canonicalLocationName(task?.dropoff || '') || `drop-${taskIndex}`;
+                if (!grouped.has(dropKey)) {
+                    grouped.set(dropKey, {
+                        id: `combined-drop:${dropKey}`,
+                        contractNameSet: new Set(),
+                        contractName: '',
+                        contractIndex: task.contractIndex,
+                        lineIndex: task.lineIndex,
+                        contractColour: task.dropoffColour || task.contractColour,
+                        contractLabel: task.dropoffLabel || task.contractLabel || dropoffColourLabel(grouped.size),
+                        dropoffColour: task.dropoffColour || task.contractColour,
+                        dropoffLabel: task.dropoffLabel || task.contractLabel || dropoffColourLabel(grouped.size),
+                        lineNumber: grouped.size + 1,
+                        cargoSet: new Set(),
+                        cargo: '',
+                        totalScu: 0,
+                        dropoff: task.dropoff,
+                        dropoffLoc: task.dropoffLoc,
+                        pickupMap: new Map(),
+                        pickups: []
+                    });
+                }
+
+                const group = grouped.get(dropKey);
+                group.totalScu += safeNumber(task.totalScu);
+                if (task.contractName) group.contractNameSet.add(task.contractName);
+                String(task.cargo || 'Cargo').split(',').map(s => s.trim()).filter(Boolean).forEach(c => group.cargoSet.add(c));
+
+                (task.pickups || []).forEach((pickup, pickupIndex) => {
+                    if (!pickup?.loc) return;
+                    const pickupKey = `${pickup.loc.sys}:${pickup.loc.name}`;
+                    if (!group.pickupMap.has(pickupKey)) {
+                        group.pickupMap.set(pickupKey, {
+                            id: `${group.id}:pickup:${group.pickupMap.size}`,
+                            location: pickup.location || pickup.loc.name,
+                            loc: pickup.loc,
+                            cargoSet: new Set(),
+                            cargo: '',
+                            scu: 0,
+                            contractIndex: pickup.contractIndex ?? task.contractIndex,
+                            lineIndex: pickup.lineIndex ?? task.lineIndex,
+                            contractColour: group.dropoffColour,
+                            contractLabel: group.dropoffLabel,
+                            dropoffColour: group.dropoffColour,
+                            dropoffLabel: group.dropoffLabel
+                        });
+                    }
+                    const mergedPickup = group.pickupMap.get(pickupKey);
+                    mergedPickup.scu += safeNumber(pickup.scu);
+                    String(pickup.cargo || task.cargo || 'Cargo').split(',').map(s => s.trim()).filter(Boolean).forEach(c => {
+                        mergedPickup.cargoSet.add(c);
+                        group.cargoSet.add(c);
+                    });
+                });
+            });
+
+            return [...grouped.values()].map((group, groupIndex) => {
+                const cargo = [...group.cargoSet].join(', ') || 'Cargo';
+                const contractName = [...group.contractNameSet].join(', ') || `Combined drop-off ${groupIndex + 1}`;
+                const pickups = [...group.pickupMap.values()].map((pickup, pickupIndex) => ({
+                    id: `${group.id}:pickup:${pickupIndex}`,
+                    location: pickup.location,
+                    loc: pickup.loc,
+                    cargo: [...pickup.cargoSet].join(', ') || cargo,
+                    scu: pickup.scu,
+                    contractIndex: pickup.contractIndex,
+                    lineIndex: pickup.lineIndex,
+                    contractColour: group.dropoffColour,
+                    contractLabel: group.dropoffLabel,
+                    dropoffColour: group.dropoffColour,
+                    dropoffLabel: group.dropoffLabel
+                }));
+
+                return {
+                    id: group.id,
+                    contractName,
+                    contractIndex: group.contractIndex,
+                    lineIndex: group.lineIndex,
+                    contractColour: group.dropoffColour,
+                    contractLabel: group.dropoffLabel,
+                    dropoffColour: group.dropoffColour,
+                    dropoffLabel: group.dropoffLabel,
+                    lineNumber: groupIndex + 1,
+                    cargo,
+                    totalScu: group.totalScu,
+                    dropoff: group.dropoff,
+                    dropoffLoc: group.dropoffLoc,
+                    pickups
+                };
+            });
         }
 
         function getLocationHTML() {
@@ -6125,475 +6140,14 @@
             }
         }
 
-        // **OPTIMIZATION 3: Consolidated render function for pickups/dropoffs**
-        function renderLocations(containerId, max, type) {
-            const container = getDOM(containerId.replace('#', ''));
-            if (!container) return;
-            container.innerHTML = '';
-            const selectClass = type === 'pickup' ? 'pickup-select' : 'dropoff-select';
-            const cargoClass = type === 'pickup' ? 'pickup-cargo' : 'dropoff-cargo';
-            const hasCargoInput = (type === 'pickup' && contractType === 'multi-single') || (type === 'dropoff' && contractType === 'single-multi');
 
-            for (let i = 1; i <= max; i++) {
-                const row = document.createElement('div');
-                row.className = 'contract-row';
-                row.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr ${hasCargoInput ? '60px' : ''}; gap: 6px;">
-                        <select class="${selectClass}" data-idx="${i}" onchange="updateStatus()">
-                            <option value="">[ Skip ]</option>
-                            ${getLocationHTML()}
-                        </select>
-                        ${hasCargoInput ? `<input type="number" class="${cargoClass}" data-idx="${i}" placeholder="SCU" min="0" onchange="updateStatus()">` : ''}
-                    </div>
-                `;
-                container.appendChild(row);
-            }
-        }
 
-        function renderLocationsMultiMulti(max) {
-            const container = getDOM('pickups');
-            container.innerHTML = '';
-            for (let i = 1; i <= max; i++) {
-                const row = document.createElement('div');
-                row.className = 'contract-row';
-                row.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 50px; gap: 6px; align-items: center;">
-                        <select class="pickup-select" data-idx="${i}" onchange="updateStatus()">
-                            <option value="">[ Skip ]</option>
-                            ${getLocationHTML()}
-                        </select>
-                        <select class="pickup-dest" data-idx="${i}" onchange="updateStatus()">
-                            <option value="">Dest →</option>
-                            ${getLocationHTML()}
-                        </select>
-                        <input type="number" class="pickup-cargo" data-idx="${i}" placeholder="SCU" min="0" onchange="updateStatus()">
-                    </div>
-                `;
-                container.appendChild(row);
-            }
-        }
 
-        function getCargoSummary() {
-            let carriedCargo = 0;
-            let deliveryCargo = 0;
-            let cargoNote = '';
-            let cargoProblem = false;
-            let cargoWarn = false;
 
-            const pickupInputs = Array.from(document.querySelectorAll('.pickup-cargo'));
-            const dropoffInputs = Array.from(document.querySelectorAll('.dropoff-cargo'));
 
-            if (contractType === 'single-multi') {
-                carriedCargo = parseInt(pickupInputs[0]?.value) || 0;
-                deliveryCargo = dropoffInputs.reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
 
-                if (deliveryCargo > carriedCargo) {
-                    cargoProblem = true;
-                    cargoNote = ` | DROPS EXCEED PICKUP BY ${deliveryCargo - carriedCargo} SCU`;
-                } else if (deliveryCargo < carriedCargo) {
-                    cargoWarn = true;
-                    cargoNote = ` | ${carriedCargo - deliveryCargo} SCU UNASSIGNED`;
-                } else if (carriedCargo > 0) {
-                    cargoNote = ` | DELIVERIES MATCH ${deliveryCargo} SCU`;
-                }
-            } else {
-                carriedCargo = pickupInputs.reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
-                deliveryCargo = carriedCargo;
-            }
 
-            return { carriedCargo, deliveryCargo, cargoNote, cargoProblem, cargoWarn };
-        }
 
-        function updateStatus() {
-            const shipSelect = getDOM('shipSelect');
-            if (!shipSelect?.value) {
-                getDOM('statusBox').innerHTML = '';
-                return;
-            }
-
-            const capacity = parseInt(shipSelect.options[shipSelect.selectedIndex].getAttribute('data-capacity'));
-            const { carriedCargo, cargoNote, cargoProblem, cargoWarn } = getCargoSummary();
-
-            let statusClass = 'status-box';
-            let statusText = `✓ OK | ${carriedCargo}/${capacity} SCU${cargoNote}`;
-
-            if (carriedCargo > capacity) {
-                statusClass += ' error';
-                statusText = `✗ OVERLOAD | ${carriedCargo}/${capacity} SCU (+${carriedCargo - capacity})${cargoNote}`;
-            } else if (cargoProblem) {
-                statusClass += ' error';
-                statusText = `✗ CARGO MISMATCH | ${carriedCargo}/${capacity} SCU${cargoNote}`;
-            } else if (carriedCargo > capacity * 0.8 || cargoWarn) {
-                statusClass += ' warn';
-                statusText = `⚠ CHECK | ${carriedCargo}/${capacity} SCU${cargoNote}`;
-            }
-
-            getDOM('statusBox').innerHTML = `<div class="${statusClass}">${statusText}</div>`;
-            saveState();
-        }
-
-        function calculateRoute() {
-            const start = getDOM('startLocation')?.value;
-            
-            if (contractType === 'multi-multi') {
-                calculateMultiMultiRoute(start);
-            } else {
-                const pickups = Array.from(document.querySelectorAll('.pickup-select')).map((sel, i) => ({
-                    name: sel.value,
-                    cargo: parseInt(document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`)?.value) || 0
-                })).filter(p => p.name);
-
-                const dropoffs = Array.from(document.querySelectorAll('.dropoff-select')).map((sel, i) => ({
-                    name: sel.value,
-                    cargo: parseInt(document.querySelector(`.dropoff-cargo[data-idx="${i+1}"]`)?.value) || 0
-                })).filter(d => d.name);
-
-                if (pickups.length === 0 || dropoffs.length === 0) {
-                    getDOM('route').textContent = 'Add pickups and dropoffs to calculate route.';
-                    return;
-                }
-
-                tracking = {};
-                if (contractType === 'single-multi') {
-                    renderRoute(routeSingleToMulti(start, pickups, dropoffs));
-                } else {
-                    renderRoute(routeMultiToSingle(start, pickups, dropoffs));
-                }
-                collapseRouteInputs();
-                focusRouteOutput();
-            }
-            saveState();
-        }
-
-        function calculateMultiMultiRoute(start) {
-            const pickups = Array.from(document.querySelectorAll('.pickup-select')).map((sel, i) => ({
-                name: sel.value,
-                destination: document.querySelector(`.pickup-dest[data-idx="${i+1}"]`)?.value || '',
-                cargo: parseInt(document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`)?.value) || 0
-            })).filter(p => p.name && p.destination);
-
-            if (pickups.length === 0) {
-                getDOM('route').textContent = 'Add pickups with destinations to calculate route.';
-                return;
-            }
-
-            let steps = [];
-            let totalDist = 0;
-            let totalCargo = pickups.reduce((sum, p) => sum + p.cargo, 0);
-            
-            const startLoc = findLocationByName(start) || findLocationByName(pickups[0].name);
-            let current = startLoc;
-
-            let remaining = [...pickups];
-            let pairNum = 1;
-
-            while (remaining.length > 0) {
-                let nearestPickupIdx = 0;
-                let minPickupDist = Infinity;
-
-                remaining.forEach((p, pidx) => {
-                    const pLoc = findLocationByName(p.name);
-                    const d = getDistance(current, pLoc);
-                    if (d < minPickupDist) {
-                        minPickupDist = d;
-                        nearestPickupIdx = pidx;
-                    }
-                });
-
-                const pickup = remaining.splice(nearestPickupIdx, 1)[0];
-                const pickupLoc = findLocationByName(pickup.name);
-                
-                steps.push({
-                    id: `pickup-${pairNum-1}`, 
-                    text: `${pairNum}. PICKUP: ${pickup.name} (${pickup.cargo}SCU) — ${minPickupDist.toFixed(1)}GM`, 
-                    clickable: true,
-                    stopName: pickup.name
-                });
-                totalDist += minPickupDist;
-                current = pickupLoc;
-
-                const destLoc = findLocationByName(pickup.destination);
-                const deliveryDist = getDistance(current, destLoc);
-                steps.push({
-                    id: `deliver-${pairNum-1}`, 
-                    text: `   └ DELIVER → ${pickup.destination} (${pickup.cargo}SCU) — ${deliveryDist.toFixed(1)}GM`, 
-                    clickable: true,
-                    stopName: pickup.destination
-                });
-                totalDist += deliveryDist;
-                current = destLoc;
-                
-                pairNum++;
-            }
-
-            tracking = {};
-            renderRoute({
-                type: 'Multi Pickup → Multi Dropoff (Optimized Route)',
-                steps,
-                totalDist: totalDist.toFixed(1),
-                totalCargo,
-                totalPayout: getTotalPayout(),
-                path: [startLoc?.name, ...steps.map(step => locations.find(l => step.text.includes(l.name))?.name).filter(Boolean)].filter(Boolean)
-            });
-            collapseRouteInputs();
-            focusRouteOutput();
-        }
-
-        function optimiseOpenRoute(startLoc, stops, endLoc = null) {
-            const validStops = stops
-                .map((stop, originalIndex) => ({
-                    ...stop,
-                    originalIndex,
-                    loc: findLocationByName(stop.name)
-                }))
-                .filter(stop => stop.loc);
-
-            const n = validStops.length;
-            if (!startLoc || n === 0) return { ordered: validStops, totalDist: 0, legs: [] };
-
-            if (n > 12) {
-                let remaining = [...validStops];
-                let current = startLoc;
-                let ordered = [];
-                let legs = [];
-                let totalDist = 0;
-
-                while (remaining.length > 0) {
-                    let nearestIdx = 0;
-                    let minDist = Infinity;
-                    remaining.forEach((stop, idx) => {
-                        const d = getTravelDistance(current, stop.loc);
-                        if (d < minDist) {
-                            minDist = d;
-                            nearestIdx = idx;
-                        }
-                    });
-
-                    const next = remaining.splice(nearestIdx, 1)[0];
-                    ordered.push(next);
-                    legs.push(minDist);
-                    totalDist += minDist;
-                    current = next.loc;
-                }
-
-                if (endLoc) {
-                    const finalDist = getTravelDistance(current, endLoc);
-                    legs.push(finalDist);
-                    totalDist += finalDist;
-                }
-
-                return { ordered, totalDist, legs };
-            }
-
-            const size = 1 << n;
-            const dp = Array.from({ length: size }, () => Array(n).fill(Infinity));
-            const parent = Array.from({ length: size }, () => Array(n).fill(-1));
-
-            for (let i = 0; i < n; i++) {
-                dp[1 << i][i] = getTravelDistance(startLoc, validStops[i].loc);
-            }
-
-            for (let mask = 0; mask < size; mask++) {
-                for (let last = 0; last < n; last++) {
-                    if (!Number.isFinite(dp[mask][last])) continue;
-
-                    for (let next = 0; next < n; next++) {
-                        if (mask & (1 << next)) continue;
-
-                        const nextMask = mask | (1 << next);
-                        const candidate = dp[mask][last] + getTravelDistance(validStops[last].loc, validStops[next].loc);
-
-                        if (candidate < dp[nextMask][next]) {
-                            dp[nextMask][next] = candidate;
-                            parent[nextMask][next] = last;
-                        }
-                    }
-                }
-            }
-
-            const fullMask = size - 1;
-            let bestLast = 0;
-            let bestTotal = Infinity;
-
-            for (let last = 0; last < n; last++) {
-                const endCost = endLoc ? getTravelDistance(validStops[last].loc, endLoc) : 0;
-                const candidate = dp[fullMask][last] + endCost;
-                if (candidate < bestTotal) {
-                    bestTotal = candidate;
-                    bestLast = last;
-                }
-            }
-
-            let orderIndexes = [];
-            let mask = fullMask;
-            let last = bestLast;
-
-            while (last !== -1) {
-                orderIndexes.push(last);
-                const prev = parent[mask][last];
-                mask = mask ^ (1 << last);
-                last = prev;
-            }
-
-            orderIndexes.reverse();
-
-            const ordered = orderIndexes.map(i => validStops[i]);
-            const legs = [];
-            let current = startLoc;
-
-            ordered.forEach(stop => {
-                const d = getTravelDistance(current, stop.loc);
-                legs.push(d);
-                current = stop.loc;
-            });
-
-            if (endLoc) {
-                legs.push(getTravelDistance(current, endLoc));
-            }
-
-            return { ordered, totalDist: bestTotal, legs };
-        }
-
-        function routeSingleToMulti(start, pickups, dropoffs) {
-            const pickup = pickups[0];
-            const pickupLoc = findLocationByName(pickup.name);
-            const startLoc = findLocationByName(start) || pickupLoc;
-            const solved = optimiseOpenRoute(pickupLoc, dropoffs, null);
-
-            let totalDist = 0;
-            let steps = [];
-            let path = [startLoc?.name].filter(Boolean);
-            let mapSegments = [];
-            let current = startLoc;
-
-            if (current && pickupLoc) {
-                const plan = appendTravelPlanSteps(steps, current, pickupLoc, 'to-pickup-0');
-                addTravelPlanMapSegments(mapSegments, plan);
-                totalDist += plan.distance;
-                path.push(...plan.pathNames.slice(1));
-                current = pickupLoc;
-            }
-
-            steps.push({
-                id: 'pickup-0',
-                text: `PICKUP: ${pickup.name} (${pickup.cargo}SCU)`,
-                clickable: true,
-                completeThroughSegmentIndex: mapSegments.length - 1
-            });
-            if (!path.includes(pickup.name)) path.push(pickup.name);
-
-            solved.ordered.forEach((drop, idx) => {
-                const dropLoc = findLocationByName(drop.name);
-                if (current && dropLoc) {
-                    const plan = appendTravelPlanSteps(steps, current, dropLoc, `to-dropoff-${idx}`);
-                    addTravelPlanMapSegments(mapSegments, plan);
-                    totalDist += plan.distance;
-                    path.push(...plan.pathNames.slice(1));
-                    current = dropLoc;
-                }
-                steps.push({
-                    id: `dropoff-${idx}`,
-                    text: `DROP ${idx + 1}: ${drop.name}${drop.cargo ? ` (${drop.cargo}SCU)` : ''}`,
-                    clickable: true,
-                    completeThroughSegmentIndex: mapSegments.length - 1
-                });
-            });
-
-            return {
-                type: 'Single Pickup → Multi Dropoff (Gateway Aware)',
-                steps,
-                totalDist: totalDist.toFixed(1),
-                totalCargo: pickup.cargo,
-                startName: startLoc?.name || '',
-                path: path.filter(Boolean),
-                mapSegments
-            };
-        }
-
-        function routeMultiToSingle(start, pickups, dropoffs) {
-            const dropoff = dropoffs[0];
-            const dropoffLoc = findLocationByName(dropoff.name);
-            const startLoc = findLocationByName(start) || findLocationByName(pickups[0].name);
-            let current = startLoc;
-            let steps = [];
-            let totalDist = 0;
-            let totalCargo = pickups.reduce((sum, p) => sum + p.cargo, 0);
-            let path = [startLoc?.name].filter(Boolean);
-            let mapSegments = [];
-
-            const grouped = new Map();
-            pickups.forEach(pickup => {
-                const loc = findLocationByName(pickup.name);
-                if (!loc) return;
-                if (!grouped.has(loc.sys)) grouped.set(loc.sys, []);
-                grouped.get(loc.sys).push(pickup);
-            });
-
-            const systemOrder = orderSystemsForStops(startLoc, pickups, dropoffLoc);
-            let pickupIndex = 0;
-
-            systemOrder.forEach(sys => {
-                const systemPickups = grouped.get(sys) || [];
-                if (!systemPickups.length) return;
-
-                steps.push({
-                    phase: `system-${sys}`,
-                    text: `── ${sys.toUpperCase()} PICKUPS ──`,
-                    clickable: false
-                });
-
-                const orderedInSystem = orderStopsWithinSystem(current, systemPickups, null).ordered;
-
-                orderedInSystem.forEach(pickup => {
-                    const pickupLoc = findLocationByName(pickup.name);
-                    if (current && pickupLoc) {
-                        const plan = appendTravelPlanSteps(steps, current, pickupLoc, `to-pickup-${pickupIndex}`);
-                        addTravelPlanMapSegments(mapSegments, plan);
-                        totalDist += plan.distance;
-                        path.push(...plan.pathNames.slice(1));
-                        current = pickupLoc;
-                    }
-
-                    steps.push({
-                        id: `pickup-${pickupIndex}`,
-                        text: `PICKUP ${pickupIndex + 1}: ${pickup.name} (${pickup.cargo}SCU)`,
-                        clickable: true,
-                        completeThroughSegmentIndex: mapSegments.length - 1
-                    });
-                    pickupIndex++;
-                });
-            });
-
-            if (dropoffLoc && current) {
-                steps.push({
-                    phase: 'delivery-run',
-                    text: `── DELIVERY TO ${dropoffLoc.sys.toUpperCase()} ──`,
-                    clickable: false
-                });
-                const plan = appendTravelPlanSteps(steps, current, dropoffLoc, 'to-dropoff-0');
-                addTravelPlanMapSegments(mapSegments, plan);
-                totalDist += plan.distance;
-                path.push(...plan.pathNames.slice(1));
-                current = dropoffLoc;
-            }
-
-            steps.push({
-                id: 'dropoff-0',
-                text: `DROPOFF: ${dropoff.name} (${totalCargo}SCU total)`,
-                clickable: true,
-                completeThroughSegmentIndex: mapSegments.length - 1
-            });
-
-            return {
-                type: 'Multi Pickup → Single Dropoff (Gateway Aware)',
-                steps,
-                totalDist: totalDist.toFixed(1),
-                totalCargo,
-                startName: startLoc?.name || '',
-                path: path.filter(Boolean),
-                mapSegments
-            };
-        }
 
         function renderRoute(route) {
             currentRoute = route;
@@ -6601,6 +6155,8 @@
             const startName = route.startName || route.path?.[0] || getDOM('startLocation')?.value || 'Current Location';
             let html = `<div class="route-header">${route.type}</div>`;
             html += `<div class="route-header">${'═'.repeat(50)}</div>`;
+            html += renderRouteColourLegend(route.colourLegend || []);
+            html += renderShipCargoVisual(route);
             html += `<div class="route-line" style="color: var(--ok); border-left: 2px solid var(--ok); background:#1f3a1f; margin-bottom:6px;">START: ${escapeHtml(startName)}</div>`;
             html += `<div class="route-line" style="color: var(--accent); border-left: 2px solid var(--accent); background:#332211; margin-bottom:8px;">⛽ REFUEL REMINDER: top up before leaving the start point, and again if the route is long or crosses gateways.</div>`;
 
@@ -6610,7 +6166,10 @@
                     currentPhase = step.phase;
                     html += `<div class="route-phase active"><div style="color: var(--accent); font-weight: 700; margin-top: 4px;">${step.text}</div></div>`;
                 } else if (step.clickable) {
-                    html += `<div class="route-line clickable" data-id="${step.id}" onclick="toggleStep('${step.id}')">${step.text}</div>`;
+                    const colour = normaliseHexColour(step.dropoffColour || step.contractColour, getPaletteColour(step.contractIndex));
+                    const style = `--contract-colour:${colour};--contract-colour-rgb:${hexToRgbString(colour)};`;
+                    const label = escapeHtml(step.dropoffLabel || step.contractLabel || contractColourLabel(step.contractIndex));
+                    html += `<div class="route-line clickable" style="${style}" data-id="${step.id}" onclick="toggleStep('${step.id}')"><span class="route-contract-badge">${label}</span>${escapeHtml(step.text)}</div>`;
                 } else if (!step.phase) {
                     html += `<div class="route-line">${step.text}</div>`;
                 }
@@ -6633,6 +6192,7 @@
             const clickableSteps = steps.filter(s => s.clickable).length;
             const completedSteps = Object.keys(tracking).filter(k => tracking[k]).length;
             getDOM('progressInfo').textContent = `Progress: ${completedSteps}/${clickableSteps}`;
+            maybeCelebrateRouteCompletion(steps || []);
         }
 
         function toggleStep(id) {
@@ -6902,15 +6462,7 @@
             document.documentElement.style.setProperty('--accent-text', getAccentTextColor(accent));
         }
 
-        function setThemeColor(color) {
-            // Backwards compatibility for old saved colour names and any older buttons.
-            const legacy = { orange: '#f97316', green: '#22c55e', purple: '#a855f7', blue: '#3b82f6' };
-            setThemeAccent(legacy[color] || color);
-        }
 
-        function renderThemeSwatchPanel() {
-            // Legacy no-op: old swatch panel removed in favour of compact colour wheel.
-        }
 
         function updateThemeActive() {
             const current = normaliseHexColor(localStorage.getItem('scThemeAccent') || '#f97316');
@@ -6934,74 +6486,7 @@
             panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
 
-        function saveState() {
-            const state = {
-                contractType,
-                system: getDOM('systemSelect')?.value,
-                mapSystem: getMapSelectedSystem(),
-                ship: getDOM('shipSelect')?.value,
-                start: getDOM('startLocation')?.value,
-                pickups: Array.from(document.querySelectorAll('.pickup-select')).map((sel, i) => ({
-                    location: sel.value,
-                    cargo: document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`)?.value || '',
-                    dest: document.querySelector(`.pickup-dest[data-idx="${i+1}"]`)?.value || ''
-                })),
-                dropoffs: Array.from(document.querySelectorAll('.dropoff-select')).map((sel, i) => ({
-                    location: sel.value,
-                    cargo: document.querySelector(`.dropoff-cargo[data-idx="${i+1}"]`)?.value || ''
-                }))
-            };
-            localStorage.setItem('scContractState', JSON.stringify(state));
-        }
 
-        function loadState() {
-            const saved = localStorage.getItem('scContractState');
-            if (!saved) return;
-            const state = JSON.parse(saved);
-            
-            if (state.contractType) {
-                contractType = state.contractType;
-                document.querySelectorAll('.toggle-btn').forEach((btn, idx) => {
-                    btn.classList.remove('active');
-                    if ((idx === 0 && contractType === 'single-multi') ||
-                        (idx === 1 && contractType === 'multi-single') ||
-                        (idx === 2 && contractType === 'multi-multi')) {
-                        btn.classList.add('active');
-                    }
-                });
-            }
-
-            if (state.system) getDOM('systemSelect').value = state.system;
-            if (state.mapSystem && mapConfig[state.mapSystem]) setMapSystem(state.mapSystem, { redraw: false, reset: false, save: true });
-            if (state.ship) getDOM('shipSelect').value = state.ship;
-
-            updateLocationOptions();
-            if (state.start) getDOM('startLocation').value = state.start;
-
-            updateUI();
-            applyContractGridLayout();
-
-            setTimeout(() => {
-                state.pickups?.forEach((p, i) => {
-                    const sel = document.querySelector(`.pickup-select[data-idx="${i+1}"]`);
-                    const cargo = document.querySelector(`.pickup-cargo[data-idx="${i+1}"]`);
-                    const dest = document.querySelector(`.pickup-dest[data-idx="${i+1}"]`);
-                    if (sel) sel.value = p.location;
-                    if (cargo) cargo.value = p.cargo;
-                    if (dest) dest.value = p.dest;
-                });
-
-                state.dropoffs?.forEach((d, i) => {
-                    const sel = document.querySelector(`.dropoff-select[data-idx="${i+1}"]`);
-                    const cargo = document.querySelector(`.dropoff-cargo[data-idx="${i+1}"]`);
-                    if (sel) sel.value = d.location;
-                    if (cargo) cargo.value = d.cargo;
-                });
-
-                loadTracking();
-                updateStatus();
-            }, 100);
-        }
 
         function saveTracking() {
             localStorage.setItem('scContractTracking', JSON.stringify(tracking));
@@ -7017,7 +6502,502 @@
 
         /* === Contract Cards Rework Layer === */
         const SC_CUSTOM_LOCATIONS_KEY = 'scCustomHaulingLocations';
-        const SC_CARD_STATE_VERSION = 3;
+        const SC_CARD_STATE_VERSION = 5;
+        let cargoPlannerLayouts = {};
+        let currentCargoPlanner = null;
+        let activeCargoDragSegmentId = '';
+        let activeCargoDragGroupId = '';
+        let cargoPlannerResizeUnlocked = false;
+        let activeCargoResizeState = null;
+        let lastConfettiCelebrationKey = '';
+        const CONTRACT_COLOUR_PALETTE = [
+            '#f97316', '#22c55e', '#3b82f6', '#a855f7', '#facc15', '#ec4899',
+            '#14b8a6', '#f43f5e', '#84cc16', '#06b6d4', '#eab308', '#c084fc'
+        ];
+
+        function normaliseHexColour(value, fallback = '#f97316') {
+            const raw = String(value || '').trim();
+            if (/^#[0-9a-f]{6}$/i.test(raw)) return raw.toLowerCase();
+            if (/^[0-9a-f]{6}$/i.test(raw)) return `#${raw.toLowerCase()}`;
+            return fallback;
+        }
+
+        function getPaletteColour(index = 0) {
+            const i = Math.max(0, Math.floor(safeNumber(index))) % CONTRACT_COLOUR_PALETTE.length;
+            return CONTRACT_COLOUR_PALETTE[i];
+        }
+
+        function hashStringForColour(value = '') {
+            const text = String(value || '').trim().toLowerCase();
+            let hash = 0;
+            for (let i = 0; i < text.length; i++) hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+            return Math.abs(hash);
+        }
+
+        function getDropoffAutoColour(dropoffName = '', fallbackIndex = 0) {
+            const clean = canonicalLocationName(dropoffName || '');
+            if (!clean) return getPaletteColour(fallbackIndex);
+            return getPaletteColour(hashStringForColour(clean));
+        }
+
+        function getContractColour(contract, index = 0) {
+            return normaliseHexColour(contract?.colour || contract?.color, getPaletteColour(index));
+        }
+
+        function getLineColour(line, contractIndex = 0, lineIndex = 0) {
+            return getSharedDropoffColour(line?.dropoff, (safeNumber(contractIndex) * 7) + safeNumber(lineIndex));
+        }
+
+        function hexToRgbString(hex) {
+            const safe = normaliseHexColour(hex).replace('#', '');
+            return [0, 2, 4].map(i => parseInt(safe.slice(i, i + 2), 16)).join(',');
+        }
+
+        function contractColourStyle(contract, index = 0) {
+            const colour = getContractColour(contract, index);
+            return `--contract-colour:${colour};--contract-colour-rgb:${hexToRgbString(colour)};`;
+        }
+
+        function lineColourStyle(line, contractIndex = 0, lineIndex = 0) {
+            const colour = getLineColour(line, contractIndex, lineIndex);
+            return `--contract-colour:${colour};--contract-colour-rgb:${hexToRgbString(colour)};`;
+        }
+
+        function contractColourLabel(index = 0) {
+            return `C${Math.max(0, Math.floor(safeNumber(index))) + 1}`;
+        }
+
+        function dropoffColourLabel(index = 0) {
+            return `D${Math.max(0, Math.floor(safeNumber(index))) + 1}`;
+        }
+
+        function buildDropoffGroupMap() {
+            const map = new Map();
+            let nextIndex = 0;
+            contracts.forEach((contract, ci) => {
+                (contract.lines || []).forEach((line, li) => {
+                    const key = canonicalLocationName(line?.dropoff || '');
+                    if (!key) return;
+                    if (!map.has(key)) {
+                        map.set(key, {
+                            key,
+                            index: nextIndex,
+                            label: dropoffColourLabel(nextIndex),
+                            colour: getDropoffAutoColour(key, nextIndex)
+                        });
+                        nextIndex += 1;
+                    }
+                });
+            });
+            return map;
+        }
+
+        function getSharedDropoffColour(dropoffName = '', fallbackIndex = 0) {
+            const key = canonicalLocationName(dropoffName || '');
+            if (!key) return getPaletteColour(fallbackIndex);
+            return getDropoffAutoColour(key, fallbackIndex);
+        }
+
+        function getDropoffGroupMeta(dropoffName = '', fallbackIndex = 0) {
+            const key = canonicalLocationName(dropoffName || '');
+            const groups = buildDropoffGroupMap();
+            if (key && groups.has(key)) return groups.get(key);
+            return {
+                key,
+                index: fallbackIndex,
+                label: dropoffColourLabel(fallbackIndex),
+                colour: getSharedDropoffColour(dropoffName, fallbackIndex)
+            };
+        }
+
+        function getShipCargoLayoutConfig(shipValue = '') {
+            if (shipValue !== 'Hermes') return null;
+            return {
+                ship: 'Hermes',
+                shipLabel: 'RSI Hermes',
+                note: 'Two side-by-side 18 × 4 cargo grids. Each full grid represents 144 SCU, for 288 SCU total.',
+                totalCapacity: 288,
+                gridCapacity: 144,
+                grids: [
+                    { id: 'grid1', name: 'Grid 1', capacity: 144 },
+                    { id: 'grid2', name: 'Grid 2', capacity: 144 }
+                ]
+            };
+        }
+
+        function makeCargoGroupId(dropoff = '', index = 0) {
+            const clean = canonicalLocationName(dropoff || '');
+            return `g${hashStringForColour(clean || `drop-${index}`).toString(36)}`;
+        }
+
+        function buildHermesCargoGroups(legend = []) {
+            return legend.map((item, index) => ({
+                id: makeCargoGroupId(item?.dropoff, index),
+                label: item?.label || dropoffColourLabel(index),
+                dropoff: item?.dropoff || 'Drop-off pending',
+                colour: normaliseHexColour(item?.colour, getDropoffAutoColour(item?.dropoff, index)),
+                totalScu: Math.max(0, Math.round(safeNumber(item?.totalScu))),
+                overflow: 0
+            }));
+        }
+
+        function getCargoPlannerRouteKey(shipName = '', legend = []) {
+            const parts = legend.map((item, index) => `${canonicalLocationName(item?.dropoff || `drop-${index}`)}:${Math.round(safeNumber(item?.totalScu))}`).sort();
+            return `${shipName}::${parts.join('|')}`;
+        }
+
+        function getDefaultCargoGridAssignments(groups = []) {
+            const assignments = {};
+            let grid1Used = 0;
+            groups.forEach(group => {
+                const size = Math.min(144, Math.max(0, safeNumber(group.totalScu)));
+                if (grid1Used + size <= 144 || grid1Used === 0) {
+                    assignments[group.id] = 'grid1';
+                    grid1Used += size;
+                } else {
+                    assignments[group.id] = 'grid2';
+                }
+            });
+            return assignments;
+        }
+
+        function getCargoPlannerState(routeKey, groups = []) {
+            const existing = cargoPlannerLayouts?.[routeKey] && typeof cargoPlannerLayouts[routeKey] === 'object'
+                ? cargoPlannerLayouts[routeKey]
+                : {};
+            const validIds = new Set(groups.map(group => group.id));
+            const defaults = getDefaultCargoGridAssignments(groups);
+            const assignments = {};
+            const visualSizes = {};
+            const orderByGrid = { grid1: [], grid2: [] };
+
+            if (existing.assignments && typeof existing.assignments === 'object') {
+                Object.entries(existing.assignments).forEach(([groupId, gridId]) => {
+                    if (validIds.has(groupId) && ['grid1', 'grid2'].includes(gridId)) assignments[groupId] = gridId;
+                });
+            }
+            groups.forEach(group => {
+                if (!assignments[group.id]) assignments[group.id] = defaults[group.id] || 'grid1';
+            });
+
+            const existingOrders = existing.orderByGrid && typeof existing.orderByGrid === 'object' ? existing.orderByGrid : {};
+            ['grid1', 'grid2'].forEach(gridId => {
+                const arr = Array.isArray(existingOrders[gridId]) ? existingOrders[gridId] : [];
+                arr.forEach(groupId => {
+                    if (validIds.has(groupId) && assignments[groupId] === gridId && !orderByGrid[gridId].includes(groupId)) orderByGrid[gridId].push(groupId);
+                });
+            });
+            groups.forEach(group => {
+                const gridId = assignments[group.id] || 'grid1';
+                if (!orderByGrid[gridId].includes(group.id)) orderByGrid[gridId].push(group.id);
+            });
+
+            if (existing.visualSizes && typeof existing.visualSizes === 'object') {
+                Object.entries(existing.visualSizes).forEach(([groupId, value]) => {
+                    const num = safeNumber(value);
+                    if (validIds.has(groupId) && num > 0) visualSizes[groupId] = num;
+                });
+            }
+            groups.forEach(group => {
+                if (!Number.isFinite(visualSizes[group.id]) || visualSizes[group.id] <= 0) {
+                    visualSizes[group.id] = Math.max(12, Math.min(144, safeNumber(group.totalScu) || 12));
+                }
+            });
+
+            return { assignments, orderByGrid, visualSizes };
+        }
+
+        function saveCargoPlannerState(routeKey, state) {
+            if (!routeKey || !state) return;
+            cargoPlannerLayouts[routeKey] = {
+                assignments: JSON.parse(JSON.stringify(state.assignments || {})),
+                orderByGrid: JSON.parse(JSON.stringify(state.orderByGrid || { grid1: [], grid2: [] })),
+                visualSizes: JSON.parse(JSON.stringify(state.visualSizes || {}))
+            };
+            saveState();
+        }
+
+        function buildHermesCargoPlanner(route = null) {
+            const layoutConfig = getShipCargoLayoutConfig(getDOM('shipSelect')?.value || '');
+            const legend = Array.isArray(route?.colourLegend) ? route.colourLegend : [];
+            if (!layoutConfig || !legend.length) return null;
+
+            const groups = buildHermesCargoGroups(legend);
+            const routeKey = getCargoPlannerRouteKey(layoutConfig.ship, legend);
+            const state = getCargoPlannerState(routeKey, groups);
+            const groupMap = Object.fromEntries(groups.map(group => [group.id, group]));
+
+            const grids = layoutConfig.grids.map(grid => {
+                const orderedGroups = (state.orderByGrid[grid.id] || []).map(id => groupMap[id]).filter(Boolean);
+                const actualUsed = orderedGroups.reduce((sum, group) => sum + safeNumber(group.totalScu), 0);
+                const totalVisual = orderedGroups.reduce((sum, group) => sum + Math.max(0, safeNumber(state.visualSizes[group.id])), 0);
+                const displayBase = Math.max(layoutConfig.gridCapacity, totalVisual || 0);
+                let cursor = 0;
+                const regions = orderedGroups.map(group => {
+                    const visualSize = Math.max(8, safeNumber(state.visualSizes[group.id]));
+                    const top = (cursor / displayBase) * 100;
+                    const height = Math.max(6, (visualSize / displayBase) * 100);
+                    cursor += visualSize;
+                    return {
+                        groupId: group.id,
+                        label: group.label,
+                        dropoff: group.dropoff,
+                        colour: group.colour,
+                        totalScu: group.totalScu,
+                        visualSize,
+                        top,
+                        height
+                    };
+                });
+                const spareUnits = Math.max(0, layoutConfig.gridCapacity - totalVisual);
+                const spareTop = (cursor / displayBase) * 100;
+                const spareHeight = Math.max(0, (spareUnits / displayBase) * 100);
+                return {
+                    ...grid,
+                    actualUsed,
+                    totalVisual,
+                    displayBase,
+                    regions,
+                    spareUnits,
+                    spareTop,
+                    spareHeight,
+                    overflow: Math.max(0, actualUsed - layoutConfig.gridCapacity)
+                };
+            });
+
+            const usedScu = groups.reduce((sum, group) => sum + safeNumber(group.totalScu), 0);
+            const overflowScu = grids.reduce((sum, grid) => sum + safeNumber(grid.overflow), 0);
+            return { routeKey, layoutConfig, groups, groupMap, state, grids, usedScu, overflowScu };
+        }
+
+        function getCargoGroupPlacementSummary(planner, groupId) {
+            if (!planner) return 'No placement yet';
+            const found = [];
+            planner.grids.forEach(grid => {
+                grid.regions.filter(region => region.groupId === groupId).forEach(region => found.push(`${grid.name}: ${fmtScu(region.totalScu)} SCU`));
+            });
+            return found.join(' • ') || 'No placement yet';
+        }
+
+        function startCargoGroupDrag(event, groupId) {
+            activeCargoDragGroupId = groupId;
+            try { event.dataTransfer.setData('text/plain', groupId); } catch {}
+            try { event.dataTransfer.effectAllowed = 'move'; } catch {}
+        }
+
+        function allowCargoGridDrop(event) {
+            event.preventDefault();
+            const grid = event.currentTarget;
+            if (grid) grid.classList.add('drag-over');
+            try { event.dataTransfer.dropEffect = 'move'; } catch {}
+        }
+
+        function leaveCargoGridDrop(event) {
+            const grid = event.currentTarget;
+            if (grid) grid.classList.remove('drag-over');
+        }
+
+        function setCargoGroupGrid(groupId, gridId) {
+            if (!currentCargoPlanner?.routeKey || !currentCargoPlanner.groupMap[groupId]) return;
+            const state = getCargoPlannerState(currentCargoPlanner.routeKey, currentCargoPlanner.groups);
+            ['grid1', 'grid2'].forEach(id => {
+                state.orderByGrid[id] = (state.orderByGrid[id] || []).filter(x => x !== groupId);
+            });
+            state.assignments[groupId] = gridId;
+            if (!state.orderByGrid[gridId].includes(groupId)) state.orderByGrid[gridId].push(groupId);
+            saveCargoPlannerState(currentCargoPlanner.routeKey, state);
+            if (currentRoute) renderRoute(currentRoute);
+        }
+
+        function dropCargoGroupOnGrid(event, gridId) {
+            event.preventDefault();
+            const grid = event.currentTarget;
+            if (grid) grid.classList.remove('drag-over');
+            const groupId = (() => {
+                try { return event.dataTransfer.getData('text/plain') || activeCargoDragGroupId; } catch { return activeCargoDragGroupId; }
+            })();
+            if (!groupId) return;
+            setCargoGroupGrid(groupId, gridId);
+            activeCargoDragGroupId = '';
+        }
+
+        function autoPlaceCargoGroup(groupId) {
+            if (!currentCargoPlanner?.routeKey || !currentCargoPlanner.groupMap[groupId]) return;
+            const defaults = getDefaultCargoGridAssignments(currentCargoPlanner.groups);
+            setCargoGroupGrid(groupId, defaults[groupId] || 'grid1');
+        }
+
+        function moveCargoGroupOrder(groupId, direction = 0) {
+            if (!currentCargoPlanner?.routeKey || !currentCargoPlanner.groupMap[groupId]) return;
+            const state = getCargoPlannerState(currentCargoPlanner.routeKey, currentCargoPlanner.groups);
+            const gridId = state.assignments[groupId] || 'grid1';
+            const arr = state.orderByGrid[gridId] || [];
+            const idx = arr.indexOf(groupId);
+            if (idx < 0) return;
+            const next = Math.max(0, Math.min(arr.length - 1, idx + direction));
+            if (next === idx) return;
+            const [item] = arr.splice(idx, 1);
+            arr.splice(next, 0, item);
+            state.orderByGrid[gridId] = arr;
+            saveCargoPlannerState(currentCargoPlanner.routeKey, state);
+            if (currentRoute) renderRoute(currentRoute);
+        }
+
+        function toggleCargoResizeLock() {
+            cargoPlannerResizeUnlocked = !cargoPlannerResizeUnlocked;
+            if (!cargoPlannerResizeUnlocked) activeCargoResizeState = null;
+            if (currentRoute) renderRoute(currentRoute);
+        }
+
+        function beginCargoRegionResize(event, routeKey, gridId, groupId) {
+            if (!cargoPlannerResizeUnlocked || !currentCargoPlanner || currentCargoPlanner.routeKey !== routeKey) return;
+            event.preventDefault();
+            event.stopPropagation();
+            const state = getCargoPlannerState(routeKey, currentCargoPlanner.groups);
+            const order = state.orderByGrid[gridId] || [];
+            const idx = order.indexOf(groupId);
+            if (idx < 0) return;
+            const nextGroupId = order[idx + 1] || null;
+            const totalVisual = order.reduce((sum, id) => sum + Math.max(0, safeNumber(state.visualSizes[id])), 0);
+            const spareUnits = Math.max(0, 144 - totalVisual);
+            if (!nextGroupId && spareUnits <= 0) return;
+            const floorEl = event.currentTarget.closest('.hermes-stack-floor');
+            const floorHeight = Math.max(160, floorEl?.getBoundingClientRect().height || 540);
+            activeCargoResizeState = {
+                routeKey,
+                gridId,
+                groupId,
+                nextGroupId,
+                startY: event.clientY,
+                floorHeight,
+                unitsBase: Math.max(144, totalVisual || 144),
+                initialCurrent: Math.max(8, safeNumber(state.visualSizes[groupId])),
+                initialNext: nextGroupId ? Math.max(8, safeNumber(state.visualSizes[nextGroupId])) : 0,
+                initialSpare: nextGroupId ? 0 : spareUnits
+            };
+        }
+
+        function handleCargoRegionResizeMove(event) {
+            if (!activeCargoResizeState || !currentCargoPlanner) return;
+            const drag = activeCargoResizeState;
+            const state = getCargoPlannerState(drag.routeKey, currentCargoPlanner.groups);
+            const deltaUnits = ((event.clientY - drag.startY) / drag.floorHeight) * drag.unitsBase;
+            const minUnits = 8;
+            let newCurrent;
+            if (drag.nextGroupId) {
+                const totalPair = drag.initialCurrent + drag.initialNext;
+                newCurrent = Math.max(minUnits, Math.min(totalPair - minUnits, drag.initialCurrent + deltaUnits));
+                const newNext = Math.max(minUnits, totalPair - newCurrent);
+                state.visualSizes[drag.groupId] = newCurrent;
+                state.visualSizes[drag.nextGroupId] = newNext;
+            } else {
+                const totalPair = drag.initialCurrent + drag.initialSpare;
+                newCurrent = Math.max(minUnits, Math.min(totalPair, drag.initialCurrent + deltaUnits));
+                state.visualSizes[drag.groupId] = newCurrent;
+            }
+            saveCargoPlannerState(drag.routeKey, state);
+            if (currentRoute) renderRoute(currentRoute);
+        }
+
+        function endCargoRegionResize() {
+            activeCargoResizeState = null;
+        }
+
+        function resetCargoPlannerLayout() {
+            if (!currentCargoPlanner?.routeKey) return;
+            delete cargoPlannerLayouts[currentCargoPlanner.routeKey];
+            cargoPlannerResizeUnlocked = false;
+            saveState();
+            if (currentRoute) renderRoute(currentRoute);
+        }
+
+        function renderHermesStackBlocks(planner, grid) {
+            if (!grid.regions.length) return '<div class="hermes-stack-empty">Spare grid</div>';
+            return grid.regions.map((region, idx) => {
+                const style = `top:${region.top}%;height:${region.height}%;--contract-colour:${region.colour};--contract-colour-rgb:${hexToRgbString(region.colour)};`;
+                const canResize = cargoPlannerResizeUnlocked && (idx < grid.regions.length - 1 || grid.spareUnits > 0);
+                return `<div class="hermes-stack-block${canResize ? ' resizable' : ''}" style="${style}" draggable="true" ondragstart="startCargoGroupDrag(event, '${region.groupId}')" title="${escapeHtml(region.label)} • ${fmtScu(region.totalScu)} SCU • ${escapeHtml(region.dropoff)}"><div class="hermes-stack-block-label">${escapeHtml(region.label)}<small>${fmtScu(region.totalScu)} SCU • ${escapeHtml(region.dropoff)}</small></div>${canResize ? `<div class="hermes-stack-resizer" onmousedown="beginCargoRegionResize(event, '${planner.routeKey}', '${grid.id}', '${region.groupId}')"></div>` : ''}</div>`;
+            }).join('');
+        }
+
+        function renderShipCargoVisual(route = null) {
+            const planner = buildHermesCargoPlanner(route);
+            currentCargoPlanner = planner;
+            if (!planner) return '';
+
+            const groupsHtml = planner.groups.map(group => {
+                const style = `--contract-colour:${group.colour};--contract-colour-rgb:${hexToRgbString(group.colour)};`;
+                const placementText = getCargoGroupPlacementSummary(planner, group.id);
+                const assigned = planner.state.assignments[group.id] || '';
+                return `<div class="hermes-stack-group" style="${style}" draggable="true" ondragstart="startCargoGroupDrag(event, '${group.id}')"><div class="hermes-stack-group-top"><span class="contract-colour-chip" aria-hidden="true"></span><b>${escapeHtml(group.label)}</b><span>${escapeHtml(group.dropoff)}</span><span>— ${fmtScu(group.totalScu)} SCU</span></div><div class="hermes-stack-group-note">${escapeHtml(placementText)}</div><div class="hermes-stack-buttons"><button class="secondary ${assigned === 'grid1' ? 'active' : ''}" onclick="setCargoGroupGrid('${group.id}', 'grid1')">Grid 1</button><button class="secondary ${assigned === 'grid2' ? 'active' : ''}" onclick="setCargoGroupGrid('${group.id}', 'grid2')">Grid 2</button><button class="secondary" onclick="autoPlaceCargoGroup('${group.id}')">Auto</button><button class="secondary" onclick="moveCargoGroupOrder('${group.id}', -1)">↑</button><button class="secondary" onclick="moveCargoGroupOrder('${group.id}', 1)">↓</button></div></div>`;
+            }).join('');
+
+            const baysHtml = planner.grids.map(grid => {
+                const blocks = renderHermesStackBlocks(planner, grid);
+                return `<div class="hermes-stack-bay" ondragover="allowCargoGridDrop(event)" ondragleave="leaveCargoGridDrop(event)" ondrop="dropCargoGroupOnGrid(event, '${grid.id}')"><div class="hermes-stack-bay-head"><b>${escapeHtml(grid.name)}</b><small>${fmtScu(Math.min(grid.actualUsed, grid.capacity))} / ${fmtScu(grid.capacity)} SCU</small></div><div class="hermes-stack-floor"><div class="hermes-stack-outline"></div>${blocks}</div><div class="hermes-stack-axis"><span>Front</span><span>Mid</span><span>Mid</span><span>Rear</span></div></div>`;
+            }).join('');
+
+            const overflowHtml = planner.overflowScu > 0 ? `<div class="hermes-stack-overflow"><b>Overflow:</b> ${fmtScu(planner.overflowScu)} SCU does not fit inside the Hermes cargo grids.</div>` : '';
+            return `<div class="hermes-stack-visual${cargoPlannerResizeUnlocked ? ' resize-unlocked' : ''}"><div class="hermes-stack-head"><div><b>${escapeHtml(planner.layoutConfig.shipLabel)} colour split planner</b><small>${escapeHtml(planner.layoutConfig.note)} Each drop-off colour is shown as one full-width coloured area inside a side-by-side grid, like your mockup. Drag colours between grids, use ↑/↓ to reorder them, and unlock resize if you want to drag the bottom edge and manually reshape the colour areas.</small></div><div class="hermes-stack-stats">Used ${fmtScu(planner.usedScu)} / ${fmtScu(planner.layoutConfig.totalCapacity)} SCU</div></div><div class="hermes-stack-actions"><button class="secondary" onclick="toggleCargoResizeLock()">${cargoPlannerResizeUnlocked ? 'Lock Resize' : 'Unlock Resize'}</button><button class="secondary" onclick="resetCargoPlannerLayout()">Auto Arrange</button></div><div class="hermes-stack-groups">${groupsHtml}</div><div class="hermes-stack-bays">${baysHtml}</div>${overflowHtml}</div>`;
+        }
+
+        function launchCompletionConfetti() {
+            const overlay = document.createElement('div');
+            overlay.className = 'confetti-overlay';
+            const colours = ['#f97316', '#22c55e', '#3b82f6', '#a855f7', '#facc15', '#ec4899', '#14b8a6'];
+            for (let i = 0; i < 140; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                const sizeW = 6 + Math.random() * 8;
+                const sizeH = 10 + Math.random() * 14;
+                piece.style.left = `${Math.random() * 100}vw`;
+                piece.style.width = `${sizeW}px`;
+                piece.style.height = `${sizeH}px`;
+                piece.style.background = colours[i % colours.length];
+                piece.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+                piece.style.setProperty('--dur', `${2000 + Math.random() * 1800}ms`);
+                overlay.appendChild(piece);
+            }
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.remove(), 4200);
+        }
+
+        function maybeCelebrateRouteCompletion(steps = []) {
+            const clickableSteps = (steps || []).filter(s => s.clickable).length;
+            const completedSteps = Object.keys(tracking).filter(k => tracking[k]).length;
+            const key = `${currentRoute?.type || 'route'}:${clickableSteps}:${completedSteps}`;
+            if (clickableSteps > 0 && completedSteps >= clickableSteps) {
+                if (lastConfettiCelebrationKey !== key) {
+                    lastConfettiCelebrationKey = key;
+                    launchCompletionConfetti();
+                }
+            } else {
+                lastConfettiCelebrationKey = '';
+            }
+        }
+
+        function updateContractColour(contractIndex, value) {
+            // Kept for old saved/browser data compatibility. New cargo colours live on delivery lines/drop-offs.
+            const contract = contracts[contractIndex];
+            if (!contract) return;
+            const colour = normaliseHexColour(value, getPaletteColour(contractIndex));
+            contract.colour = colour;
+            contract.color = colour;
+            renderContracts();
+            updateStatus();
+            saveState();
+        }
+
+        function updateLineColour(contractIndex, lineIndex, value) {
+            const line = contracts[contractIndex]?.lines?.[lineIndex];
+            if (!line) return;
+            line.colourManual = false;
+            line.colour = getSharedDropoffColour(line.dropoff, (contractIndex * 7) + lineIndex);
+            line.color = line.colour;
+            renderContracts();
+            updateStatus();
+            saveState();
+        }
 
         const builtInExtraLocations = [
             {name: "Pyro II", sys: "Pyro", lat: 0.00, lon: -55.23, dist: 10.62, hauling: true},
@@ -7147,7 +7127,7 @@
                 lon: Number(loc.lon) || 0,
                 dist: Number(loc.dist) || 0
             };
-            const existingIndex = locations.findIndex(l => l.name === clean.name);
+            const existingIndex = locations.findIndex(l => l.name === clean.name && l.sys === clean.sys);
             if (existingIndex >= 0) locations[existingIndex] = {...locations[existingIndex], ...clean};
             else locations.push(clean);
             locationsByName.set(clean.name, clean);
@@ -7200,23 +7180,26 @@
 
             for (const candidate of candidates) {
                 if (!candidate) continue;
+
+                const matches = locations.filter(l => l.name === candidate || l.name.toLowerCase() === candidate.toLowerCase());
+
                 if (preferredSys) {
-                    const exact = locations.find(l => l.name === candidate && l.sys === preferredSys);
+                    const exact = matches.find(l => l.sys === preferredSys);
                     if (exact) return exact;
                 }
 
-                const exactByName = locationsByName.get(candidate);
-                if (exactByName) return exactByName;
+                const uiPreferredSys = getPreferredLookupSystem();
+                if (uiPreferredSys && matches.length > 1) {
+                    const preferred = matches.find(l => l.sys === uiPreferredSys);
+                    if (preferred) return preferred;
+                }
 
-                const matches = locations.filter(l => l.name === candidate || l.name.toLowerCase() === candidate.toLowerCase());
                 if (matches.length === 1) return matches[0];
 
                 if (matches.length > 1) {
-                    const uiPreferredSys = getPreferredLookupSystem();
-                    if (uiPreferredSys) {
-                        const preferred = matches.find(l => l.sys === uiPreferredSys);
-                        if (preferred) return preferred;
-                    }
+                    // Gateways can share names in different systems. Do not let the name-only map
+                    // pick the wrong side of the jump. Use the currently selected system first,
+                    // then fall back to the normal hauling-side default.
                     if (candidate === 'Stanton Gateway') {
                         const pyroSide = matches.find(l => l.sys === 'Pyro');
                         if (pyroSide) return pyroSide;
@@ -7225,8 +7208,15 @@
                         const stantonSide = matches.find(l => l.sys === 'Stanton');
                         if (stantonSide) return stantonSide;
                     }
+                    if (candidate === 'Nyx Gateway') {
+                        const pyroSide = matches.find(l => l.sys === 'Pyro');
+                        if (pyroSide) return pyroSide;
+                    }
                     return matches[0];
                 }
+
+                const exactByName = locationsByName.get(candidate);
+                if (exactByName) return exactByName;
             }
             return null;
         }
@@ -7306,10 +7296,12 @@
         function selectOptionsHtml(value = '') {
             const selectedValue = canonicalLocationName(value);
             const found = selectedValue ? findLocationByName(selectedValue) : null;
-            const selectedOption = selectedValue
+            const optionHtml = getLocationHTML();
+            const hasVisibleOption = selectedValue && optionHtml.includes(`value="${escapeHtml(selectedValue)}"`);
+            const selectedOption = selectedValue && !hasVisibleOption
                 ? `<option value="${escapeHtml(selectedValue)}" selected>${found ? '' : '⚠ '}${escapeHtml(selectedValue)}${found ? '' : ' [not in locations]'}</option>`
                 : '';
-            return '<option value="">[ Select location ]</option>' + selectedOption + getLocationHTML();
+            return '<option value="">[ Select location ]</option>' + selectedOption + optionHtml;
         }
 
         function setSelectValue(select, value) {
@@ -7320,10 +7312,13 @@
         }
 
         function makeBlankContract() {
+            const nextIndex = contracts.length;
             return {
                 id: uid('contract'),
-                name: `Contract ${contracts.length + 1}`,
+                name: `Contract ${nextIndex + 1}`,
                 payout: '',
+                colour: getPaletteColour(nextIndex),
+                color: getPaletteColour(nextIndex),
                 collapsed: false,
                 activeLine: 0,
                 lines: [makeBlankLine()]
@@ -7335,6 +7330,9 @@
                 id: uid('line'),
                 dropoff: '',
                 cargo: '',
+                colour: '',
+                color: '',
+                colourManual: false,
                 // Kept for old saved browser data only. New SCU totals come from pickup rows.
                 scu: '',
                 pickups: [makeBlankPickup()]
@@ -7349,12 +7347,17 @@
             contracts.forEach((contract, ci) => {
                 if (!contract.id) contract.id = uid('contract');
                 if (contract.payout === undefined) contract.payout = '';
+                contract.colour = getContractColour(contract, ci);
+                contract.color = contract.colour;
                 if (!contract.name) contract.name = `Contract ${ci + 1}`;
                 if (!Array.isArray(contract.lines) || !contract.lines.length) contract.lines = [makeBlankLine()];
                 contract.activeLine = Math.max(0, Math.min(Math.floor(safeNumber(contract.activeLine)), contract.lines.length - 1));
 
-                contract.lines.forEach(line => {
+                contract.lines.forEach((line, li) => {
                     if (!line.id) line.id = uid('line');
+                    line.colourManual = false;
+                    line.colour = getSharedDropoffColour(line.dropoff, (ci * 7) + li);
+                    line.color = line.colour;
                     if (!Array.isArray(line.pickups) || !line.pickups.length) line.pickups = [makeBlankPickup()];
                     line.pickups.forEach(pickup => {
                         if (!pickup.id) pickup.id = uid('pickup');
@@ -7411,6 +7414,8 @@
             const copy = JSON.parse(JSON.stringify(source));
             copy.id = uid('contract');
             copy.name = `${source.name || 'Contract'} Copy`;
+            copy.colour = getPaletteColour(contractIndex + 1);
+            copy.color = copy.colour;
             copy.collapsed = false;
             copy.activeLine = 0;
             copy.lines.forEach(line => {
@@ -7432,9 +7437,6 @@
             saveState();
         }
 
-        function toggleContract(contractIndex) {
-            setActiveContract(contractIndex);
-        }
 
         function updateContractName(contractIndex, value) {
             if (!contracts[contractIndex]) return;
@@ -7485,6 +7487,11 @@
             const line = contracts[contractIndex]?.lines[lineIndex];
             if (!line) return;
             line[field] = field === 'dropoff' ? canonicalLocationName(value) : value;
+            if (field === 'dropoff') {
+                line.colourManual = false;
+                line.colour = getSharedDropoffColour(line.dropoff, (contractIndex * 7) + lineIndex);
+                line.color = line.colour;
+            }
             renderContracts();
             updateStatus();
             saveState();
@@ -7584,7 +7591,7 @@
                 bits.push(stats.shape);
                 return `<div class="contract-main-tab-slot${active}">
                     <button class="contract-main-tab${active}" onclick="setActiveContract(${ci})" title="Open ${escapeHtml(name)}" style="margin:0;">
-                        <b>${escapeHtml(name)}</b>
+                        <span style="display:flex;align-items:center;gap:6px;min-width:0;"><b>${escapeHtml(name)}</b></span>
                         <small>${escapeHtml(bits.join(' • '))}</small>
                     </button>
                     <button class="contract-main-tab-close danger-action" onclick="event.stopPropagation(); removeContract(${ci})" title="Delete ${escapeHtml(name)}" aria-label="Delete ${escapeHtml(name)}">×</button>
@@ -7598,6 +7605,7 @@
             const cargos = [...stats.cargos].slice(0, 3).join(', ') || 'No cargo yet';
             const lines = Array.isArray(contract.lines) && contract.lines.length ? contract.lines : [makeBlankLine()];
             const activeLine = Math.max(0, Math.min(safeNumber(contract.activeLine), lines.length - 1));
+            const uniqueDropoffs = new Set(lines.map(line => canonicalLocationName(line.dropoff || '')).filter(Boolean)).size || lines.length;
             return `<article class="contract-card active">
                 <div class="contract-head">
                     <div>
@@ -7614,7 +7622,7 @@
                             <span class="contract-pill">${fmtScu(stats.totalScu)} SCU</span>
                             <span class="contract-pill good">${fmtAuec(stats.payout)} aUEC</span>
                             <span class="contract-pill">${escapeHtml(cargos)}</span>
-                            <span class="contract-pill warn">${lines.length} delivery line${lines.length === 1 ? '' : 's'}</span>
+                            <span class="contract-pill warn">${uniqueDropoffs} drop-off colour${uniqueDropoffs === 1 ? '' : 's'}</span>
                         </div>
                     </div>
                     <div class="contract-actions">
@@ -7638,8 +7646,9 @@
                 const drop = line.dropoff ? canonicalLocationName(line.dropoff).replace(/ \(.+?\)/g, '') : 'No drop-off';
                 const total = lineTotalScu(line);
                 const active = li === activeLine ? ' active' : '';
-                return `<button class="contract-tab${active}" onclick="setActiveDeliveryLine(${ci}, ${li})" title="Edit delivery line ${li + 1}" style="margin:0;">
-                    <span>Line ${li + 1}<small>${escapeHtml(drop)}${total ? ` • ${fmtScu(total)} SCU` : ''}</small></span>
+                const groupMeta = getDropoffGroupMeta(line.dropoff, li);
+                return `<button class="contract-tab${active}" onclick="setActiveDeliveryLine(${ci}, ${li})" title="Edit drop-off line ${li + 1}" style="margin:0;${lineColourStyle(line, ci, li)}">
+                    <span style="display:flex;align-items:center;gap:6px;"><span class="contract-colour-chip tiny" aria-hidden="true"></span><span>${escapeHtml(groupMeta.label)}<small>${escapeHtml(drop)}${total ? ` • ${fmtScu(total)} SCU` : ''}</small></span></span>
                 </button>`;
             }).join('');
             return `<div class="contract-tabs">${tabs}<button class="contract-tab contract-tab-add" onclick="addDeliveryLine(${ci})" style="margin:0;">＋ Line</button></div>`;
@@ -7648,11 +7657,12 @@
         function renderDeliveryLine(line, ci, li, lineCount) {
             const pickupTotal = linePickupScuTotal(line);
             const shownTotal = pickupTotal > 0 ? fmtScu(pickupTotal) : '';
+            const colour = getLineColour(line, ci, li);
             const lineDeleteButton = lineCount > 1
                 ? `<button class="secondary danger-action line-delete-btn" onclick="removeDeliveryLine(${ci}, ${li})" title="Delete this delivery line">Delete Line</button>`
                 : '';
-            return `<div class="delivery-line">
-                <div class="line-top${lineCount <= 1 ? ' no-line-delete' : ''}">
+            return `<div class="delivery-line" style="${lineColourStyle(line, ci, li)}">
+                <div class="line-top has-dropoff-colour${lineCount <= 1 ? ' no-line-delete' : ''}">
                     <div>
                         <label>Deliver to</label>
                         <select data-role="dropoff" data-contract="${ci}" data-line="${li}" onchange="updateLineField(${ci}, ${li}, 'dropoff', this.value)">${selectOptionsHtml(line.dropoff)}</select>
@@ -7664,7 +7674,7 @@
                     ${lineDeleteButton}
                 </div>
                 <div class="collect-titlebar">
-                    <div><b>Collect cargo</b><small>Each row is one pickup: where from, what item, and how many SCU.</small></div>
+                    <div><b>Collect cargo</b><small>These rows use the automatic drop-off colour, so matching destinations stay grouped safely.</small></div>
                     <button class="secondary" onclick="addPickup(${ci}, ${li})">＋ Collect Row</button>
                 </div>
                 <div class="pickup-list">
@@ -7763,7 +7773,8 @@
             const tasks = [];
             contracts.forEach((contract, ci) => {
                 (contract.lines || []).forEach((line, li) => {
-                    const dropoffLoc = findLocationByName(line.dropoff);
+                    const preferredSystem = getPreferredLookupSystem();
+                    const dropoffLoc = findLocationByName(line.dropoff, preferredSystem);
                     const pickupRows = (line.pickups || []).filter(p => p.location);
                     const explicitPickupTotal = linePickupScuTotal(line);
                     const legacyTotal = safeNumber(line.scu);
@@ -7774,8 +7785,12 @@
                         warnings.push(`${contract.name || `Contract ${ci + 1}`} line ${li + 1}: drop-off not found: ${line.dropoff || '[blank]'}`);
                         return;
                     }
+                    const deliveryIndex = tasks.length;
+                    const dropMeta = getDropoffGroupMeta(line.dropoff, deliveryIndex);
+                    const lineColour = normaliseHexColour(dropMeta.colour, getLineColour(line, ci, li));
+                    const lineLabel = dropMeta.label;
                     const validPickups = pickupRows.map((pickup, pi) => {
-                        const loc = findLocationByName(pickup.location);
+                        const loc = findLocationByName(pickup.location, preferredSystem);
                         if (!loc) {
                             warnings.push(`${contract.name || `Contract ${ci + 1}`} line ${li + 1}: pickup not found: ${pickup.location}`);
                             return null;
@@ -7785,7 +7800,13 @@
                             location: loc.name,
                             loc,
                             cargo: String(pickup.cargo || line.cargo || '').trim() || 'Cargo',
-                            scu: useLegacySplit ? (legacyTotal / pickupRows.length) : splitPickupAmount(totalScu, pickupRows, pi)
+                            scu: useLegacySplit ? (legacyTotal / pickupRows.length) : splitPickupAmount(totalScu, pickupRows, pi),
+                            contractIndex: ci,
+                            lineIndex: li,
+                            contractColour: lineColour,
+                            contractLabel: lineLabel,
+                            dropoffColour: lineColour,
+                            dropoffLabel: lineLabel
                         };
                     }).filter(Boolean);
                     if (!validPickups.length) {
@@ -7801,6 +7822,12 @@
                     tasks.push({
                         id: `${contract.id}:${line.id}`,
                         contractName: contract.name || `Contract ${ci + 1}`,
+                        contractIndex: ci,
+                        lineIndex: li,
+                        contractColour: lineColour,
+                        contractLabel: lineLabel,
+                        dropoffColour: lineColour,
+                        dropoffLabel: lineLabel,
                         lineNumber: li + 1,
                         cargo: cargoSummary,
                         totalScu,
@@ -7811,7 +7838,7 @@
                 });
             });
             if (!options.quiet) buildRouteTasks.lastWarnings = warnings;
-            return tasks;
+            return mergeTasksByDropoff(tasks);
         }
         buildRouteTasks.lastWarnings = [];
 
@@ -7899,15 +7926,25 @@
                     if (action.kind === 'pickup') {
                         steps.push({
                             id: actionId,
-                            text: `PICKUP: ${loc.name} — ${fmtScu(action.amount)} SCU ${action.pickup.cargo || action.task.cargo} → ${action.task.dropoff} [${action.task.contractName}]`,
+                            text: `PICKUP: ${loc.name} — ${fmtScu(action.amount)} SCU combined cargo → ${action.task.dropoff} [${action.task.dropoffLabel || action.task.contractName}]`,
                             clickable: true,
+                            contractIndex: action.task.contractIndex,
+                            contractColour: action.task.dropoffColour || action.task.contractColour,
+                            contractLabel: action.task.dropoffLabel || action.task.contractLabel,
+                            dropoffColour: action.task.dropoffColour || action.task.contractColour,
+                            dropoffLabel: action.task.dropoffLabel || action.task.contractLabel,
                             completeThroughSegmentIndex: mapSegments.length - 1
                         });
                     } else {
                         steps.push({
                             id: actionId,
-                            text: `DROP: ${loc.name} — ${fmtScu(action.amount)} SCU ${action.task.cargo} [${action.task.contractName}]`,
+                            text: `DROP: ${loc.name} — ${fmtScu(action.amount)} SCU combined cargo [${action.task.dropoffLabel || action.task.contractName}]`,
                             clickable: true,
+                            contractIndex: action.task.contractIndex,
+                            contractColour: action.task.dropoffColour || action.task.contractColour,
+                            contractLabel: action.task.dropoffLabel || action.task.contractLabel,
+                            dropoffColour: action.task.dropoffColour || action.task.contractColour,
+                            dropoffLabel: action.task.dropoffLabel || action.task.contractLabel,
                             completeThroughSegmentIndex: mapSegments.length - 1
                         });
                     }
@@ -7986,7 +8023,8 @@
                 totalPayout: getTotalPayout(),
                 startName: startLoc.name,
                 path: path.filter(Boolean),
-                mapSegments
+                mapSegments,
+                colourLegend: getRouteColourLegend(tasks)
             });
             saveState();
             focusRouteOutput();
@@ -8014,6 +8052,7 @@
                 start: getDOM('startLocation')?.value || '',
                 activeContractIndex,
                 contracts: JSON.parse(JSON.stringify(contracts || [])),
+                cargoPlannerLayouts: JSON.parse(JSON.stringify(cargoPlannerLayouts || {})),
                 customLocations: getSavedCustomLocationsForExport(),
                 tracking: JSON.parse(JSON.stringify(tracking || {})),
                 route: currentRoute ? JSON.parse(JSON.stringify(currentRoute)) : null,
@@ -8100,6 +8139,7 @@
             if (payload?.ship && getDOM('shipSelect')) getDOM('shipSelect').value = payload.ship;
 
             contracts = JSON.parse(JSON.stringify(importedContracts));
+            cargoPlannerLayouts = payload?.cargoPlannerLayouts && typeof payload.cargoPlannerLayouts === 'object' ? JSON.parse(JSON.stringify(payload.cargoPlannerLayouts)) : {};
             activeContractIndex = Number.isFinite(Number(payload?.activeContractIndex)) ? Number(payload.activeContractIndex) : 0;
             normaliseContractData();
             clampActiveContractIndex();
@@ -8202,14 +8242,7 @@ function addCustomLocation() {
             showCustomLocations();
         }
 
-        function buildRouteInputSummaryHtml() {
-            const stats = getCargoSummary();
-            return `<strong>Route calculated</strong><div class="summary-grid"><div class="summary-card"><b>Contracts</b>${contracts.length}</div><div class="summary-card"><b>Max Cargo</b>${stats.carriedCargo} SCU</div><div class="summary-card"><b>Total Payout</b>${fmtAuec(stats.payout || 0)} aUEC</div></div>`;
-        }
 
-        function collapseRouteInputs() { /* cards stay visible; manual collapse is per contract */ }
-        function unlockRouteInputs() { renderContracts(); }
-        function hideRouteInputSummary() {}
 
         function saveState() {
             const state = {
@@ -8220,7 +8253,8 @@ function addCustomLocation() {
                 ship: getDOM('shipSelect')?.value,
                 start: getDOM('startLocation')?.value,
                 activeContractIndex,
-                contracts
+                contracts,
+                cargoPlannerLayouts
             };
             localStorage.setItem('scContractState', JSON.stringify(state));
         }
@@ -8234,11 +8268,13 @@ function addCustomLocation() {
                     if (state.mapSystem && mapConfig[state.mapSystem]) setMapSystem(state.mapSystem, { redraw: false, reset: false, save: true });
                     if (state.ship) getDOM('shipSelect').value = state.ship;
                     contracts = Array.isArray(state.contracts) ? state.contracts : [];
+                    cargoPlannerLayouts = state.cargoPlannerLayouts && typeof state.cargoPlannerLayouts === 'object' ? state.cargoPlannerLayouts : {};
                     activeContractIndex = Number.isFinite(Number(state.activeContractIndex)) ? Number(state.activeContractIndex) : 0;
                     normaliseContractData();
                     clampActiveContractIndex();
                 } catch {
                     contracts = [];
+                    cargoPlannerLayouts = {};
                 }
             }
             updateLocationOptions();
@@ -8270,6 +8306,9 @@ function addCustomLocation() {
                 }
             } catch (e) { /* no-op */ }
         };
+
+        window.addEventListener('mousemove', handleCargoRegionResizeMove);
+        window.addEventListener('mouseup', endCargoRegionResize);
 
         document.addEventListener('change', updateStatus);
     </script>
